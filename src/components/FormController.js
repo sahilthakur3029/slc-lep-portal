@@ -10,6 +10,15 @@ export class FormController extends Component {
     firstName: "",
     lastName: "",
     email: "",
+    sid: "",
+    academicTitle: "",
+    residency: "",
+    major: "",
+    majorWeight: "",
+    gender: "",
+    genderWeight: "",
+    hobbies: [],
+    availability: "",
     occupation: "",
     city: "",
     bio: "",
@@ -38,8 +47,40 @@ export class FormController extends Component {
 
   render() {
     const { step } = this.state;
-    const { firstName, lastName, email, occupation, city, bio } = this.state;
-    const values = { firstName, lastName, email, occupation, city, bio };
+    const {
+      firstName,
+      lastName,
+      email,
+      sid,
+      academicTitle,
+      residency,
+      major,
+      majorWeight,
+      gender,
+      genderWeight,
+      hobbies,
+      availability,
+      occupation,
+      city,
+      bio,
+    } = this.state;
+    const values = {
+      firstName,
+      lastName,
+      email,
+      sid,
+      academicTitle,
+      residency,
+      major,
+      majorWeight,
+      gender,
+      genderWeight,
+      hobbies,
+      availability,
+      occupation,
+      city,
+      bio,
+    };
 
     switch (step) {
       case 1:

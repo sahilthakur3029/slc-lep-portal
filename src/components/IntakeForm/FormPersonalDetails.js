@@ -4,6 +4,7 @@ import AppBar from "@material-ui/core/AppBar";
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
+import TopBar from "./TopBar.js";
 
 export class FormPersonalDetails extends Component {
   continue = (e) => {
@@ -26,6 +27,7 @@ export class FormPersonalDetails extends Component {
             fullWidth
             maxWidth='sm'
           > */}
+          <TopBar />
           <AppBar title="Enter Personal Details" />
           <TextField
             placeholder="Enter Your Occupation"

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import AppBar from "@material-ui/core/AppBar";
 import TopBar from "./TopBar.js";
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
@@ -45,7 +46,7 @@ const MenuProps = {
     },
   },
 };
-const names = [
+const allHobbies = [
   "Sports",
   "Music/Dance",
   "Instruments",
@@ -58,13 +59,23 @@ const names = [
   "Fashion/Shopping",
 ];
 
+const allDays = [
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+];
+
 class FormUserDetails extends Component {
   continue = (e) => {
     e.preventDefault();
     this.props.nextStep();
   };
   render() {
-    const { values, handleChange, classes, theme } = this.props;
+    const { values, handleChange, classes } = this.props;
     return (
       <MuiThemeProvider>
         <>
@@ -205,8 +216,8 @@ class FormUserDetails extends Component {
             </RadioGroup>
           </FormControl>
           <br />
-          <FormControl className={classes.formControl}>
-            <InputLabel id="demo-mutiple-name-label">Hobbies</InputLabel>
+          <FormControl className={classes.formControl} required>
+            <InputLabel id="hobbies-label">Select All Hobbies</InputLabel>
             <Select
               labelId="hobbies-label"
               id="hobbies"
@@ -216,13 +227,53 @@ class FormUserDetails extends Component {
               input={<Input />}
               MenuProps={MenuProps}
             >
-              {names.map((name) => (
+              {allHobbies.map((name) => (
                 <MenuItem key={name} value={name}>
                   {name}
                 </MenuItem>
               ))}
             </Select>
           </FormControl>
+          <FormControl className={classes.formControl} required>
+            <InputLabel id="hobbies-label">
+              Select All Available Days
+            </InputLabel>
+            <Select
+              labelId="dow-label"
+              id="dow"
+              multiple
+              value={values.availability}
+              onChange={handleChange("availability")}
+              input={<Input />}
+              MenuProps={MenuProps}
+            >
+              {allDays.map((name) => (
+                <MenuItem key={name} value={name}>
+                  {name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <br />
+          <TextField
+            label="What do you hope to gain from the SLC Language Exchange Program?"
+            onChange={handleChange("hopeToGain")}
+            defaultValue={values.hopeToGain}
+            margin="normal"
+            required
+            fullWidth
+            className={classes.formControl}
+          />
+          <br />
+          <TextField
+            label="How do you plan to maintain your motivation to meet with your partner(s) weekly?"
+            onChange={handleChange("planToMeet")}
+            defaultValue={values.planToMeet}
+            margin="normal"
+            required
+            fullWidth
+            className={classes.formControl}
+          />
           <br />
           <br />
           <ColorButton
@@ -233,6 +284,7 @@ class FormUserDetails extends Component {
           >
             Next
           </ColorButton>
+          <br />
         </>
       </MuiThemeProvider>
     );

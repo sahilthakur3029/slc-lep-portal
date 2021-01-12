@@ -1,11 +1,13 @@
 import React, { Component } from "react";
 import FormUserDetails from "./FormUserDetails";
-import FormPersonalDetails from "./FormPersonalDetails";
+import FormLanguageDetails from "./FormLanguageDetails";
 import Confirm from "./Confirm";
 import Success from "./Success";
+import { Redirect } from "react-router-dom";
 
-export class FormController extends Component {
+class FormController extends Component {
   state = {
+    redirect: null,
     step: 1,
     firstName: "",
     lastName: "",
@@ -18,10 +20,25 @@ export class FormController extends Component {
     gender: "",
     genderWeight: "",
     hobbies: [],
-    availability: "",
+    availability: [],
+    hopeToGain: "",
+    planToMeet: "",
     occupation: "",
     city: "",
     bio: "",
+    firstChoiceLearn: "",
+    firstChoiceLearnOther: "",
+    firstChoiceLearnLevel: "",
+    secondChoiceLearn: "",
+    secondChoiceLearnOther: "",
+    secondChoiceLearnLevel: "",
+    firstChoiceTeach: "",
+    firstChoiceTeachOther: "",
+    firstChoiceTeachLevel: "",
+    secondChoiceTeach: "",
+    secondChoiceTeachOther: "",
+    secondChoiceTeachLevel: "",
+    comments: "",
   };
 
   // Proceed to next step
@@ -38,6 +55,12 @@ export class FormController extends Component {
     this.setState({
       step: step - 1,
     });
+  };
+
+  // Redirect home
+  goHome = () => {
+    const { redirect } = this.state;
+    this.setState({ redirect: <Redirect push to="/" /> });
   };
 
   // Handle fields change
@@ -60,9 +83,21 @@ export class FormController extends Component {
       genderWeight,
       hobbies,
       availability,
-      occupation,
-      city,
-      bio,
+      hopeToGain,
+      planToMeet,
+      firstChoiceLearn,
+      firstChoiceLearnOther,
+      firstChoiceLearnLevel,
+      secondChoiceLearn,
+      secondChoiceLearnOther,
+      secondChoiceLearnLevel,
+      firstChoiceTeach,
+      firstChoiceTeachOther,
+      firstChoiceTeachLevel,
+      secondChoiceTeach,
+      secondChoiceTeachOther,
+      secondChoiceTeachLevel,
+      comments,
     } = this.state;
     const values = {
       firstName,
@@ -77,9 +112,21 @@ export class FormController extends Component {
       genderWeight,
       hobbies,
       availability,
-      occupation,
-      city,
-      bio,
+      hopeToGain,
+      planToMeet,
+      firstChoiceLearn,
+      firstChoiceLearnOther,
+      firstChoiceLearnLevel,
+      secondChoiceLearn,
+      secondChoiceLearnOther,
+      secondChoiceLearnLevel,
+      firstChoiceTeach,
+      firstChoiceTeachOther,
+      firstChoiceTeachLevel,
+      secondChoiceTeach,
+      secondChoiceTeachOther,
+      secondChoiceTeachLevel,
+      comments,
     };
 
     switch (step) {
@@ -93,7 +140,7 @@ export class FormController extends Component {
         );
       case 2:
         return (
-          <FormPersonalDetails
+          <FormLanguageDetails
             nextStep={this.nextStep}
             prevStep={this.prevStep}
             handleChange={this.handleChange}
@@ -109,7 +156,7 @@ export class FormController extends Component {
           />
         );
       case 4:
-        return <Success />;
+        return <Success goHome={this.goHome} />;
       default:
         console.log("This is a multi-step form built with React.");
     }

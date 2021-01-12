@@ -1,30 +1,71 @@
 import React, { Component } from "react";
-import AppBar from "@material-ui/core/AppBar";
+import TopBar from "./TopBar.js";
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
+import Button from "@material-ui/core/Button";
+import { withStyles } from "@material-ui/core/styles";
+import { Redirect } from "react-router-dom";
 
-export class Success extends Component {
-  continue = (e) => {
-    e.preventDefault();
-    // PROCESS FORM //
-    this.props.nextStep();
-  };
+const useStyles = (theme) => ({
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 350,
+  },
+  selectEmpty: {
+    marginTop: theme.spacing(2),
+  },
+});
 
-  back = (e) => {
+const ColorButton = withStyles((theme) => ({
+  root: {
+    color: theme.palette.getContrastText("#859438"),
+    backgroundColor: "#859438",
+    "&:hover": {
+      backgroundColor: "#859438",
+    },
+    margin: theme.spacing(1),
+  },
+}))(Button);
+
+class Success extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      redirect: null,
+    };
+  }
+
+  goHome = (e) => {
     e.preventDefault();
-    this.props.prevStep();
+    this.props.goHome();
   };
 
   render() {
+    const { classes } = this.props;
     return (
       <MuiThemeProvider>
         <>
-          <AppBar title="Success" />
-          <h1>Thank You For Filling Out The Intake Form</h1>
-          <p>Please Click Below To Navigate Back To The Home Page.</p>
+          <TopBar />
+          <br />
+          <h1 className={classes.formControl}>
+            Thank You For Filling Out The Intake Form
+          </h1>
+          <p className={classes.formControl}>
+            Please Click Below To Navigate Back To The Home Page.
+          </p>
+          <br />
+          <ColorButton
+            variant="contained"
+            color="primary"
+            className={classes.margin}
+            onClick={this.goHome}
+          >
+            Home
+          </ColorButton>
         </>
       </MuiThemeProvider>
     );
   }
 }
 
-export default Success;
+export default withStyles(useStyles)(Success);

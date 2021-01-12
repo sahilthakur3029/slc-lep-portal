@@ -14,7 +14,7 @@ class App extends React.Component {
       <BrowserRouter>
         <Switch>
           <Route exact path="/" component={Home} />
-          <Route exact path="/form" component={FormController} />
+          <Route exact path="/intakeform" component={FormController} />
         </Switch>
       </BrowserRouter>
     );

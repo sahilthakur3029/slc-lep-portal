@@ -37,7 +37,8 @@ class Success extends Component {
 
   goHome = (e) => {
     e.preventDefault();
-    this.props.goHome();
+    // Redirect home
+    this.setState({ redirect: <Redirect push to="/" /> });
   };
 
   render() {
@@ -45,6 +46,7 @@ class Success extends Component {
     return (
       <MuiThemeProvider>
         <>
+          {this.state.redirect}
           <TopBar />
           <br />
           <h1 className={classes.formControl}>

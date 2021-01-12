@@ -3,11 +3,9 @@ import FormUserDetails from "./FormUserDetails";
 import FormLanguageDetails from "./FormLanguageDetails";
 import Confirm from "./Confirm";
 import Success from "./Success";
-import { Redirect } from "react-router-dom";
 
 class FormController extends Component {
   state = {
-    redirect: null,
     step: 1,
     firstName: "",
     lastName: "",
@@ -55,12 +53,6 @@ class FormController extends Component {
     this.setState({
       step: step - 1,
     });
-  };
-
-  // Redirect home
-  goHome = () => {
-    const { redirect } = this.state;
-    this.setState({ redirect: <Redirect push to="/" /> });
   };
 
   // Handle fields change
@@ -156,7 +148,7 @@ class FormController extends Component {
           />
         );
       case 4:
-        return <Success goHome={this.goHome} />;
+        return <Success />;
       default:
         console.log("This is a multi-step form built with React.");
     }

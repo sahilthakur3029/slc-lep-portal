@@ -91,6 +91,10 @@ class FormLanguageDetails extends Component {
         <>
           <TopBar />
           <br />
+          <h1 className={classes.formControl}>
+            <u>Language Exchange</u>
+          </h1>
+          <br />
           <h2 className={classes.formControl}>
             What languages do you want to practice?
           </h2>

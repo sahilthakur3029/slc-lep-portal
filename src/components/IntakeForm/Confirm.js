@@ -38,10 +38,8 @@ class Confirm extends Component {
       academicTitle: this.props.values.academicTitle,
       residency: this.props.values.residency,
       major: this.props.values.major,
-      majorWeight: this.props.values.majorWeight,
       gender: this.props.values.gender,
-      genderWeight: this.props.values.genderWeight,
-      hobbies: this.props.values.hobbies,
+      genderCustom: this.props.values.genderCustom,
       availability: this.props.values.availability,
       hopeToGain: this.props.values.hopeToGain,
       planToMeet: this.props.values.planToMeet,
@@ -61,6 +59,11 @@ class Confirm extends Component {
       secondChoiceTeachOther: this.props.values.secondChoiceTeachOther,
       secondChoiceTeachLevel: this.props.values.secondChoiceTeachLevel,
       comments: this.props.values.comments,
+      preferredMajor: this.props.values.preferredMajor,
+      preferredMajorWeight: this.props.values.preferredMajorWeight,
+      preferredGender: this.props.values.preferredGender,
+      preferredGenderCustom: this.props.values.preferredGenderCustom,
+      preferredGenderWeight: this.props.values.preferredGenderWeight,
     });
     console.log(data);
     this.props.nextStep();
@@ -81,10 +84,8 @@ class Confirm extends Component {
         academicTitle,
         residency,
         major,
-        majorWeight,
         gender,
-        genderWeight,
-        hobbies,
+        genderCustom,
         availability,
         hopeToGain,
         planToMeet,
@@ -101,6 +102,11 @@ class Confirm extends Component {
         secondChoiceTeachOther,
         secondChoiceTeachLevel,
         comments,
+        preferredMajor,
+        preferredMajorWeight,
+        preferredGender,
+        preferredGenderCustom,
+        preferredGenderWeight,
       },
       classes,
     } = this.props;
@@ -136,22 +142,13 @@ class Confirm extends Component {
               <ListItemText primary="Major" secondary={major} />
             </ListItem>
             <ListItem>
-              <ListItemText
-                primary="Major Preference Level"
-                secondary={majorWeight}
-              />
-            </ListItem>
-            <ListItem>
               <ListItemText primary="Gender" secondary={gender} />
             </ListItem>
             <ListItem>
               <ListItemText
-                primary="Gender Preference Level"
-                secondary={genderWeight}
+                primary="Gender Custom Response (If Applicable)"
+                secondary={genderCustom}
               />
-            </ListItem>
-            <ListItem>
-              <ListItemText primary="Hobbies" secondary={hobbies.join(", ")} />
             </ListItem>
             <ListItem>
               <ListItemText
@@ -179,7 +176,7 @@ class Confirm extends Component {
             </ListItem>
             <ListItem>
               <ListItemText
-                primary="First Choice Learn Other (If Applicable)"
+                primary="First Choice Learn Other"
                 secondary={firstChoiceLearnOther}
               />
             </ListItem>
@@ -191,19 +188,19 @@ class Confirm extends Component {
             </ListItem>
             <ListItem>
               <ListItemText
-                primary="Second Choice Learn (If Applicable)"
+                primary="Second Choice Learn"
                 secondary={secondChoiceLearn}
               />
             </ListItem>
             <ListItem>
               <ListItemText
-                primary="Second Choice Learn Other (If Applicable)"
+                primary="Second Choice Learn Other"
                 secondary={secondChoiceLearnOther}
               />
             </ListItem>
             <ListItem>
               <ListItemText
-                primary="Second Choice Learn Level (If Applicable)"
+                primary="Second Choice Learn Level"
                 secondary={secondChoiceLearnLevel}
               />
             </ListItem>
@@ -215,7 +212,7 @@ class Confirm extends Component {
             </ListItem>
             <ListItem>
               <ListItemText
-                primary="First Choice Teach Other (If Applicable)"
+                primary="First Choice Teach Other"
                 secondary={firstChoiceTeachOther}
               />
             </ListItem>
@@ -227,24 +224,54 @@ class Confirm extends Component {
             </ListItem>
             <ListItem>
               <ListItemText
-                primary="Second Choice Teach (If Applicable)"
+                primary="Second Choice Teach"
                 secondary={secondChoiceTeach}
               />
             </ListItem>
             <ListItem>
               <ListItemText
-                primary="Second Choice Teach Other (If Applicable)"
+                primary="Second Choice Teach Other"
                 secondary={secondChoiceTeachOther}
               />
             </ListItem>
             <ListItem>
               <ListItemText
-                primary="Second Choice Teach Level (If Applicable)"
+                primary="Second Choice Teach Level"
                 secondary={secondChoiceTeachLevel}
               />
             </ListItem>
             <ListItem>
               <ListItemText primary="Comments" secondary={comments} />
+            </ListItem>
+            <ListItem>
+              <ListItemText
+                primary="Preferred Major(s)"
+                secondary={preferredMajor}
+              />
+            </ListItem>
+            <ListItem>
+              <ListItemText
+                primary="Preferred Major(s) Preference Level"
+                secondary={preferredMajorWeight}
+              />
+            </ListItem>
+            <ListItem>
+              <ListItemText
+                primary="Preferred Gender"
+                secondary={preferredGender}
+              />
+            </ListItem>
+            <ListItem>
+              <ListItemText
+                primary="Preferred Gender Custom Response (If Applicable)"
+                secondary={preferredGenderCustom}
+              />
+            </ListItem>
+            <ListItem>
+              <ListItemText
+                primary="Preferred Gender Preference Level"
+                secondary={preferredGenderWeight}
+              />
             </ListItem>
           </List>
           <ColorButton

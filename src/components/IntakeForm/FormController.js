@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import FormUserDetails from "./FormUserDetails";
 import FormLanguageDetails from "./FormLanguageDetails";
+import FormPartnerDetails from "./FormPartnerDetails";
 import Confirm from "./Confirm";
 import Success from "./Success";
 
@@ -14,10 +15,8 @@ class FormController extends Component {
     academicTitle: "",
     residency: "",
     major: "",
-    majorWeight: "",
     gender: "",
-    genderWeight: "",
-    hobbies: [],
+    genderCustom: "",
     availability: [],
     hopeToGain: "",
     planToMeet: "",
@@ -37,6 +36,11 @@ class FormController extends Component {
     secondChoiceTeachOther: "",
     secondChoiceTeachLevel: "",
     comments: "",
+    preferredMajor: "",
+    preferredMajorWeight: "",
+    preferredGender: "",
+    preferredGenderCustom: "",
+    preferredGenderWeight: "",
   };
 
   // Proceed to next step
@@ -70,10 +74,8 @@ class FormController extends Component {
       academicTitle,
       residency,
       major,
-      majorWeight,
       gender,
-      genderWeight,
-      hobbies,
+      genderCustom,
       availability,
       hopeToGain,
       planToMeet,
@@ -90,6 +92,11 @@ class FormController extends Component {
       secondChoiceTeachOther,
       secondChoiceTeachLevel,
       comments,
+      preferredMajor,
+      preferredMajorWeight,
+      preferredGender,
+      preferredGenderCustom,
+      preferredGenderWeight,
     } = this.state;
     const values = {
       firstName,
@@ -99,10 +106,8 @@ class FormController extends Component {
       academicTitle,
       residency,
       major,
-      majorWeight,
       gender,
-      genderWeight,
-      hobbies,
+      genderCustom,
       availability,
       hopeToGain,
       planToMeet,
@@ -119,6 +124,11 @@ class FormController extends Component {
       secondChoiceTeachOther,
       secondChoiceTeachLevel,
       comments,
+      preferredMajor,
+      preferredMajorWeight,
+      preferredGender,
+      preferredGenderCustom,
+      preferredGenderWeight,
     };
 
     switch (step) {
@@ -141,13 +151,22 @@ class FormController extends Component {
         );
       case 3:
         return (
+          <FormPartnerDetails
+            nextStep={this.nextStep}
+            prevStep={this.prevStep}
+            handleChange={this.handleChange}
+            values={values}
+          />
+        );
+      case 4:
+        return (
           <Confirm
             nextStep={this.nextStep}
             prevStep={this.prevStep}
             values={values}
           />
         );
-      case 4:
+      case 5:
         return <Success />;
       default:
         console.log("This is a multi-step form built with React.");

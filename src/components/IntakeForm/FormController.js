@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import FormUserDetails from "./FormUserDetails";
 import FormLanguageDetails from "./FormLanguageDetails";
 import FormPartnerDetails from "./FormPartnerDetails";
+import FormWaiver from "./FormWaiver";
 import Confirm from "./Confirm";
 import Success from "./Success";
 
@@ -41,6 +42,8 @@ class FormController extends Component {
     preferredGender: "",
     preferredGenderCustom: "",
     preferredGenderWeight: "",
+    waiverAccept: "",
+    orientationKey: "",
   };
 
   // Proceed to next step
@@ -97,6 +100,8 @@ class FormController extends Component {
       preferredGender,
       preferredGenderCustom,
       preferredGenderWeight,
+      waiverAccept,
+      orientationKey,
     } = this.state;
     const values = {
       firstName,
@@ -129,6 +134,8 @@ class FormController extends Component {
       preferredGender,
       preferredGenderCustom,
       preferredGenderWeight,
+      waiverAccept,
+      orientationKey,
     };
 
     switch (step) {
@@ -160,13 +167,23 @@ class FormController extends Component {
         );
       case 4:
         return (
-          <Confirm
+          <FormWaiver
             nextStep={this.nextStep}
             prevStep={this.prevStep}
+            handleChange={this.handleChange}
             values={values}
           />
         );
       case 5:
+        return (
+          <Confirm
+            nextStep={this.nextStep}
+            prevStep={this.prevStep}
+            handleChange={this.handleChange}
+            values={values}
+          />
+        );
+      case 6:
         return <Success />;
       default:
         console.log("This is a multi-step form built with React.");

@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import AppBar from "@material-ui/core/AppBar";
 import TopBar from "./TopBar.js";
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
@@ -10,10 +9,6 @@ import FormControl from "@material-ui/core/FormControl";
 import { withStyles } from "@material-ui/core/styles";
 import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";
-import Radio from "@material-ui/core/Radio";
-import RadioGroup from "@material-ui/core/RadioGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import FormLabel from "@material-ui/core/FormLabel";
 import HelpIcon from "@material-ui/icons/Help";
 import Tooltip from "@material-ui/core/Tooltip";
 import { createMuiTheme } from "@material-ui/core/styles";
@@ -161,7 +156,6 @@ class FormUserDetails extends Component {
             onChange={handleChange("major")}
             defaultValue={values.major}
             margin="normal"
-            required
             className={classes.formControl}
           />
           <br />
@@ -199,14 +193,11 @@ class FormUserDetails extends Component {
             onChange={handleChange("genderCustom")}
             defaultValue={values.genderCustom}
             margin="normal"
-            required
             className={classes.formControl}
           />
           <br />
-          <FormControl className={classes.formControl} required>
-            <InputLabel id="hobbies-label">
-              Select All Available Days
-            </InputLabel>
+          <FormControl className={classes.formControl}>
+            <InputLabel id="days-label">Select All Available Days</InputLabel>
             <Select
               labelId="dow-label"
               id="dow"

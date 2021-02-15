@@ -3,7 +3,10 @@ import { List, ListItem, ListItemText } from "@material-ui/core/";
 import TopBar from "./TopBar.js";
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
 import { withStyles } from "@material-ui/core/styles";
+
+const key = "sahiliscool";
 
 const useStyles = (theme) => ({
   formControl: {
@@ -29,6 +32,9 @@ const ColorButton = withStyles((theme) => ({
 class Confirm extends Component {
   continue = (e) => {
     e.preventDefault();
+    if (this.props.values.orientationKey != key) {
+      return;
+    }
     // PROCESS FORM //
     let data = JSON.stringify({
       firstName: this.props.values.firstName,
@@ -64,6 +70,8 @@ class Confirm extends Component {
       preferredGender: this.props.values.preferredGender,
       preferredGenderCustom: this.props.values.preferredGenderCustom,
       preferredGenderWeight: this.props.values.preferredGenderWeight,
+      waiverAccept: this.props.values.waiverAccept,
+      orientationKey: this.props.values.orientationKey,
     });
     console.log(data);
     this.props.nextStep();
@@ -107,8 +115,11 @@ class Confirm extends Component {
         preferredGender,
         preferredGenderCustom,
         preferredGenderWeight,
+        waiverAccept,
+        orientationKey,
       },
       classes,
+      handleChange,
     } = this.props;
     return (
       <MuiThemeProvider>
@@ -118,162 +129,184 @@ class Confirm extends Component {
           <h1 className={classes.formControl}>Confirmation</h1>
           <List>
             <ListItem>
-              <ListItemText primary="First Name" secondary={firstName} />
+              <ListItemText primary="First Name:*" secondary={firstName} />
             </ListItem>
             <ListItem>
-              <ListItemText primary="Last Name" secondary={lastName} />
+              <ListItemText primary="Last Name:*" secondary={lastName} />
             </ListItem>
             <ListItem>
-              <ListItemText primary="Email" secondary={email} />
+              <ListItemText primary="Email:*" secondary={email} />
             </ListItem>
             <ListItem>
-              <ListItemText primary="SID" secondary={sid} />
+              <ListItemText primary="SID:*" secondary={sid} />
             </ListItem>
             <ListItem>
               <ListItemText
-                primary="Academic Title"
+                primary="Academic Title:*"
                 secondary={academicTitle}
               />
             </ListItem>
             <ListItem>
-              <ListItemText primary="Residency" secondary={residency} />
+              <ListItemText primary="Residency:*" secondary={residency} />
             </ListItem>
             <ListItem>
-              <ListItemText primary="Major" secondary={major} />
+              <ListItemText primary="Major(s):" secondary={major} />
             </ListItem>
             <ListItem>
-              <ListItemText primary="Gender" secondary={gender} />
+              <ListItemText primary="Gender:" secondary={gender} />
             </ListItem>
             <ListItem>
               <ListItemText
-                primary="Gender Custom Response (If Applicable)"
+                primary="Gender Custom Response (If Applicable):"
                 secondary={genderCustom}
               />
             </ListItem>
             <ListItem>
               <ListItemText
-                primary="Days of Week Availability"
+                primary="Days of Week Availability:"
                 secondary={availability.join(", ")}
               />
             </ListItem>
             <ListItem>
               <ListItemText
-                primary="What do you hope to gain from the SLC Language Exchange Program?"
+                primary="What do you hope to gain from the SLC Language Exchange Program?:*"
                 secondary={hopeToGain}
               />
             </ListItem>
             <ListItem>
               <ListItemText
-                primary="How do you plan to maintain your motivation to meet with your partner(s) weekly?"
+                primary="How do you plan to maintain your motivation to meet with your partner(s) weekly?:*"
                 secondary={planToMeet}
               />
             </ListItem>
             <ListItem>
               <ListItemText
-                primary="First Choice Learn"
+                primary="First Choice Learn:*"
                 secondary={firstChoiceLearn}
               />
             </ListItem>
             <ListItem>
               <ListItemText
-                primary="First Choice Learn Other"
+                primary="First Choice Learn Other:"
                 secondary={firstChoiceLearnOther}
               />
             </ListItem>
             <ListItem>
               <ListItemText
-                primary="First Choice Learn Level"
+                primary="First Choice Learn Level:*"
                 secondary={firstChoiceLearnLevel}
               />
             </ListItem>
             <ListItem>
               <ListItemText
-                primary="Second Choice Learn"
+                primary="Second Choice Learn:"
                 secondary={secondChoiceLearn}
               />
             </ListItem>
             <ListItem>
               <ListItemText
-                primary="Second Choice Learn Other"
+                primary="Second Choice Learn Other:"
                 secondary={secondChoiceLearnOther}
               />
             </ListItem>
             <ListItem>
               <ListItemText
-                primary="Second Choice Learn Level"
+                primary="Second Choice Learn Level:"
                 secondary={secondChoiceLearnLevel}
               />
             </ListItem>
             <ListItem>
               <ListItemText
-                primary="First Choice Teach"
+                primary="First Choice Teach:*"
                 secondary={firstChoiceTeach}
               />
             </ListItem>
             <ListItem>
               <ListItemText
-                primary="First Choice Teach Other"
+                primary="First Choice Teach Other:"
                 secondary={firstChoiceTeachOther}
               />
             </ListItem>
             <ListItem>
               <ListItemText
-                primary="First Choice Learn Teach Level"
+                primary="First Choice Learn Teach Level:*"
                 secondary={firstChoiceTeachLevel}
               />
             </ListItem>
             <ListItem>
               <ListItemText
-                primary="Second Choice Teach"
+                primary="Second Choice Teach:"
                 secondary={secondChoiceTeach}
               />
             </ListItem>
             <ListItem>
               <ListItemText
-                primary="Second Choice Teach Other"
+                primary="Second Choice Teach Other:"
                 secondary={secondChoiceTeachOther}
               />
             </ListItem>
             <ListItem>
               <ListItemText
-                primary="Second Choice Teach Level"
+                primary="Second Choice Teach Level:"
                 secondary={secondChoiceTeachLevel}
               />
             </ListItem>
             <ListItem>
-              <ListItemText primary="Comments" secondary={comments} />
+              <ListItemText primary="Comments:" secondary={comments} />
             </ListItem>
             <ListItem>
               <ListItemText
-                primary="Preferred Major(s)"
+                primary="Preferred Major(s):"
                 secondary={preferredMajor}
               />
             </ListItem>
             <ListItem>
               <ListItemText
-                primary="Preferred Major(s) Preference Level"
+                primary="Preferred Major(s) Preference Level:"
                 secondary={preferredMajorWeight}
               />
             </ListItem>
             <ListItem>
               <ListItemText
-                primary="Preferred Gender"
+                primary="Preferred Gender:"
                 secondary={preferredGender}
               />
             </ListItem>
             <ListItem>
               <ListItemText
-                primary="Preferred Gender Custom Response (If Applicable)"
+                primary="Preferred Gender Custom Response (If Applicable):"
                 secondary={preferredGenderCustom}
               />
             </ListItem>
             <ListItem>
               <ListItemText
-                primary="Preferred Gender Preference Level"
+                primary="Preferred Gender Preference Level:"
                 secondary={preferredGenderWeight}
               />
             </ListItem>
+            <ListItem>
+              <ListItemText
+                primary="Waiver Acknowledgment:*"
+                secondary={waiverAccept}
+              />
+            </ListItem>
           </List>
+          <h2 className={classes.formControl}>
+            Please Enter The Orientation Key You Received At Orientation Below
+            In Order To Submit:
+          </h2>
+          <TextField
+            placeholder="Orienataion Key"
+            label="Enter orienataion key here"
+            onChange={handleChange("orientationKey")}
+            defaultValue={orientationKey}
+            margin="normal"
+            required
+            fullWidth
+            className={classes.formControl}
+          />
+          <br />
+          <br />
           <ColorButton
             variant="contained"
             color="primary"

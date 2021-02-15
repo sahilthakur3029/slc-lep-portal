@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import AppBar from "@material-ui/core/AppBar";
 import TopBar from "./TopBar.js";
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
@@ -8,14 +7,11 @@ import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import { withStyles } from "@material-ui/core/styles";
-import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormLabel from "@material-ui/core/FormLabel";
-import HelpIcon from "@material-ui/icons/Help";
-import Tooltip from "@material-ui/core/Tooltip";
 
 const useStyles = (theme) => ({
   formControl: {
@@ -140,11 +136,7 @@ class FormPartnerDetails extends Component {
             margin="normal"
             className={classes.formControl}
           />
-          <FormControl
-            component="fieldset"
-            required
-            className={classes.formControl}
-          >
+          <FormControl component="fieldset" className={classes.formControl}>
             <FormLabel component="legend">
               On a scale from 1-5, how important is it to get someone in your
               pair/trio with the same gender?

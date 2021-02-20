@@ -10,6 +10,11 @@ class App extends React.Component {
   }
 
   render() {
+    const { REACT_APP_TEST } = process.env;
+    fetch(REACT_APP_TEST)
+      .then((response) => response.json())
+      .then((data) => console.log(data))
+      .catch((error) => console.log("Erorr", error));
     return (
       <BrowserRouter>
         <Switch>

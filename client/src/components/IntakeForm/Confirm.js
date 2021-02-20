@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { List, ListItem, ListItemText } from "@material-ui/core/";
+import { List, ListItem, ListItemText } from "@material-ui/core";
 import TopBar from "./TopBar.js";
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";

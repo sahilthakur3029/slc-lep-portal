@@ -5,9 +5,9 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
-@app.route('/sahil')
+@app.route('/test')
 def index():
-    a = {"sahil":"hi"}
+    a = {"Test":"Hello World!"}
     return jsonify(a)
 
 

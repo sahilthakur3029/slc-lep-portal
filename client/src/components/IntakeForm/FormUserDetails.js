@@ -236,6 +236,22 @@ class FormUserDetails extends Component {
           />
           <br />
           <br />
+          <h2 className={classes.formControl}>
+            Please Enter The Key You Receieved At Orientation Below (You Will
+            Not Be Able To Submit Without The Correct Key):
+          </h2>
+          <TextField
+            placeholder="Orienataion Key"
+            label="Enter orienataion key here"
+            onChange={handleChange("orientationKey")}
+            defaultValue={values.orientationKey}
+            margin="normal"
+            required
+            fullWidth
+            className={classes.formControl}
+          />
+          <br />
+          <br />
           <ColorButton
             variant="contained"
             color="primary"

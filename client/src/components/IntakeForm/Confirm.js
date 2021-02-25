@@ -5,8 +5,14 @@ import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import { withStyles } from "@material-ui/core/styles";
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
 
 const key = "sahiliscool";
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 const useStyles = (theme) => ({
   formControl: {
@@ -30,9 +36,26 @@ const ColorButton = withStyles((theme) => ({
 }))(Button);
 
 class Confirm extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      open: false,
+    };
+  }
+
+  handleClose = (e, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    this.setState({ open: false });
+  };
+
   continue = (e) => {
     e.preventDefault();
     if (this.props.values.orientationKey != key) {
+      this.setState({ open: true });
       return;
     }
     // PROCESS FORM //
@@ -124,6 +147,16 @@ class Confirm extends Component {
     return (
       <MuiThemeProvider>
         <>
+          <Snackbar
+            open={this.state.open}
+            autoHideDuration={5000}
+            onClose={() => this.setState({ open: false })}
+          >
+            <Alert onClose={this.handleClose} severity="success">
+              This is a success message! This is a success message!This is a
+              success message!
+            </Alert>
+          </Snackbar>
           <TopBar />
           <br />
           <h1 className={classes.formControl}>Confirmation</h1>
@@ -177,6 +210,12 @@ class Confirm extends Component {
               <ListItemText
                 primary="How do you plan to maintain your motivation to meet with your partner(s) weekly?:*"
                 secondary={planToMeet}
+              />
+            </ListItem>
+            <ListItem>
+              <ListItemText
+                primary="Orientation Key*"
+                secondary={orientationKey}
               />
             </ListItem>
             <ListItem>
@@ -291,22 +330,6 @@ class Confirm extends Component {
               />
             </ListItem>
           </List>
-          <h2 className={classes.formControl}>
-            Please Enter The Orientation Key You Received At Orientation Below
-            In Order To Submit:
-          </h2>
-          <TextField
-            placeholder="Orienataion Key"
-            label="Enter orienataion key here"
-            onChange={handleChange("orientationKey")}
-            defaultValue={orientationKey}
-            margin="normal"
-            required
-            fullWidth
-            className={classes.formControl}
-          />
-          <br />
-          <br />
           <ColorButton
             variant="contained"
             color="primary"

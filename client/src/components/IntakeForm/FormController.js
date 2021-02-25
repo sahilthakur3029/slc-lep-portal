@@ -54,6 +54,14 @@ class FormController extends Component {
     });
   };
 
+  // Proceed to next step (and checks orienation key first)
+  nextStepOrientationCheck = () => {
+    const { step } = this.state;
+    this.setState({
+      step: step + 1,
+    });
+  };
+
   // Go back to prev step
   prevStep = () => {
     const { step } = this.state;

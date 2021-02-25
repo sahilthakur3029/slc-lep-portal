@@ -21,9 +21,6 @@ class FormController extends Component {
     availability: [],
     hopeToGain: "",
     planToMeet: "",
-    occupation: "",
-    city: "",
-    bio: "",
     firstChoiceLearn: "",
     firstChoiceLearnOther: "",
     firstChoiceLearnLevel: "",
@@ -48,14 +45,6 @@ class FormController extends Component {
 
   // Proceed to next step
   nextStep = () => {
-    const { step } = this.state;
-    this.setState({
-      step: step + 1,
-    });
-  };
-
-  // Proceed to next step (and checks orienation key first)
-  nextStepOrientationCheck = () => {
     const { step } = this.state;
     this.setState({
       step: step + 1,
@@ -150,8 +139,8 @@ class FormController extends Component {
       case 1:
         return (
           <FormUserDetails
-            nextStep={this.nextStep}
             handleChange={this.handleChange}
+            nextStep={this.nextStep}
             values={values}
           />
         );

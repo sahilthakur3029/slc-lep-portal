@@ -8,8 +8,6 @@ import { withStyles } from "@material-ui/core/styles";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 
-const key = "sahiliscool";
-
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
@@ -43,7 +41,6 @@ class Confirm extends Component {
       open: false,
     };
   }
-
   handleClose = (e, reason) => {
     if (reason === "clickaway") {
       return;
@@ -51,10 +48,23 @@ class Confirm extends Component {
 
     this.setState({ open: false });
   };
-
   continue = (e) => {
     e.preventDefault();
-    if (this.props.values.orientationKey != key) {
+    if (
+      this.props.values.firstName.trim() == "" ||
+      this.props.values.lastName.trim() == "" ||
+      this.props.values.email.trim() == "" ||
+      this.props.values.sid.trim() == "" ||
+      this.props.values.academicTitle.trim() == "" ||
+      this.props.values.residency.trim() == "" ||
+      this.props.values.hopeToGain.trim() == "" ||
+      this.props.values.planToMeet.trim() == "" ||
+      this.props.values.firstChoiceLearn.trim() == "" ||
+      this.props.values.firstChoiceLearnLevel.trim() == "" ||
+      this.props.values.firstChoiceTeach.trim() == "" ||
+      this.props.values.firstChoiceTeachLevel.trim() == "" ||
+      this.props.values.waiverAccept.trim() == ""
+    ) {
       this.setState({ open: true });
       return;
     }
@@ -72,9 +82,6 @@ class Confirm extends Component {
       availability: this.props.values.availability,
       hopeToGain: this.props.values.hopeToGain,
       planToMeet: this.props.values.planToMeet,
-      occupation: this.props.values.occupation,
-      city: this.props.values.city,
-      bio: this.props.values.bio,
       firstChoiceLearn: this.props.values.firstChoiceLearn,
       firstChoiceLearnOther: this.props.values.firstChoiceLearnOther,
       firstChoiceLearnLevel: this.props.values.firstChoiceLearnLevel,
@@ -94,7 +101,6 @@ class Confirm extends Component {
       preferredGenderCustom: this.props.values.preferredGenderCustom,
       preferredGenderWeight: this.props.values.preferredGenderWeight,
       waiverAccept: this.props.values.waiverAccept,
-      orientationKey: this.props.values.orientationKey,
     });
     console.log(data);
     this.props.nextStep();
@@ -139,7 +145,6 @@ class Confirm extends Component {
         preferredGenderCustom,
         preferredGenderWeight,
         waiverAccept,
-        orientationKey,
       },
       classes,
       handleChange,
@@ -152,9 +157,9 @@ class Confirm extends Component {
             autoHideDuration={5000}
             onClose={() => this.setState({ open: false })}
           >
-            <Alert onClose={this.handleClose} severity="success">
-              This is a success message! This is a success message!This is a
-              success message!
+            <Alert onClose={this.handleClose} severity="error">
+              Please make sure you have filled out all the required fields
+              marked by an asterick
             </Alert>
           </Snackbar>
           <TopBar />
@@ -202,20 +207,14 @@ class Confirm extends Component {
             </ListItem>
             <ListItem>
               <ListItemText
-                primary="What do you hope to gain from the SLC Language Exchange Program?:*"
+                primary="What do you hope to gain from the SLC Language Exchange Program:*"
                 secondary={hopeToGain}
               />
             </ListItem>
             <ListItem>
               <ListItemText
-                primary="How do you plan to maintain your motivation to meet with your partner(s) weekly?:*"
+                primary="How do you plan to maintain your motivation to meet with your partner(s) weekly:*"
                 secondary={planToMeet}
-              />
-            </ListItem>
-            <ListItem>
-              <ListItemText
-                primary="Orientation Key*"
-                secondary={orientationKey}
               />
             </ListItem>
             <ListItem>

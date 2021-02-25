@@ -13,6 +13,14 @@ import HelpIcon from "@material-ui/icons/Help";
 import Tooltip from "@material-ui/core/Tooltip";
 import { createMuiTheme } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
+
+const key = "iloveslc";
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 const theme = createMuiTheme({
   palette: {
@@ -66,15 +74,42 @@ const allDays = [
 ];
 
 class FormUserDetails extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      open: false,
+    };
+  }
   continue = (e) => {
     e.preventDefault();
+    if (this.props.values.orientationKey.trim() != key) {
+      this.setState({ open: true });
+      return;
+    }
     this.props.nextStep();
+  };
+  handleClose = (e, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    this.setState({ open: false });
   };
   render() {
     const { values, handleChange, classes } = this.props;
     return (
       <MuiThemeProvider theme={theme}>
         <>
+          <Snackbar
+            open={this.state.open}
+            autoHideDuration={5000}
+            onClose={() => this.setState({ open: false })}
+          >
+            <Alert onClose={this.handleClose} severity="error">
+              Incorrect orienataion key
+            </Alert>
+          </Snackbar>
           <CssBaseline />
           <TopBar />
           <br />
@@ -238,7 +273,7 @@ class FormUserDetails extends Component {
           <br />
           <h2 className={classes.formControl}>
             Please Enter The Key You Receieved At Orientation Below (You Will
-            Not Be Able To Submit Without The Correct Key):
+            Not Be Able To Continue Without The Correct Key):
           </h2>
           <TextField
             placeholder="Orienataion Key"

@@ -68,7 +68,7 @@ class Confirm extends Component {
       this.setState({ open: true });
       return;
     }
-    // PROCESS FORM //
+    // PROCESS FORM! //
     let data = JSON.stringify({
       firstName: this.props.values.firstName,
       lastName: this.props.values.lastName,

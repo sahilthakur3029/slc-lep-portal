@@ -9,6 +9,7 @@ import Success from "./Success";
 class FormController extends Component {
   state = {
     step: 1,
+    semester: "Spring 2021",
     firstName: "",
     lastName: "",
     email: "",
@@ -67,6 +68,7 @@ class FormController extends Component {
   render() {
     const { step } = this.state;
     const {
+      semester,
       firstName,
       lastName,
       email,
@@ -101,6 +103,7 @@ class FormController extends Component {
       orientationKey,
     } = this.state;
     const values = {
+      semester,
       firstName,
       lastName,
       email,

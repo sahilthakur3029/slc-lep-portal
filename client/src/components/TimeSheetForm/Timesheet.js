@@ -44,42 +44,51 @@ const ColorButton = withStyles((theme) => ({
   },
 }))(Button);
 
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 350,
-    },
-  },
-};
-
-const allDays = [
-  "Sunday",
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-];
-
 class Timesheet extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       open: false,
+      allWeeks: props.values.allWeeks,
+      calendarLink: props.values.calendarLink,
+      semester: props.values.semester,
     };
   }
+  componentDidMount() {
+    let insertWeekPrefix = [];
+    for (let i = 0; i < this.state.allWeeks.length; i++) {
+      insertWeekPrefix.push(`Week ${this.state.allWeeks[i]}`);
+    }
+    this.setState({
+      allWeeks: insertWeekPrefix,
+    });
+  }
+
   continue = (e) => {
-    // e.preventDefault();
-    // if (this.props.values.orientationKey.trim() != key) {
-    //   this.setState({ open: true });
-    //   return;
-    // }
-    // this.props.nextStep();
+    e.preventDefault();
+    if (
+      this.props.values.firstName.trim() === "" ||
+      this.props.values.lastName.trim() === "" ||
+      this.props.values.sid.trim() === "" ||
+      this.props.values.partnerNames.trim() === "" ||
+      this.props.values.weeks.trim() === "" ||
+      this.props.values.hours.trim() === ""
+    ) {
+      this.setState({ open: true });
+      return;
+    }
+    // PROCESS FORM! //
+    let data = JSON.stringify({
+      firstName: this.props.values.firstName,
+      lastName: this.props.values.lastName,
+      sid: this.props.values.sid,
+      partnerNames: this.props.values.partnerNames,
+      hours: this.props.values.hours,
+      weeks: this.props.values.weeks,
+    });
+    console.log(data);
+    this.props.nextStep();
   };
   handleClose = (e, reason) => {
     if (reason === "clickaway") {
@@ -99,17 +108,18 @@ class Timesheet extends Component {
             onClose={() => this.setState({ open: false })}
           >
             <Alert onClose={this.handleClose} severity="error">
-              Incorrect orienataion key
+              Please fill in all the fields.
             </Alert>
           </Snackbar>
           <CssBaseline />
           <TopBar />
           <br />
           <h1 className={classes.formControl}>
-            <u>LEP Intake Form</u>
+            <u>{this.state.semester} LEP Weekly Timesheet</u>
           </h1>
-          <br />
-          <h2 className={classes.formControl}>Basic Information</h2>
+          <p className={classes.formControl}>
+            Please submit your weekly hours every Sunday by 5PM PST.
+          </p>
           <TextField
             placeholder="Enter Your First Name"
             label="First Name"
@@ -119,6 +129,82 @@ class Timesheet extends Component {
             required
             className={classes.formControl}
           />
+          <TextField
+            placeholder="Enter Your Last Name"
+            label="Last Name"
+            onChange={handleChange("lastName")}
+            defaultValue={values.lastName}
+            margin="normal"
+            required
+            className={classes.formControl}
+          />
+          <br />
+          <TextField
+            placeholder="Enter Your Student ID Number"
+            label="SID"
+            onChange={handleChange("sid")}
+            defaultValue={values.sid}
+            margin="normal"
+            required
+            className={classes.formControl}
+          />
+          <br />
+          <TextField
+            placeholder="Enter Your Partner(s) Names"
+            label="Partner Names"
+            onChange={handleChange("partnerNames")}
+            defaultValue={values.sid}
+            margin="normal"
+            required
+            className={classes.formControl}
+          />
+          <br />
+          <TextField
+            placeholder="How many hours did you meet?"
+            label="Hours"
+            onChange={handleChange("hours")}
+            defaultValue={values.hours}
+            margin="normal"
+            required
+            className={classes.formControl}
+          />
+          <br />
+          <br />
+          <h2 className={classes.formControl}>
+            Please select the week you are logging hours for:
+          </h2>
+          <p className={classes.formControl}>
+            For reference, see the SLC Academic Calendar at{" "}
+            <a target="_blank" href={"https://" + this.state.calendarLink}>
+              {this.state.calendarLink}
+            </a>
+            .
+          </p>
+          <FormControl className={classes.formControl} required>
+            <InputLabel id="week-label">Choose Week</InputLabel>
+            <Select
+              labelId="week-label"
+              id="week-title"
+              defaultValue={values.weeks}
+              onChange={handleChange("weeks")}
+            >
+              {this.state.allWeeks.map((name) => (
+                <MenuItem key={name} value={name}>
+                  {name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <br />
+          <br />
+          <ColorButton
+            variant="contained"
+            color="primary"
+            className={classes.margin}
+            onClick={this.continue}
+          >
+            Confirm & Continue
+          </ColorButton>
         </>
       </MuiThemeProvider>
     );

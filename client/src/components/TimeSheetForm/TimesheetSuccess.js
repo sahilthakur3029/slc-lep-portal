@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import TopBar from "./TopBar.js";
+import TopBar from "../IntakeForm/TopBar";
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
 import { withStyles } from "@material-ui/core/styles";
 
@@ -13,7 +13,7 @@ const useStyles = (theme) => ({
   },
 });
 
-class Success extends Component {
+class TimesheetSuccess extends Component {
   constructor(props) {
     super(props);
   }
@@ -26,15 +26,13 @@ class Success extends Component {
           <TopBar />
           <br />
           <h1 className={classes.formControl}>
-            Thank You For Filling Out The Intake Form!
+            Thank You For Logging In Your Hours!
           </h1>
-          <p className={classes.formControl}>
-            You will recieve an email once a match has been found.
-          </p>
+          <p className={classes.formControl}>You can now close this page.</p>
         </>
       </MuiThemeProvider>
     );
   }
 }
 
-export default withStyles(useStyles)(Success);
+export default withStyles(useStyles)(TimesheetSuccess);

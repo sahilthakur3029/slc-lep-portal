@@ -51,19 +51,19 @@ class Confirm extends Component {
   continue = (e) => {
     e.preventDefault();
     if (
-      this.props.values.firstName.trim() == "" ||
-      this.props.values.lastName.trim() == "" ||
-      this.props.values.email.trim() == "" ||
-      this.props.values.sid.trim() == "" ||
-      this.props.values.academicTitle.trim() == "" ||
-      this.props.values.residency.trim() == "" ||
-      this.props.values.hopeToGain.trim() == "" ||
-      this.props.values.planToMeet.trim() == "" ||
-      this.props.values.firstChoiceLearn.trim() == "" ||
-      this.props.values.firstChoiceLearnLevel.trim() == "" ||
-      this.props.values.firstChoiceTeach.trim() == "" ||
-      this.props.values.firstChoiceTeachLevel.trim() == "" ||
-      this.props.values.waiverAccept.trim() == ""
+      this.props.values.firstName.trim() === "" ||
+      this.props.values.lastName.trim() === "" ||
+      this.props.values.email.trim() === "" ||
+      this.props.values.sid.trim() === "" ||
+      this.props.values.academicTitle.trim() === "" ||
+      this.props.values.residency.trim() === "" ||
+      this.props.values.hopeToGain.trim() === "" ||
+      this.props.values.planToMeet.trim() === "" ||
+      this.props.values.firstChoiceLearn.trim() === "" ||
+      this.props.values.firstChoiceLearnLevel.trim() === "" ||
+      this.props.values.firstChoiceTeach.trim() === "" ||
+      this.props.values.firstChoiceTeachLevel.trim() === "" ||
+      this.props.values.waiverAccept.trim() === ""
     ) {
       this.setState({ open: true });
       return;

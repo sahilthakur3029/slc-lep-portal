@@ -71,6 +71,7 @@ class FormUserDetails extends Component {
 
     this.state = {
       open: false,
+      semester: this.props.values.semester,
     };
   }
   continue = (e) => {
@@ -106,7 +107,7 @@ class FormUserDetails extends Component {
           <TopBar />
           <br />
           <h1 className={classes.formControl}>
-            <u>LEP Intake Form</u>
+            <u>LEP {this.state.semester} Intake Form</u>
           </h1>
           <br />
           <h2 className={classes.formControl}>Basic Information</h2>
@@ -159,9 +160,9 @@ class FormUserDetails extends Component {
             >
               <MenuItem value={"Undergraduate"}>Undergraduate</MenuItem>
               <MenuItem value={"Graduate"}>Graduate</MenuItem>
-              <MenuItem value={"Graduate"}>Staff</MenuItem>
-              <MenuItem value={"Graduate"}>Scholar</MenuItem>
-              <MenuItem value={"Graduate"}>Alumnus</MenuItem>
+              <MenuItem value={"Staff"}>Staff</MenuItem>
+              <MenuItem value={"Scholar"}>Scholar</MenuItem>
+              <MenuItem value={"Alumnus"}>Alumnus</MenuItem>
             </Select>
           </FormControl>
           <FormControl className={classes.formControl} required>

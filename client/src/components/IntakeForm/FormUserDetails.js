@@ -22,14 +22,6 @@ function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
-const theme = createMuiTheme({
-  palette: {
-    background: {
-      default: "#e6efee",
-    },
-  },
-});
-
 const useStyles = (theme) => ({
   formControl: {
     margin: theme.spacing(1),
@@ -99,7 +91,7 @@ class FormUserDetails extends Component {
   render() {
     const { values, handleChange, classes } = this.props;
     return (
-      <MuiThemeProvider theme={theme}>
+      <MuiThemeProvider>
         <>
           <Snackbar
             open={this.state.open}

@@ -3,6 +3,16 @@ import { BrowserRouter, Switch, Route } from "react-router-dom";
 import "./App.css";
 import FormController from "./components/IntakeForm/FormController";
 import Home from "./components/Home";
+import { createMuiTheme, ThemeProvider, Button } from "@material-ui/core";
+import TimesheetController from "./components/TimeSheetForm/TimesheetController";
+
+const theme = createMuiTheme({
+  palette: {
+    background: {
+      default: "#e6efee",
+    },
+  },
+});
 
 class App extends React.Component {
   constructor(props) {
@@ -16,12 +26,15 @@ class App extends React.Component {
       .then((data) => console.log(data))
       .catch((error) => console.log("Erorr", error));
     return (
-      <BrowserRouter>
-        <Switch>
-          <Route exact path="/" component={Home} />
-          <Route exact path="/intakeform" component={FormController} />
-        </Switch>
-      </BrowserRouter>
+      <ThemeProvider theme={theme}>
+        <BrowserRouter>
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route exact path="/intakeform" component={FormController} />
+            <Route exact path="/timesheet" component={TimesheetController} />
+          </Switch>
+        </BrowserRouter>
+      </ThemeProvider>
     );
   }
 }

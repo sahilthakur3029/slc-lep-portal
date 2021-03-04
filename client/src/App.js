@@ -3,10 +3,7 @@ import { BrowserRouter, Switch, Route } from "react-router-dom";
 import "./App.css";
 import FormController from "./components/IntakeForm/FormController";
 import Home from "./components/Home";
-import {
-  unstable_createMuiStrictModeTheme as createMuiTheme,
-  ThemeProvider,
-} from "@material-ui/core";
+import { createMuiTheme, ThemeProvider } from "@material-ui/core";
 import TimesheetController from "./components/TimesheetForm/TimesheetController";
 
 const theme = createMuiTheme({

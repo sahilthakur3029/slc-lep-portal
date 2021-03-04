@@ -15,8 +15,6 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 
-const key = "iloveslc";
-
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
@@ -71,6 +69,7 @@ class FormUserDetails extends Component {
     this.state = {
       open: false,
       semester: "",
+      currOrientationKey: "",
     };
   }
   componentDidMount() {
@@ -80,13 +79,18 @@ class FormUserDetails extends Component {
       .then((data) => {
         this.setState({
           semester: data.semester,
+          currOrientationKey: data.currOrientationKey,
         });
       })
       .catch((error) => console.log("Error", error));
   }
   continue = (e) => {
     e.preventDefault();
-    if (this.props.values.orientationKey.trim() !== key) {
+    console.log(this.props.values.orientationKey.trim());
+    console.log(this.state.currOrientationKey);
+    if (
+      this.props.values.orientationKey.trim() !== this.state.currOrientationKey
+    ) {
       this.setState({ open: true });
       return;
     }

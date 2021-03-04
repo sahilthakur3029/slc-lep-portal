@@ -8,4 +8,6 @@ def insertApplicant():
 
 @intakeform.route('/intakerender')
 def getSemester():
-    return {"semester": "Spring 2021"}
+    return {"currOrientationKey": "iloveslc",
+            "semester": "Spring 2021",
+    }

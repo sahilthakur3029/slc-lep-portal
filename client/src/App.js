@@ -23,7 +23,7 @@ class App extends React.Component {
     const { REACT_APP_TEST } = process.env;
     fetch(REACT_APP_TEST)
       .then((response) => response.json())
-      .then((data) => console.log(data))
+      .then((data) => console.log(data["Test"]))
       .catch((error) => console.log("Erorr", error));
     return (
       <ThemeProvider theme={theme}>

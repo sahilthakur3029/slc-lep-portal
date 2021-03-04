@@ -14,10 +14,6 @@ const useStyles = (theme) => ({
 });
 
 class Success extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     const { classes } = this.props;
     return (

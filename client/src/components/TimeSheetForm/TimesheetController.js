@@ -3,18 +3,19 @@ import Timesheet from "./Timesheet";
 import TimesheetSuccess from "./TimesheetSuccess";
 
 class TimesheetController extends Component {
-  state = {
-    step: 1,
-    firstName: "",
-    lastName: "",
-    sid: "",
-    partnerNames: "",
-    week: "",
-    hours: "",
-    allWeeks: [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
-    calendarLink: "bit.ly/slc-sp21",
-    semester: "Spring 2021",
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      step: 1,
+      firstName: "",
+      lastName: "",
+      sid: "",
+      partnerNames: "",
+      week: "",
+      hours: "",
+    };
+  }
 
   // Proceed to next step
   nextStep = () => {
@@ -31,27 +32,14 @@ class TimesheetController extends Component {
 
   render() {
     const { step } = this.state;
-    const {
-      firstName,
-      lastName,
-      sid,
-      partnerNames,
-      weeks,
-      hours,
-      allWeeks,
-      calendarLink,
-      semester,
-    } = this.state;
+    const { firstName, lastName, sid, partnerNames, week, hours } = this.state;
     const values = {
       firstName,
       lastName,
       sid,
       partnerNames,
-      weeks,
+      week,
       hours,
-      allWeeks,
-      calendarLink,
-      semester,
     };
     switch (step) {
       case 1:

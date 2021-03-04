@@ -11,7 +11,6 @@ import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";
 import HelpIcon from "@material-ui/icons/Help";
 import Tooltip from "@material-ui/core/Tooltip";
-import { createMuiTheme } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
@@ -71,12 +70,23 @@ class FormUserDetails extends Component {
 
     this.state = {
       open: false,
-      semester: this.props.values.semester,
+      semester: "",
     };
+  }
+  componentDidMount() {
+    const { REACT_APP_INTAKERENDER } = process.env;
+    fetch(REACT_APP_INTAKERENDER)
+      .then((response) => response.json())
+      .then((data) => {
+        this.setState({
+          semester: data.semester,
+        });
+      })
+      .catch((error) => console.log("Error", error));
   }
   continue = (e) => {
     e.preventDefault();
-    if (this.props.values.orientationKey.trim() != key) {
+    if (this.props.values.orientationKey.trim() !== key) {
       this.setState({ open: true });
       return;
     }

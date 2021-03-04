@@ -3,8 +3,11 @@ import { BrowserRouter, Switch, Route } from "react-router-dom";
 import "./App.css";
 import FormController from "./components/IntakeForm/FormController";
 import Home from "./components/Home";
-import { createMuiTheme, ThemeProvider, Button } from "@material-ui/core";
-import TimesheetController from "./components/TimeSheetForm/TimesheetController";
+import {
+  unstable_createMuiStrictModeTheme as createMuiTheme,
+  ThemeProvider,
+} from "@material-ui/core";
+import TimesheetController from "./components/TimesheetForm/TimesheetController";
 
 const theme = createMuiTheme({
   palette: {
@@ -15,16 +18,7 @@ const theme = createMuiTheme({
 });
 
 class App extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
-    const { REACT_APP_TEST } = process.env;
-    fetch(REACT_APP_TEST)
-      .then((response) => response.json())
-      .then((data) => console.log(data["Test"]))
-      .catch((error) => console.log("Erorr", error));
     return (
       <ThemeProvider theme={theme}>
         <BrowserRouter>

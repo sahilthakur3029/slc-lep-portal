@@ -7,16 +7,10 @@ import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import { withStyles } from "@material-ui/core/styles";
-import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";
-import HelpIcon from "@material-ui/icons/Help";
-import Tooltip from "@material-ui/core/Tooltip";
-import { createMuiTheme } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
-
-const key = "iloveslc";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -50,19 +44,27 @@ class Timesheet extends Component {
 
     this.state = {
       open: false,
-      allWeeks: props.values.allWeeks,
-      calendarLink: props.values.calendarLink,
-      semester: props.values.semester,
+      allWeeks: [],
+      calendarLink: "",
+      semester: "",
     };
   }
   componentDidMount() {
-    let insertWeekPrefix = [];
-    for (let i = 0; i < this.state.allWeeks.length; i++) {
-      insertWeekPrefix.push(`Week ${this.state.allWeeks[i]}`);
-    }
-    this.setState({
-      allWeeks: insertWeekPrefix,
-    });
+    const { REACT_APP_TSRENDER } = process.env;
+    fetch(REACT_APP_TSRENDER)
+      .then((response) => response.json())
+      .then((data) => {
+        let insertWeekPrefix = [];
+        for (let i = 0; i < data.allWeeks.length; i++) {
+          insertWeekPrefix.push(`Week ${data.allWeeks[i]}`);
+        }
+        this.setState({
+          calendarLink: data.calendarLink,
+          semester: data.semester,
+          allWeeks: insertWeekPrefix,
+        });
+      })
+      .catch((error) => console.log("Error", error));
   }
 
   continue = (e) => {
@@ -72,7 +74,7 @@ class Timesheet extends Component {
       this.props.values.lastName.trim() === "" ||
       this.props.values.sid.trim() === "" ||
       this.props.values.partnerNames.trim() === "" ||
-      this.props.values.weeks.trim() === "" ||
+      this.props.values.week.trim() === "" ||
       this.props.values.hours.trim() === ""
     ) {
       this.setState({ open: true });
@@ -85,7 +87,7 @@ class Timesheet extends Component {
       sid: this.props.values.sid,
       partnerNames: this.props.values.partnerNames,
       hours: this.props.values.hours,
-      weeks: this.props.values.weeks,
+      week: this.props.values.week,
     });
     console.log(data);
     this.props.nextStep();
@@ -99,6 +101,7 @@ class Timesheet extends Component {
   };
   render() {
     const { values, handleChange, classes } = this.props;
+
     return (
       <MuiThemeProvider>
         <>
@@ -185,8 +188,8 @@ class Timesheet extends Component {
             <Select
               labelId="week-label"
               id="week-title"
-              defaultValue={values.weeks}
-              onChange={handleChange("weeks")}
+              defaultValue=""
+              onChange={handleChange("week")}
             >
               {this.state.allWeeks.map((name) => (
                 <MenuItem key={name} value={name}>

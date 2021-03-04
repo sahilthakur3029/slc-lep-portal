@@ -3,7 +3,6 @@ import { List, ListItem, ListItemText } from "@material-ui/core";
 import TopBar from "./TopBar.js";
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
 import { withStyles } from "@material-ui/core/styles";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
@@ -147,7 +146,6 @@ class Confirm extends Component {
         waiverAccept,
       },
       classes,
-      handleChange,
     } = this.props;
     return (
       <MuiThemeProvider>

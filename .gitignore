@@ -30,3 +30,7 @@ server/__pycache__/
 
 # vs code setting
 .vscode/
+ 
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]

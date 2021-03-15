@@ -2,6 +2,7 @@ from flask import Flask, jsonify
 from routes.intakeform import intakeform
 from routes.timesheetform import timesheetform
 from flask_cors import CORS
+import psycopg2
 
 
 app = Flask(__name__)
@@ -11,7 +12,19 @@ CORS(app)
 
 @app.route('/test')
 def index():
-    return {"Test":"Hello World!"}
+  # Connect to your postgres DB
+  conn = psycopg2.connect("dbname=slcapplication user=postgres")
+
+  # Open a cursor to perform database operations
+  cur = conn.cursor()
+
+  # Execute a query
+  cur.execute("SELECT * FROM test")
+
+  # Retrieve query results
+  records = cur.fetchall()
+  print(records)
+  return {"Test":"Hello World!"}
 
 
 if __name__ == '__main__': 

@@ -1,4 +1,4 @@
-from flask import Flask, Blueprint, jsonify
+from flask import Flask, Blueprint, jsonify, request
 from flask_cors import CORS
 import psycopg2
 import json
@@ -10,6 +10,12 @@ CORS(timesheetform)
 conn = psycopg2.connect("dbname=slcapplication user=postgres")
 # Open a cursor to perform database operations
 cur = conn.cursor()
+
+@timesheetform.route('/loghours', methods = ['POST'])
+def insertApplicant():
+    data_json = request.get_json()
+    print(data_json)
+    return 'Successful'
 
 @timesheetform.route('/tsrender')
 def updatepage():

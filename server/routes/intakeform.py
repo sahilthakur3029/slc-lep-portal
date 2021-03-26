@@ -1,4 +1,4 @@
-from flask import Flask, Blueprint, jsonify
+from flask import Flask, Blueprint, jsonify, request
 from flask_cors import CORS
 import psycopg2
 
@@ -11,9 +11,11 @@ conn = psycopg2.connect("dbname=slcapplication user=postgres")
 cur = conn.cursor()
 
 
-@intakeform.route('/applicant')
+@intakeform.route('/newapplicant', methods = ['POST'])
 def insertApplicant():
-    return {"Applicant":"Sahil"}
+    data_json = request.get_json()
+    print(data_json)
+    return 'Successful'
 
 @intakeform.route('/intakerender')
 def getSemester():
@@ -21,7 +23,7 @@ def getSemester():
     cur.execute("SELECT * FROM formmang")
 
     # Retrieve query results
-    records = cur.fetchall()
+    records = cur.fetchall() 
     return {"currOrientationKey": records[0][0],
             "semester": records[0][1],
             }

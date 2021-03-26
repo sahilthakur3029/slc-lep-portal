@@ -6,6 +6,7 @@ import Button from "@material-ui/core/Button";
 import { withStyles } from "@material-ui/core/styles";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
+import { titleCase } from "title-case";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -69,8 +70,8 @@ class Confirm extends Component {
     }
     // PROCESS FORM! //
     let data = JSON.stringify({
-      firstName: this.props.values.firstName,
-      lastName: this.props.values.lastName,
+      firstName: titleCase(this.props.values.firstName.trim()),
+      lastName: titleCase(this.props.values.lastName.trim()),
       email: this.props.values.email,
       sid: this.props.values.sid,
       academicTitle: this.props.values.academicTitle,
@@ -101,7 +102,19 @@ class Confirm extends Component {
       preferredGenderWeight: this.props.values.preferredGenderWeight,
       waiverAccept: this.props.values.waiverAccept,
     });
-    console.log(data);
+    const { REACT_APP_APPLICANT } = process.env;
+    fetch(REACT_APP_APPLICANT, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userData: data,
+      }),
+    })
+      .then((response) => response.json())
+      .catch((error) => console.log("Error", error));
     this.props.nextStep();
   };
 

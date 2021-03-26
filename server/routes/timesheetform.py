@@ -1,10 +1,29 @@
-from flask import Flask, Blueprint, jsonify
+from flask import Flask, Blueprint, jsonify, request
+from flask_cors import CORS
+import psycopg2
+import json
 
 timesheetform = Blueprint('timesheetform', __name__, template_folder='templates')
+CORS(timesheetform)
+
+# Connect to your postgres DB
+conn = psycopg2.connect("dbname=slcapplication user=postgres")
+# Open a cursor to perform database operations
+cur = conn.cursor()
+
+@timesheetform.route('/loghours', methods = ['POST'])
+def insertApplicant():
+    data_json = request.get_json()
+    print(data_json)
+    return 'Successful'
 
 @timesheetform.route('/tsrender')
 def updatepage():
-    return {"allWeeks": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
-            "calendarLink": "bit.ly/slc-sp21",
-            "semester": "Spring 2021",
-    }
+        # Execute a query
+        cur.execute("SELECT * FROM formmang")
+        # Retrieve query results
+        records = cur.fetchall()
+        return {"allWeeks": json.loads(records[0][2]),
+            "calendarLink": records[0][3],
+            "semester": records[0][1],
+        }

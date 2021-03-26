@@ -10,16 +10,16 @@ app.register_blueprint(intakeform)
 app.register_blueprint(timesheetform)
 CORS(app)
 
+# Connect to your postgres DB
+conn = psycopg2.connect("dbname=slcapplication user=postgres")
+# Open a cursor to perform database operations
+cur = conn.cursor()
+
 @app.route('/test')
+
 def index():
-  # Connect to your postgres DB
-  conn = psycopg2.connect("dbname=slcapplication user=postgres")
-
-  # Open a cursor to perform database operations
-  cur = conn.cursor()
-
   # Execute a query
-  cur.execute("SELECT * FROM test")
+  cur.execute("SELECT * FROM formmang")
 
   # Retrieve query results
   records = cur.fetchall()

@@ -3,8 +3,8 @@ from flask_cors import CORS
 import psycopg2
 import pandas as pd
 
-intakeform = Blueprint('algorithm', __name__, template_folder='templates')
-CORS(intakeform)
+algorithm = Blueprint('algorithm', __name__, template_folder='templates')
+CORS(algorithm)
 
 # Connect to your postgres DB
 conn = psycopg2.connect("dbname=slcapplication user=postgres")

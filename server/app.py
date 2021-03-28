@@ -1,7 +1,7 @@
 from flask import Flask, jsonify
+from routes.algorithm import algorithm
 from routes.intakeform import intakeform
 from routes.timesheetform import timesheetform
-from routes.algorithm import algorithm
 from flask_cors import CORS
 import psycopg2
 

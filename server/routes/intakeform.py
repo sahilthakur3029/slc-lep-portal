@@ -33,7 +33,6 @@ def insertApplicant():
 
     if d_j["preferredGenderWeight"] == "":
       d_j["preferredGenderWeight"] = '0' 
-    print(d_j)
     # State changes
     sql = """INSERT INTO intakeform (first_name, last_name, email, sid, academic_title, residency, major, gender, gender_custom, availability, hope_to_gain, plan_to_meet,
     f_c_learn, f_c_learn_other, f_c_learn_level, s_c_learn, s_c_learn_other, s_c_learn_level, f_c_teach, f_c_teach_other, f_c_teach_level, s_c_teach, s_c_teach_other,

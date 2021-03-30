@@ -140,10 +140,7 @@ def run_algorithm():
         formatted_data.append({"Timestamp": row["Timestamp"], "First":row["First"], "Last":row["Last"], "Email":row["Email"], "SID":row["SID"], "Level": row["Academic Title"], 
         "Gender": row["Gender"].strip(), "Major":row["Major"], "Teach":teach_dict, "Learn":learn_dict, "Comments":comments, "Days Available": d_o_w_set, "Partner Major": row["P_Major"], 
         "Partner Major Weight": row["P_Major_Weight"], "Partner Gender": row["P_Gender"].strip(), "Partner Gender Weight": row["P_Gender_Weight"]})
-        print({"Timestamp": row["Timestamp"], "First":row["First"], "Last":row["Last"], "Email":row["Email"], "SID":row["SID"], "Level": row["Academic Title"], 
-        "Gender": row["Gender"].strip(), "Major":row["Major"], "Teach":teach_dict, "Learn":learn_dict, "Comments":comments, "Days Available": d_o_w_set, "Partner Major": row["P_Major"], 
-        "Partner Major Weight": row["P_Major_Weight"], "Partner Gender": row["P_Gender"].strip(), "Partner Gender Weight": row["P_Gender_Weight"]})
     step_2 = pd.DataFrame(formatted_data, columns=["Timestamp", "First", "Last", "Email", "SID", "Level", "Gender", "Major", "Teach", "Learn", "Comments", "Days Available", 
     "Partner Major", "Partner Major Weight", "Partner Gender", "Partner Gender Weight"])
-    print(step_2)
+    print(step_2)       
     return "Complete"

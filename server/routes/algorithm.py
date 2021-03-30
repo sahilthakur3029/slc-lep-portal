@@ -79,6 +79,7 @@ def run_algorithm():
     # Step 2 of algorithm
     formatted_data = []
     for index, row in df.iterrows():
+        print(index)
         comments = row["Comments"]
         teach_dict = {}
         try:
@@ -202,7 +203,6 @@ def step_3(app_df):
     max_time = max([person.timestamp for person in people[1:]])
     for person in people[1:]:
         person.timestamp = max_time - person.timestamp
-        print(person.profile)
     #Second cell block
     #maximal matching networkx
     G = nx.Graph()

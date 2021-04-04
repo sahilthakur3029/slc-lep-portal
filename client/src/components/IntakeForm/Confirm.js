@@ -11,7 +11,7 @@ import { titleCase } from "title-case";
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
-
+// Need to know what this theme is
 const useStyles = (theme) => ({
   formControl: {
     margin: theme.spacing(1),
@@ -22,12 +22,13 @@ const useStyles = (theme) => ({
   },
 });
 
+// Colour of the buttons on the last page, changed the hover colour
 const ColorButton = withStyles((theme) => ({
   root: {
     color: theme.palette.getContrastText("#859438"),
     backgroundColor: "#859438",
     "&:hover": {
-      backgroundColor: "#859438",
+      backgroundColor: "#848438",
     },
     margin: theme.spacing(1),
   },
@@ -51,6 +52,8 @@ class Confirm extends Component {
   continue = (e) => {
     e.preventDefault();
     if (
+      // checking if all of these blanks are empty?
+      // That means a new form has been opened? Look at open variable
       this.props.values.firstName.trim() === "" ||
       this.props.values.lastName.trim() === "" ||
       this.props.values.email.trim() === "" ||
@@ -154,6 +157,7 @@ class Confirm extends Component {
     this.props.prevStep();
   };
 
+  // Displaying the final review page with all the values fed in
   render() {
     const {
       values: {
@@ -201,7 +205,7 @@ class Confirm extends Component {
           >
             <Alert onClose={this.handleClose} severity="error">
               Please make sure you have filled out all the required fields
-              marked by an asterick
+              marked by a *
             </Alert>
           </Snackbar>
           <TopBar />

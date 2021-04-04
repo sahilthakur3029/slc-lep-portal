@@ -2,19 +2,30 @@ import React, { Component } from "react";
 import AppBar from "@material-ui/core/AppBar";
 import { withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
+import HeaderImg from './test_img.png';
 
 const useStyles = (theme) => ({
   root: {
     flexGrow: 1,
   },
   title: {
-    flexGrow: 1,
+    flexGrow: 3,
     alignSelf: "flex-start",
-    color: "#C4820E",
+    color: "#C4820E", //#C4820E
     padding: "0.5%",
+    margin: "25% 2% 5% 2%",
+    border: "solid #003262 2px",
+    backgroundColor: "#003262",
+    fontSize: "48px",
+    borderRadius: "2px",
   },
   topBar: {
-    backgroundColor: "#003262",
+    backgroundImage: `url(${HeaderImg})`,
+    backgroundPosition: 'center',
+    backgroundSize: 'cover',
+    backgroundRepeat: 'no-repeat'
+    // backgroundColor: "#003262", // "#003262",
+    // backgroundImage: "url(test_img.png)",
   },
 });
 

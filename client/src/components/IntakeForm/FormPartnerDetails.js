@@ -15,13 +15,20 @@ import FormLabel from "@material-ui/core/FormLabel";
 
 const useStyles = (theme) => ({
   formControl: {
-    margin: theme.spacing(1),
+    margin: theme.spacing(2),
     minWidth: 350,
+    marginLeft: "30px",
+  },
+  heads: {
+    color: "black",
+    textAlign: "center",
+    fontSize: 50,
   },
   selectEmpty: {
     marginTop: theme.spacing(2),
   },
   formControlSmall: {
+    marginLeft: "30px",
     margin: theme.spacing(1),
     minWidth: 350,
     color: "gray",
@@ -33,9 +40,10 @@ const ColorButton = withStyles((theme) => ({
     color: theme.palette.getContrastText("#859438"),
     backgroundColor: "#859438",
     "&:hover": {
-      backgroundColor: "#859438",
+      backgroundColor: "#848438",
     },
     margin: theme.spacing(1),
+    marginLeft: "30px",
   },
 }))(Button);
 
@@ -58,7 +66,7 @@ class FormPartnerDetails extends Component {
           <TopBar />
           <br />
           <h1 className={classes.formControl}>
-            <u>Partner Preferences</u>
+            Partner Preferences
           </h1>
           <h4 className={classes.formControlSmall}>
             Disclaimer: We do our best to accommodate partner

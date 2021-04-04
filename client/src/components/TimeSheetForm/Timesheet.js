@@ -20,6 +20,12 @@ const useStyles = (theme) => ({
   formControl: {
     margin: theme.spacing(1),
     minWidth: 350,
+    marginLeft: "30px",
+  },
+  heads: {
+    color: "black",
+    textAlign: "center",
+    fontSize: 40,
   },
   selectEmpty: {
     marginTop: theme.spacing(2),
@@ -32,9 +38,10 @@ const ColorButton = withStyles((theme) => ({
     color: theme.palette.getContrastText("#859438"),
     backgroundColor: "#859438",
     "&:hover": {
-      backgroundColor: "#859438",
+      backgroundColor: "#848438",
     },
     margin: theme.spacing(1),
+    marginLeft: "30px",
   },
 }))(Button);
 
@@ -129,12 +136,12 @@ class Timesheet extends Component {
           <CssBaseline />
           <TopBar />
           <br />
-          <h1 className={classes.formControl}>
-            <u>{this.state.semester} LEP Weekly Timesheet</u>
+          <h1 className={classes.heads}>
+            {this.state.semester} LEP Weekly Timesheet
           </h1>
-          <p className={classes.formControl}>
-            Please submit your weekly hours every Sunday by 5PM PST.
-          </p>
+          <h2 className={classes.formControl}>
+            Please submit your weekly hours every Sunday by 5PM PST
+          </h2>
           <TextField
             placeholder="Enter Your First Name"
             label="First Name"

@@ -18,6 +18,12 @@ const useStyles = (theme) => ({
   formControl: {
     margin: theme.spacing(1),
     minWidth: 350,
+    marginLeft: "30px",
+  },
+  heads: {
+    color: "black",
+    textAlign: "center",
+    fontSize: 50,
   },
   selectEmpty: {
     marginTop: theme.spacing(2),
@@ -29,9 +35,10 @@ const ColorButton = withStyles((theme) => ({
     color: theme.palette.getContrastText("#859438"),
     backgroundColor: "#859438",
     "&:hover": {
-      backgroundColor: "#859438",
+      backgroundColor: "#848438",
     },
     margin: theme.spacing(1),
+    marginLeft: "30px",
   },
 }))(Button);
 
@@ -84,6 +91,7 @@ class FormLanguageDetails extends Component {
     this.props.prevStep();
   };
 
+  // Display the page
   render() {
     const { values, handleChange, classes } = this.props;
     return (
@@ -92,7 +100,7 @@ class FormLanguageDetails extends Component {
           <TopBar />
           <br />
           <h1 className={classes.formControl}>
-            <u>Language Exchange</u>
+            Language Exchange
           </h1>
           <br />
           <h2 className={classes.formControl}>

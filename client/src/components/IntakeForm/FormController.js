@@ -6,6 +6,10 @@ import FormWaiver from "./FormWaiver";
 import Confirm from "./Confirm";
 import Success from "./Success";
 
+// Controls the form, displaying the next and previous buttons 
+// and controlling which page shows since it is a multi page form
+
+// Initial State
 class FormController extends Component {
   state = {
     step: 1,
@@ -64,6 +68,7 @@ class FormController extends Component {
     this.setState({ [input]: e.target.value });
   };
 
+  // Rendering the values that were given to each blank
   render() {
     const { step } = this.state;
     const {
@@ -135,6 +140,8 @@ class FormController extends Component {
       orientationKey,
     };
 
+    // Different pages of the form, values are all the variables
+    // FormUserDetails, FormLanguageDetails decide wht goes on each page
     switch (step) {
       case 1:
         return (

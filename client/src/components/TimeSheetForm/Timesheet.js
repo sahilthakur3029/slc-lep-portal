@@ -96,7 +96,19 @@ class Timesheet extends Component {
       hours: this.props.values.hours,
       week: this.props.values.week,
     });
-    console.log(data);
+    const { REACT_APP_LOGHOURS } = process.env;
+    fetch(REACT_APP_LOGHOURS, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userData: data,
+      }),
+    })
+      .then((response) => response.json())
+      .catch((error) => console.log("Error", error));
     this.props.nextStep();
   };
   handleClose = (e, reason) => {

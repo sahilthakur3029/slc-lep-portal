@@ -7,8 +7,14 @@ import { withStyles } from "@material-ui/core/styles";
 
 const useStyles = (theme) => ({
   formControl: {
-    margin: theme.spacing(1),
+    margin: theme.spacing(2),
     minWidth: 350,
+    marginLeft: "30px",
+  },
+  heads: {
+    color: "black",
+    textAlign: "center",
+    fontSize: 50,
   },
   selectEmpty: {
     marginTop: theme.spacing(2),
@@ -17,6 +23,7 @@ const useStyles = (theme) => ({
     margin: theme.spacing(1),
     minWidth: 350,
     color: "gray",
+    marginLeft: "30px",
   },
 });
 
@@ -25,9 +32,10 @@ const ColorButton = withStyles((theme) => ({
     color: theme.palette.getContrastText("#859438"),
     backgroundColor: "#859438",
     "&:hover": {
-      backgroundColor: "#859438",
+      backgroundColor: "#848438",
     },
     margin: theme.spacing(1),
+    marginLeft: "30px",
   },
 }))(Button);
 
@@ -49,9 +57,7 @@ class FormWaiver extends Component {
           <TopBar />
           <br />
           <h1 className={classes.formControl}>
-            <u>
               Waiver of Liability, Assumption of Risk, and Indemnity Agreement
-            </u>
           </h1>
           <h4 className={classes.formControlSmall}>
             UNIVERSITY OF CALIFORNIA AT BERKELEY

@@ -13,7 +13,7 @@ import FormPairings from "./components/AdminView/FormPairings";
 const theme = createMuiTheme({
   palette: {
     background: {
-      default: "#e6efee",
+      default: "#ffffff", //"#e6efee",
     },
   },
 });

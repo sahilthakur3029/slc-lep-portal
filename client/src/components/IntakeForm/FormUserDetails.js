@@ -19,10 +19,17 @@ function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
+// Theme comes from the theme variable in App.js
 const useStyles = (theme) => ({
   formControl: {
-    margin: theme.spacing(1),
+    margin: theme.spacing(2),
     minWidth: 350,
+    marginLeft: "30px",
+  },
+  heads: {
+    color: "black",
+    textAlign: "center",
+    fontSize: 50,
   },
   selectEmpty: {
     marginTop: theme.spacing(2),
@@ -35,9 +42,10 @@ const ColorButton = withStyles((theme) => ({
     color: theme.palette.getContrastText("#859438"),
     backgroundColor: "#859438",
     "&:hover": {
-      backgroundColor: "#859438",
+      backgroundColor: "#848438",
     },
     margin: theme.spacing(1),
+    marginLeft: "30px",
   },
 }))(Button);
 
@@ -104,10 +112,12 @@ class FormUserDetails extends Component {
     this.setState({ open: false });
   };
   render() {
+    // props is the useStyles variable
     const { values, handleChange, classes } = this.props;
     return (
       <MuiThemeProvider>
         <>
+        {/* Snackbar not required right? */}
           <Snackbar
             open={this.state.open}
             autoHideDuration={5000}
@@ -120,8 +130,8 @@ class FormUserDetails extends Component {
           <CssBaseline />
           <TopBar />
           <br />
-          <h1 className={classes.formControl}>
-            <u>LEP {this.state.semester} Intake Form</u>
+          <h1 className={classes.heads}>
+            LEP {this.state.semester} Intake Form
           </h1>
           <br />
           <h2 className={classes.formControl}>Basic Information</h2>
@@ -284,7 +294,7 @@ class FormUserDetails extends Component {
           </h2>
           <TextField
             placeholder="Orienataion Key"
-            label="Enter orienataion key here"
+            label="Enter orientation key here"
             onChange={handleChange("orientationKey")}
             defaultValue={values.orientationKey}
             margin="normal"
@@ -296,7 +306,7 @@ class FormUserDetails extends Component {
           <br />
           <ColorButton
             variant="contained"
-            color="primary"
+            color="primary" // Looks like this could be secondary also without making a difference
             className={classes.margin}
             onClick={this.continue}
           >

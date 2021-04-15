@@ -80,6 +80,7 @@ def run_algorithm():
     # Step 2 of algorithm
     # print(df)
     # Checks which round of pairing and if not first updated dataframe with only relevant names
+    df = checkRemoveDups(df)
     df = updatePairRound(df)
     formatted_data = []
     for index, row in df.iterrows():
@@ -644,3 +645,29 @@ def updatePairRound(df):
             keep.append(index)
     df = df.iloc[keep]
     return df
+
+# Removes duplicates from pairing process (but keeps intakeform untouced for integrity)
+def checkRemoveDups(app_df):
+    # Creates a list of tuples, one from each list combined together (SID_1, Email_1)
+    app_SIDs = list(app_df['SID'])
+    app_SIDs.reverse()
+    app_emails = list(app_df['Email'])
+    app_emails.reverse()
+    reversed_app_SIDs_emails = zip(app_SIDs, app_emails)
+    ht = {}
+    count = len(app_emails) - 1
+    # For each sid and email in the combined zip, it makes a seperate key, value of each each element in each tuple.
+    # i.e. First tuple becomes {3034767503: 3034767503, 'chu00015@berkeley.edu': 'chu00015@berkeley.edu'} (2 keys)
+    for sid,email in reversed_app_SIDs_emails:
+        if sid in ht or email in ht:
+            # print("Person dropped!")
+            # print(count)
+            app_df = app_df.drop([count])
+        else:
+            ht[sid] = sid
+            ht[email] = email
+        count -= 1
+    app_df = app_df.reset_index(drop=True)
+    # Deleting 
+    app_df.drop(app_df.columns[0], axis=1)
+    return app_df

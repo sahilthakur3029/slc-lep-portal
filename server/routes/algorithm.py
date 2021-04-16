@@ -661,7 +661,7 @@ def checkRemoveDups(app_df):
     for sid,email in reversed_app_SIDs_emails:
         if sid in ht or email in ht:
             # print("Person dropped!")
-            # print(count)
+            # print(count) 
             app_df = app_df.drop([count])
         else:
             ht[sid] = sid

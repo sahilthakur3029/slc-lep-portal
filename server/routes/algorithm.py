@@ -78,9 +78,13 @@ def run_algorithm():
     df = postgresql_to_dataframe(conn, "select * from intakeform", column_names)
     # TODO Have to remove people from if already paired and maybe duplicate applicants (Step 1)
     # Step 2 of algorithm
+    # print(df)
+    # Checks which round of pairing and if not first updated dataframe with only relevant names
+    df = checkRemoveDups(df)
+    df = updatePairRound(df)
     formatted_data = []
     for index, row in df.iterrows():
-        print(index)
+        # print(index)
         comments = row["Comments"]
         teach_dict = {}
         try:
@@ -213,10 +217,10 @@ def step_3(app_df):
         for j in range(i, n+1): #students
             if people[i].can_teach(people[j]) and people[j].can_teach(people[i]):
                 # It seems like the edge weights of the graph depends on when the students went for orientation
-                print("Possible Pair:")
-                print("Names: ",people[i].name, ",", people[j].name)
+                # print("Possible Pair:")
+                # print("Names: ",people[i].name, ",", people[j].name)
                 G.add_edge(i, j, weight = pair_find_weight(people[i], people[j]))
-                print()
+                # print()
 
     # pairs_idx = nx.maximal_matching(G) #performs maximal matching on people index graph to produce pair indices
     # pairs_idx holds a dictionary of matchings
@@ -257,10 +261,10 @@ def step_3(app_df):
     for i in range(len(pairs)):
         for j in range(len(pairs), len(pairs)+len(singles_idx)): #singles node indices are incremented to avoid collisions
             if pairs[i].can_form_trio(people[singles_idx[j-len(pairs)]], criteria):
-                print("Possible Trio Below")
-                print(pairs[i].p1.name,",", pairs[i].p2.name,",", people[singles_idx[j-len(pairs)]].name)
+                # print("Possible Trio Below")
+                # print(pairs[i].p1.name,",", pairs[i].p2.name,",", people[singles_idx[j-len(pairs)]].name)
                 G2.add_edge(i, j, weight=trio_find_weight(pairs[i], people[singles_idx[j-len(pairs)]]))
-                print()
+                # print()
 
     #second round of maximal matching
     trios_idx = nx.algorithms.matching.max_weight_matching(G2, maxcardinality=True)
@@ -418,7 +422,7 @@ not_get_pref_key = {0: 0, 1: -100, 2: -200, 3: -400, 4: -800, 5: -1600}
 
 # Function for finding weight of timestamp (currently the only one in use)
 def pair_find_timestamp_weight(person_1, person_2):
-    print("Timestamp Weight: ", person_1.timestamp + person_2.timestamp)
+    # print("Timestamp Weight: ", person_1.timestamp + person_2.timestamp)
     return person_1.timestamp + person_2.timestamp
 
 # Function for finding weight of gender
@@ -434,7 +438,7 @@ def pair_find_gender_weight(person_1, person_2):
         genderCounter += get_pref_key[person_2.partnerGenderWeight]
     else:
         genderCounter += not_get_pref_key[person_2.partnerGenderWeight]
-    print("Gender Weight: ", genderCounter)
+    # print("Gender Weight: ", genderCounter)
     return genderCounter
 
 # Function for finding weight of major
@@ -458,28 +462,28 @@ def pair_find_major_weight(person_1, person_2):
             majorCounter += get_pref_key[person_2.partnerMajorWeight]
     else:
         majorCounter += not_get_pref_key[person_2.partnerMajorWeight]
-    print("Major Weight: ", majorCounter)
+    # print("Major Weight: ", majorCounter)
     return majorCounter
 
 
 # Function for finding weight of days of week
 def pair_find_days_of_week_weight(person_1, person_2):
     if (len(person_1.days_of_week_dict.intersection(person_2.days_of_week_dict)) == 0):
-        print("Week Weight: -1000")
+        # print("Week Weight: -1000")
         return -1000
     else:
-        print("Week Weight: 0")
+        # print("Week Weight: 0")
         return 0
 
 # Pair weight calculator
 def pair_find_weight(person_1, person_2):
     total_weight = pair_find_timestamp_weight(person_1, person_2) + pair_find_gender_weight(person_1, person_2) + pair_find_major_weight(person_1, person_2) + pair_find_days_of_week_weight(person_1, person_2)
-    print("Total Weight: ", total_weight)
+    # print("Total Weight: ", total_weight)
     return total_weight
 
 # Function for finding weight of timestamp (currently the only one in use)
 def trio_find_timestamp_weight(pair, person):
-    print("Timestamp Weight: ", pair.timestamp + person.timestamp)
+    # print("Timestamp Weight: ", pair.timestamp + person.timestamp)
     return pair.timestamp + person.timestamp
 
 # Function for finding weight of gender
@@ -532,7 +536,7 @@ def trio_find_gender_weight(pair, person):
         else:
 #             print("Case Nothing Similar: Wanted Person to Split Gender Pair (8)")
             genderCounter += not_get_pref_key[person.partnerGenderWeight]/2
-    print("Gender Weight: ", genderCounter)
+    # print("Gender Weight: ", genderCounter)
     return genderCounter
 
 # Function for finding weight of major
@@ -547,23 +551,23 @@ def trio_find_major_weight(pair, person):
             majorCounter += get_pref_key[person.partnerMajorWeight]
     else:
         majorCounter += not_get_pref_key[person.partnerMajorWeight]
-    print("Major Weight: ", majorCounter)
+    # print("Major Weight: ", majorCounter)
     return majorCounter
 
 
 # Function for finding weight of days of week
 def trio_find_days_of_week_weight(pair, person):
     if (len(pair.combined_days_of_week_dict.intersection(person.days_of_week_dict)) == 0):
-        print("Week Weight: -1000")
+        # print("Week Weight: -1000")
         return -1000
     else:
-        print("Week Weight: 0")
+        # print("Week Weight: 0")
         return 0
 
 # Trio weight calculator
 def trio_find_weight(pair, person):
     total_weight = trio_find_timestamp_weight(pair, person) + trio_find_gender_weight(pair, person) + trio_find_major_weight(pair, person) + trio_find_days_of_week_weight(pair, person)
-    print("Total Weight: ", total_weight)
+    # print("Total Weight: ", total_weight)
     return total_weight
 
 # Writing files to database
@@ -594,6 +598,12 @@ def write_to_database(app_df, pairs, trios, leftovers, people):
         app_df.iloc[p3]["Level"], json.dumps(people[trio[2]].teach), json.dumps(people[trio[2]].practice), app_df.iloc[p3]["Comments"]))
         conn.commit()
         cursor.close()
+    # Need to first clear unpaired table before entering 
+    cursor = conn.cursor()
+    sql = """DELETE FROM unpaired"""
+    cursor.execute(sql)
+    conn.commit()
+    cursor.close()
     for leftover in leftovers:
         p1 = people[leftover].idx - 1
         cursor = conn.cursor()
@@ -603,3 +613,61 @@ def write_to_database(app_df, pairs, trios, leftovers, people):
         conn.commit()
         cursor.close()
     return "Written To Database"
+
+# Pair judgement and update function
+def updatePairRound(df):
+    pair_column_names = ["Timestamp", "First", "Last", "Email", "SID", "Level", "Teach", "Learn", "Comments", "Timestamp.1", "First.1", "Last.1", "Email.1", "SID.1", "Level.1", "Teach.1", "Learn.1", "Comments.1", 
+    "Timestamp.2", "First.2", "Last.2", "Email.2", "SID.2", "Level.2", "Teach.2", "Learn.2", "Comments.2"]
+    paired_df = postgresql_to_dataframe(conn, "select * from pairs", pair_column_names)
+    paired_length = len(paired_df.index)
+    # This means that this is the first run and no modifications need to be made
+    if paired_length == 0:
+        # print("First run of algorithm! No changes needed!")
+        return df
+    partner1_df = paired_df.loc[:, ["SID", "Email"]]
+    partner2_df = paired_df.loc[:, ["SID.1", "Email.1"]].rename(index=str, columns={"SID.1": "SID", "Email.1": "Email"})
+    partner3_df = paired_df.loc[:, ["SID.2", "Email.2"]].rename(index=str, columns={"SID.2": "SID", "Email.2": "Email"})
+    # Combines into one list of all people who are paired
+    all_partners_df = pd.concat([partner1_df, partner2_df, partner3_df])
+    all_partners_df = all_partners_df.dropna(axis=0)
+    all_partners_df['SID'] = all_partners_df['SID'].apply(int)
+    all_partners_df['Email'] = all_partners_df['Email'].str.lower().str.strip()
+    # Set used later to iterate
+    paired_SIDs = set(all_partners_df['SID'])
+    paired_emails = set(all_partners_df['Email'])
+    keep = []
+    for index, person in df.iterrows():
+        sid = person["SID"]
+        email = person["Email"]
+        if sid in paired_SIDs or email in paired_emails:
+            continue
+        else:
+            keep.append(index)
+    df = df.iloc[keep]
+    return df
+
+# Removes duplicates from pairing process (but keeps intakeform untouced for integrity)
+def checkRemoveDups(app_df):
+    # Creates a list of tuples, one from each list combined together (SID_1, Email_1)
+    app_SIDs = list(app_df['SID'])
+    app_SIDs.reverse()
+    app_emails = list(app_df['Email'])
+    app_emails.reverse()
+    reversed_app_SIDs_emails = zip(app_SIDs, app_emails)
+    ht = {}
+    count = len(app_emails) - 1
+    # For each sid and email in the combined zip, it makes a seperate key, value of each each element in each tuple.
+    # i.e. First tuple becomes {3034767503: 3034767503, 'chu00015@berkeley.edu': 'chu00015@berkeley.edu'} (2 keys)
+    for sid,email in reversed_app_SIDs_emails:
+        if sid in ht or email in ht:
+            # print("Person dropped!")
+            # print(count) 
+            app_df = app_df.drop([count])
+        else:
+            ht[sid] = sid
+            ht[email] = email
+        count -= 1
+    app_df = app_df.reset_index(drop=True)
+    # Deleting 
+    app_df.drop(app_df.columns[0], axis=1)
+    return app_df

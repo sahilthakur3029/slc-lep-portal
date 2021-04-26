@@ -25,15 +25,19 @@ import {
   TableHeaderRow,
   TableColumnResizing,
   TableRowDetail,
-  TableFixedColumns
+  TableFixedColumns,
+  ColumnChooser,
+  TableColumnVisibility
 } from "@devexpress/dx-react-grid-material-ui";
 import {
   SearchState,
   IntegratedFiltering,
+  SortingState,
+  IntegratedSorting
 } from '@devexpress/dx-react-grid';
 import { RowDetailState } from '@devexpress/dx-react-grid';
 
-// Things to do: Editing in a popup form, sorting up and down, column visibility
+// Things to do: Editing in a popup form
 
 const useStyles = (theme) => ({
   formControl: {
@@ -213,16 +217,24 @@ class StudentDisplay extends Component {
               <RowDetailState
                 defaultExpandedRowIds={[]}
               />
+              <SortingState
+                defaultSorting={[{ columnName: 'first_name', direction: 'asc' }]}
+              />
+              <IntegratedSorting />
               <Table className={classes.tableClass}/>
               <TableColumnResizing columnWidths={columnWid}/>
-              <TableHeaderRow resizingEnabled={true}/> {/*Need to customise to make the headings more distinct!*/}
+              <TableHeaderRow showSortingControls resizingEnabled={true}/> {/*Need to customise to make the headings more distinct!*/}
               <TableRowDetail
                 contentComponent={RowDetail}
               />
               <TableFixedColumns
                 leftColumns={leftColumns}
               />
+              <TableColumnVisibility
+                // defaultHiddenColumnNames={defaultHiddenColumnNames}
+              />
               <Toolbar />
+              <ColumnChooser />
               <SearchPanel />
             </Grid>
           </Paper>

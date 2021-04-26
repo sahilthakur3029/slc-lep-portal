@@ -14,11 +14,10 @@ def getStudents():
     # Open a cursor to perform database operations
     cur = conn.cursor()
     # Execute a query
-    cur.execute("SELECT first_name FROM intakeform")
+    cur.execute("SELECT * FROM intakeform")
     # Retrieve query results
     records = cur.fetchall()
     print(records)
-    print("hiii")
     # Close cursor
     cur.close()
     return jsonify(records)

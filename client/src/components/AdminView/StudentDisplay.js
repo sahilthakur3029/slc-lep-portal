@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-// import TopBar from "../IntakeForm/TopBar";
-// import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
+import TopBar from "../IntakeForm/TopBar";
+import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
 // import TextField from "@material-ui/core/TextField";
 // import Button from "@material-ui/core/Button";
 // import Select from "@material-ui/core/Select";
@@ -13,31 +13,98 @@ import { withStyles } from "@material-ui/core/styles";
 // import RadioGroup from "@material-ui/core/RadioGroup";
 // import FormControlLabel from "@material-ui/core/FormControlLabel";
 // import FormLabel from "@material-ui/core/FormLabel";
+import // State or Local Processing Plugins
+"@devexpress/dx-react-grid";
+import "@devexpress/dx-react-grid-bootstrap4/dist/dx-react-grid-bootstrap4.css";
+import Paper from "@material-ui/core/Paper";
+import {
+  Grid,
+  Table,
+  Toolbar,
+  SearchPanel,
+  TableHeaderRow,
+  TableColumnResizing,
+  TableRowDetail,
+  TableFixedColumns
+} from "@devexpress/dx-react-grid-material-ui";
+import {
+  SearchState,
+  IntegratedFiltering,
+} from '@devexpress/dx-react-grid';
+import { RowDetailState } from '@devexpress/dx-react-grid';
+
+// Things to do: Editing in a popup form, sorting up and down, column visibility
+
+const useStyles = (theme) => ({
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 350,
+  },
+  heads: {
+    color: "black",
+    textAlign: "center",
+    fontSize: 35,
+  },
+  selectEmpty: {
+    marginTop: theme.spacing(2),
+  },
+
+  tableClass: {
+    backgroundColor: "red",
+    color: "blue",
+  }
+});
 
 class StudentDisplay extends Component {
     constructor(props) {
       super(props);
-      console.log("hello");
       this.state = {
-        students: null,
+        student_info: null,
       };
     }
 
-    
     componentDidMount() {
-      console.log("reached here");
       const { REACT_APP_NAMES } = process.env;
+      let student_info_array = [];
+      
       fetch(REACT_APP_NAMES)
         .then((response) => response.json())
         .then((data) => {
-          for (const stud_name of data) {
-            console.log(stud_name)
-            console.log(stud_name[0])
+          for (const student of data) {
+            student_info_array.push({ "first_name":student[0],
+             "last_name":student[1],
+             "email":student[2],
+             "SID":student[3],
+             "class_standing":student[4],
+             "domestic_status":student[5],
+             "major":student[6],
+             "gender":student[7],
+             "gender_custom":student[8],
+             "days_of_week":student[9],
+             "hope_to_gain":student[10],
+             "plan_to_meet":student[11],
+             "lang_1_learn":student[12],
+             "lang_1_learn_other":student[13],
+             "lang_1_learn_level":student[14],
+             "lang_2_learn":student[15],
+             "lang_2_learn_other":student[16],
+             "lang_2_learn_level":student[17],
+             "lang_1_teach":student[18],
+             "lang_1_teach_other":student[19],
+             "lang_1_teach_level":student[20],
+             "lang_2_teach":student[21],
+             "lang_2_teach_other":student[22],
+             "lang_2_teach_level":student[23],
+             "comments":student[24],
+             "partner_major":student[25],
+             "partner_major_weight":student[26],
+             "partner_gender":student[27],
+             "partner_gender_custom":student[28],
+             "partner_gender_weight":student[29],
+            } );
           }
-          // console.log(typeof(data));
-          // console.log(typeof(data[0][0]));
-          // console.log(data[0][0]);
-          this.setState({students: data}, () => {
+          this.setState({
+          student_info: student_info_array,
           });
         })
         .catch((error) => console.log("Error", error));
@@ -47,180 +114,123 @@ class StudentDisplay extends Component {
     };
 
     render() {
-      const string_studs = this.state.students
-      // console.log(typeof(string_studs));
-      return(string_studs);
-    };
+      if (!this.state.student_info) {
+          return <div />
+      }
+      // props is the useStyles variable
+      const { values, handleChange, classes } = this.props;
+      const student_info_array = this.state.student_info
 
-    // handleClose = (e, reason) => {
-    //   if (reason === "clickaway") {
-    //     return;
-    //   }
-  
-    //   // this.setState({ open: false });
-    // };
-    // render() {
-    //   // props is the useStyles variable
-    //   const { values, handleChange, classes } = this.props;
-    //   return (
-    //     <MuiThemeProvider>
-    //       <>
-    //       {/* Snackbar not required right? */}
-    //         <Snackbar
-    //           open={this.state.open}
-    //           autoHideDuration={5000}
-    //           onClose={() => this.setState({ open: false })}
-    //         >
-    //           <Alert onClose={this.handleClose} severity="error">
-    //             Incorrect orienataion key
-    //           </Alert>
-    //         </Snackbar>
-    //         <CssBaseline />
-    //         <TopBar />
-    //         <br />
-    //         <h1 className={classes.heads}>
-    //           LEP {this.state.semester} Intake Form
-    //         </h1>
-    //         <br />
-    //         <h2 className={classes.formControl}>Basic Information</h2>
-    //         <TextField
-    //           placeholder="Enter Your First Name"
-    //           label="First Name"
-    //           onChange={handleChange("firstName")}
-    //           defaultValue={values.firstName}
-    //           margin="normal"
-    //           required
-    //           className={classes.formControl}
-    //         />
-    //         <TextField
-    //           placeholder="Enter Your Last Name"
-    //           label="Last Name"
-    //           onChange={handleChange("lastName")}
-    //           defaultValue={values.lastName}
-    //           margin="normal"
-    //           required
-    //           className={classes.formControl}
-    //         />
-    //         <br />
-    //         <TextField
-    //           placeholder="Enter Your Email"
-    //           label="Email"
-    //           onChange={handleChange("email")}
-    //           defaultValue={values.email}
-    //           margin="normal"
-    //           required
-    //           className={classes.formControl}
-    //         />
-    //         <br />
-    //         <TextField
-    //           placeholder="Enter Your Student ID Number"
-    //           label="SID"
-    //           onChange={handleChange("sid")}
-    //           defaultValue={values.sid}
-    //           margin="normal"
-    //           required
-    //           className={classes.formControl}
-    //         />
-    //         <br />
-    //         <FormControl className={classes.formControl} required>
-    //           <InputLabel id="academic-title-label">Academic Title</InputLabel>
-    //           <Select
-    //             labelId="academic-title-label"
-    //             id="academic-title"
-    //             defaultValue={values.academicTitle}
-    //             onChange={handleChange("academicTitle")}
-    //           >
-    //             <MenuItem value={"Undergraduate"}>Undergraduate</MenuItem>
-    //             <MenuItem value={"Graduate"}>Graduate</MenuItem>
-    //             <MenuItem value={"Staff"}>Staff</MenuItem>
-    //             <MenuItem value={"Scholar"}>Scholar</MenuItem>
-    //             <MenuItem value={"Alumnus"}>Alumnus</MenuItem>
-    //           </Select>
-    //         </FormControl>
-    //         <FormControl className={classes.formControl} required>
-    //           <InputLabel id="residency-label">Residency</InputLabel>
-    //           <Select
-    //             labelId="residency-label"
-    //             id="residency"
-    //             defaultValue={values.residency}
-    //             onChange={handleChange("residency")}
-    //           >
-    //             <MenuItem value={"Domestic US"}>Domestic US</MenuItem>
-    //             <MenuItem value={"International"}>International</MenuItem>
-    //           </Select>
-    //         </FormControl>
-    //         <br />
-    //         <TextField
-    //           placeholder="Enter Your Major(s)"
-    //           label="Major(s) - If multiple, seperate with commas"
-    //           onChange={handleChange("major")}
-    //           defaultValue={values.major}
-    //           margin="normal"
-    //           className={classes.formControl}
-    //         />
-    //         <br />
-    //         <Tooltip
-    //           title="We use the following information for the purposes of helping our staff use the most 
-    //         respectful language when addressing you and giving you the option, as seen later in this form, 
-    //         of preferring a partner with a particular gender."
-    //           placement="top"
-    //         >
-    //           <FormControl className={classes.formControl}>
-    //             <InputLabel id="gender-label">
-    //               Gender <HelpIcon className={classes.questionMark}></HelpIcon>
-    //             </InputLabel>
-    //             <Select
-    //               labelId="gender-label"
-    //               id="gender"
-    //               defaultValue={values.gender}
-    //               onChange={handleChange("gender")}
-    //             >
-    //               <MenuItem value={"Male"}>Male</MenuItem>
-    //               <MenuItem value={"Female"}>Female</MenuItem>
-    //               <MenuItem value={"TransMale"}>TransMale</MenuItem>
-    //               <MenuItem value={"TransFemale"}>TransFemale</MenuItem>
-    //               <MenuItem value={"Genderqueer"}>Genderqueer</MenuItem>
-    //               <MenuItem value={"Prefer Not To State"}>
-    //                 Prefer Not To State
-    //               </MenuItem>
-    //               <MenuItem value={"Custom"}>Custom</MenuItem>
-    //             </Select>
-    //           </FormControl>
-    //         </Tooltip>
-    //         <TextField
-    //           placeholder="Gender Custom"
-    //           label="If Custom, please specify"
-    //           onChange={handleChange("genderCustom")}
-    //           defaultValue={values.genderCustom}
-    //           margin="normal"
-    //           className={classes.formControl}
-    //         />
-    //         <br />
-    //         <FormControl className={classes.formControl}>
-    //           <InputLabel id="days-label">Select All Available Days</InputLabel>
-    //           <Select
-    //             labelId="dow-label"
-    //             id="dow"
-    //             multiple
-    //             value={values.availability}
-    //             onChange={handleChange("availability")}
-    //             input={<Input />}
-    //             MenuProps={MenuProps}
-    //           >
-    //             {allDays.map((name) => (
-    //               <MenuItem key={name} value={name}>
-    //                 {name}
-    //               </MenuItem>
-    //             ))}
-    //           </Select>
-    //         </FormControl>
-           
-    //         <br />
-    //       </>
-    //     </MuiThemeProvider>
-    //   );
-    // }
+      const columns = [{ name: "first_name", title: "First Name"},
+      { name: "last_name", title: "Last Name"},
+      { name: "email", title: "Email"},
+      { name: "SID", title: "SID"},
+      { name: "class_standing", title: "Class Standing"},
+      { name: "domestic_status", title: "Domestic Status"},
+      { name: "major", title: "Major"},
+      { name: "gender", title: "Gender"},
+      { name: "gender_custom", title: "Custom Gender"},
+      { name: "days_of_week", title: "Availability"},
+      { name: "lang_1_learn", title: "Language 1(learn)"},
+      { name: "lang_1_learn_other", title: "Other"},
+      { name: "lang_1_learn_level", title: "Level"},
+      { name: "lang_2_learn", title: "Language 2(learn)"},
+      { name: "lang_2_learn_other", title: "Other"},
+      { name: "lang_2_learn_level", title: "Level"},
+      { name: "lang_1_teach", title: "Language 1(teach)"},
+      { name: "lang_1_teach_other", title: "Other"},
+      { name: "lang_1_teach_level", title: "Level"},
+      { name: "lang_2_teach", title: "Language 2(teach)"},
+      { name: "lang_2_teach_other", title: "Other"},
+      { name: "lang_2_teach_level", title: "Level"},
+      { name: "partner_major", title: "Partner's preferred major"},
+      { name: "partner_major_weight", title: "Weightage"},
+      { name: "partner_gender", title: "Partner's preferred gender"},
+      { name: "partner_gender_custom", title: "Custom gender"},
+      { name: "partner_gender_weight", title: "Weightage"},
+    ];
+      const rows = student_info_array;
+
+      const RowDetail = ({ row }) => (
+        <div>
+          What the student hopes to gain: 
+          {' '}
+          {row.hope_to_gain}
+          {' '}
+          <br/>
+          Meeting plan:
+          {' '}
+          {row.plan_to_meet}
+          <br/>
+          Comments:
+          {' '}
+          {row.comments}
+        </div>
+      );
+
+      const columnWid = [
+        { columnName: 'first_name', width: 240 },
+        { columnName: 'last_name', width: 240 },
+        { columnName: 'email', width: 300 },
+        { columnName: 'SID', width: 180 },
+        { columnName: 'class_standing', width: 180 },
+        { columnName: 'domestic_status', width: 180 },
+        { columnName: 'major', width: 240 },
+        { columnName: 'gender', width: 180 },
+        { columnName: 'gender_custom', width: 180 },
+        { columnName: 'days_of_week', width: 240 },
+        { columnName: 'lang_1_learn', width: 180 },
+        { columnName: 'lang_1_learn_other', width: 180 },
+        { columnName: 'lang_1_learn_level', width: 90 },
+        { columnName: 'lang_2_learn', width: 180 },
+        { columnName: 'lang_2_learn_other', width: 180 },
+        { columnName: 'lang_2_learn_level', width: 90 },
+        { columnName: 'lang_1_teach', width: 180 },
+        { columnName: 'lang_1_teach_other', width: 180 },
+        { columnName: 'lang_1_teach_level', width: 90 },
+        { columnName: 'lang_2_teach', width: 180 },
+        { columnName: 'lang_2_teach_other', width: 180 },
+        { columnName: 'lang_2_teach_level', width: 90 },
+        { columnName: "partner_major", width: 180},
+        { columnName: "partner_major_weight", width: 90},
+        { columnName: "partner_gender", width: 180},
+        { columnName: "partner_gender_custom", width: 180},
+        { columnName: "partner_gender_weight", width: 90},
+      ];
+
+      const leftColumns = ['first_name', 'last_name'];
+
+      return (
+        <MuiThemeProvider>
+          <TopBar />
+          <h2 className={classes.heads}>
+            Student List
+          </h2>
+          <Paper>
+            <Grid rows={rows} columns={columns}>
+              <SearchState defaultValue="" />
+              <IntegratedFiltering />
+              <RowDetailState
+                defaultExpandedRowIds={[]}
+              />
+              <Table className={classes.tableClass}/>
+              <TableColumnResizing columnWidths={columnWid}/>
+              <TableHeaderRow resizingEnabled={true}/> {/*Need to customise to make the headings more distinct!*/}
+              <TableRowDetail
+                contentComponent={RowDetail}
+              />
+              <TableFixedColumns
+                leftColumns={leftColumns}
+              />
+              <Toolbar />
+              <SearchPanel />
+            </Grid>
+          </Paper>
+
+        </MuiThemeProvider>
+      )
+    };
   }
   
-  export default StudentDisplay;
+  export default withStyles(useStyles)(StudentDisplay);
   

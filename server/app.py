@@ -3,6 +3,7 @@ from routes.algorithm import algorithm
 from routes.intakeform import intakeform
 from routes.timesheetform import timesheetform
 from routes.studentdisplay import studentdisplay
+from routes.pairsdisplay import pairsdisplay
 from flask_cors import CORS
 import psycopg2
 
@@ -12,6 +13,7 @@ app.register_blueprint(intakeform)
 app.register_blueprint(timesheetform)
 app.register_blueprint(algorithm)
 app.register_blueprint(studentdisplay)
+app.register_blueprint(pairsdisplay)
 CORS(app)
 
 # Connect to your postgres DB

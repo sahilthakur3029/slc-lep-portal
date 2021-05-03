@@ -32,7 +32,7 @@ class App extends React.Component {
             <Route exact path="/paired" component={Paired} />
             <Route exact path="/unpaired" component={Unpaired} />
             <Route exact path="/formpairs" component={FormPairings} />
-            <Route exact path="/onename" component={StudentDisplay} />
+            <Route exact path="/studentlist" component={StudentDisplay} />
           </Switch>
         </BrowserRouter>
       </ThemeProvider>

@@ -19,25 +19,23 @@ const theme = createMuiTheme({
   },
 });
 
-class App extends React.Component {
-  render() {
-    return (
-      <ThemeProvider theme={theme}>
-        <BrowserRouter>
-          <Switch>
-            <Route exact path="/" component={Home} />
-            <Route exact path="/intakeform" component={FormController} />
-            <Route exact path="/timesheet" component={TimesheetController} />
-            <Route exact path="/adminhome" component={AdminHome} />
-            <Route exact path="/paired" component={Paired} />
-            <Route exact path="/unpaired" component={Unpaired} />
-            <Route exact path="/formpairs" component={FormPairings} />
-            <Route exact path="/signin" component={SignIn} />
-          </Switch>
-        </BrowserRouter>
-      </ThemeProvider>
-    );
-  }
+function App(props) {
+  return (
+    <ThemeProvider theme={theme}>
+      <BrowserRouter>
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route exact path="/intakeform" component={FormController} />
+          <Route exact path="/timesheet" component={TimesheetController} />
+          <Route exact path="/adminhome" component={AdminHome} />
+          <Route exact path="/paired" component={Paired} />
+          <Route exact path="/unpaired" component={Unpaired} />
+          <Route exact path="/formpairs" component={FormPairings} />
+          <Route exact path="/signin" component={SignIn} />
+        </Switch>
+      </BrowserRouter>
+    </ThemeProvider>
+  );
 }
 
 export default App;

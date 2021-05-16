@@ -14,6 +14,7 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import GoogleButton from "react-google-button";
 
 function Copyright() {
   return (
@@ -55,6 +56,13 @@ class SignIn extends Component {
     this.state = {};
   }
 
+  logIn() {
+    fetch("/login")
+      .then((response) => response.json())
+      .then((data) => {})
+      .catch((error) => console.log("Error", error));
+  }
+
   render() {
     const { classes } = this.props;
     return (
@@ -70,44 +78,13 @@ class SignIn extends Component {
               <Typography component="h1" variant="h5">
                 Sign in
               </Typography>
-              <form className={classes.form} noValidate>
-                <TextField
-                  variant="outlined"
-                  margin="normal"
-                  required
-                  fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
-                  autoFocus
-                />
-                <TextField
-                  variant="outlined"
-                  margin="normal"
-                  required
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  autoComplete="current-password"
-                />
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  color="primary"
-                  className={classes.submit}
-                >
-                  Sign In
-                </Button>
-                <Grid container>
-                  <Grid item xs>
-                    <Link variant="body2">Forgot password?</Link>
-                  </Grid>
-                </Grid>
-              </form>
+              <br />
+              <br />
+              <GoogleButton
+                onClick={() => {
+                  this.logIn();
+                }}
+              />
             </div>
             <Box mt={8}>
               <Copyright />

@@ -17,10 +17,13 @@ app.register_blueprint(intakeform)
 app.register_blueprint(timesheetform)
 app.register_blueprint(algorithm)
 CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 # Your Google client ID, from the API "Credentials" part of the console
 GOOGLE_CLIENT_ID = \
     "400000931739-oqett115tft12ja9u5lehnimqu87bebd.apps.googleusercontent.com"
+
+app.config['GOOGLE_CLIENT_ID'] = "400000931739-oqett115tft12ja9u5lehnimqu87bebd.apps.googleusercontent.com"
 
 # A secret key for the application.  Generate using something like
 # os.urandom(24).
@@ -67,15 +70,18 @@ class UserManager(object):
     def add_or_update_google_user(self, google_subscriber_id, name,
                                   profile_pic):
         """Add or update user profile info."""
+        print("Adding user")
         if google_subscriber_id in self.known_users:
             self.known_users[google_subscriber_id].update(name, profile_pic)
         else:
             self.known_users[google_subscriber_id] = \
                 User(google_subscriber_id, name, profile_pic)
+        print("Length of Users, {}".format(len(self.known_users)))
         return self.known_users[google_subscriber_id]
 
     def lookup_user(self, google_subscriber_id):
         """Lookup user by ID.  Returns User object."""
+
         return self.known_users.get(google_subscriber_id)
 
 
@@ -86,6 +92,7 @@ user_manager = UserManager()
 # if the user ID isn't valid.
 @login.user_loader
 def user_loader(user_id):
+    print("When is this called?")
     return user_manager.lookup_user(user_id)
 
 
@@ -105,6 +112,7 @@ def csrf_protection(fn):
         if 'X-Requested-With' in request.headers:
             return fn(*args)
         else:
+            print("This is missing?")
             return "X-Requested-With header missing", HTTPStatus.FORBIDDEN
     return protected
 
@@ -127,11 +135,14 @@ class Me(Resource):
     @login_required
     @api.response(HTTPStatus.OK, 'Success', a_user)
     def get(self):
-        return jsonify({
+        print("Get request called")
+        print(current_user.name)
+        before_return = jsonify({
             'google_id': current_user.id,
             'name': current_user.name,
             'picture': current_user.profile_pic
         })
+        return before_return
 
     @api.param(
         'id_token', 'A JWT from the Google Sign-In SDK to be validated',
@@ -140,32 +151,43 @@ class Me(Resource):
     @api.response(HTTPStatus.FORBIDDEN, "Unauthorized")
     @csrf_protection
     def post(self):
+        print("CALLED?")
         # Validate the identity
         id_token = request.form.get('id_token')
+        print(id_token)
         if id_token is None:
+            print("CASE 1")
             return "No ID token provided", HTTPStatus.FORBIDDEN
 
         try:
+            print(app.config['GOOGLE_CLIENT_ID'])
             identity = google_token.validate_id_token(
                 id_token, app.config['GOOGLE_CLIENT_ID'])
         except ValueError:
+            print("CASE 2")
             return 'Invalid ID token', HTTPStatus.FORBIDDEN
 
         # Get the user info out of the validated identity
         if ('sub' not in identity or
                 'name' not in identity or
                 'picture' not in identity):
+            print("CASE 3")
             return "Unexcpected authorization response", HTTPStatus.FORBIDDEN
 
         # This just adds a new user that hasn't been seen before and assumes it
         # will work, but you could extend the logic to do something different
         # (such as only allow known users, or somehow mark a user as new so
         # your frontend can collect extra profile information).
+        print(identity['sub'])
+        print(identity['name'])
+        print(identity['picture'])
         user = user_manager.add_or_update_google_user(
                 identity['sub'], identity['name'], identity['picture'])
 
         # Authorize the user:
         login_user(user, remember=True)
+        print("User is authorizeed and should be logged in?")
+        print("User Test: {}".format(user))
 
         return self.get()
 
@@ -179,6 +201,7 @@ class Me(Resource):
 @api.route('/test')
 class Index(Resource):
     def get(self):
+        print("Test function called")
         # Execute a query
         cur.execute("SELECT * FROM formmang")
 

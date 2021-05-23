@@ -57,10 +57,10 @@ class SignIn extends Component {
   }
 
   logIn() {
-    fetch("/login")
-      .then((response) => response.json())
-      .then((data) => {})
-      .catch((error) => console.log("Error", error));
+    // fetch("/login")
+    //   .then((response) => response.json())
+    //   .then((data) => {})
+    //   .catch((error) => console.log("Error", error));
   }
 
   render() {

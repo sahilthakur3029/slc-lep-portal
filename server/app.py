@@ -13,7 +13,7 @@ from flask_login import (
 )
 from flask_wtf.csrf import CSRFProtect, generate_csrf
 import psycopg2
-
+import google_token
 
 app = Flask(__name__, static_folder="public")
 app.register_blueprint(intakeform)
@@ -44,6 +44,8 @@ cors = CORS(
     expose_headers=["Content-Type", "X-CSRFToken"],
     supports_credentials=True,
 )
+
+app.config['GOOGLE_CLIENT_ID'] = "400000931739-oqett115tft12ja9u5lehnimqu87bebd.apps.googleusercontent.com"
 
 # database
 users = [
@@ -94,11 +96,33 @@ def login():
     data = request.json
     username = data.get("username")
     password = data.get("password")
+    id_token = data.get("id_token")
 
+    # Case 1: Null Check
+    if id_token is None:
+        return jsonify({"login": False})
+
+    # Case 2: Decodes Token + Checks For Invalid ID Token 
+    try:
+        identity = google_token.validate_id_token(
+            id_token, app.config['GOOGLE_CLIENT_ID'])
+    except ValueError:
+        return jsonify({"login": False})
+    
+    # Case 3: Unexpected Response
+    if ('sub' not in identity or
+            'name' not in identity or
+            'picture' not in identity):
+        return jsonify({"login": False})
+
+    print(identity['sub'])
+    print(identity['name'])
+    print(identity['picture'])
     for user in users:
         if user["username"] == username and user["password"] == password:
             user_model = User()
             user_model.id = user["id"]
+            user_model.name = identity['name']
             login_user(user_model)
             return jsonify({"login": True})
 
@@ -108,8 +132,9 @@ def login():
 @app.route("/api/data", methods=["GET"])
 @login_required
 def user_data():
+    print(current_user.id)
     user = get_user(current_user.id)
-    return jsonify({"username": user["username"]})
+    return jsonify({"username": current_user.name})
 
 
 @app.route("/api/getsession", methods=["GET"])

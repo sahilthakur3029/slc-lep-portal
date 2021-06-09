@@ -16,6 +16,24 @@ import { withStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import GoogleButton from "react-google-button";
 
+import { Redirect } from "react-router-dom";
+import { GoogleLogin } from "react-google-login";
+import Snackbar from "@material-ui/core/Snackbar";
+import Alert from "@material-ui/lab/Alert";
+
+function Copyright() {
+  return (
+    <Typography variant="body2" color="textSecondary" align="center">
+      {"Copyright © "}
+      <Link color="inherit" href="https://material-ui.com/">
+        Student Learning Center
+      </Link>{" "}
+      {new Date().getFullYear()}
+      {"."}
+    </Typography>
+  );
+}
+
 const useStyles = (theme) => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -44,11 +62,13 @@ class SignIn extends Component {
       password: "",
       csrfToken: "",
       isAuthenticated: false,
+      loginError: false,
     };
     this.csrf = this.csrf.bind(this);
     this.login = this.login.bind(this);
     this.whoami = this.whoami.bind(this);
     this.logout = this.logout.bind(this);
+    this.loginFailure = this.loginFailure.bind(this);
   }
 
   componentDidMount() {
@@ -85,9 +105,7 @@ class SignIn extends Component {
       });
   }
 
-  login() {
-    console.log(this.state.username);
-    console.log(this.state.password);
+  login(d) {
     console.log(this.state.csrfToken);
     fetch("http://localhost:5000/api/login", {
       method: "POST",
@@ -98,8 +116,9 @@ class SignIn extends Component {
       },
       credentials: "include",
       body: JSON.stringify({
-        username: this.state.username,
-        password: this.state.password,
+        username: "test",
+        password: "test",
+        id_token: d.tokenObj.id_token,
       }),
     })
       .then((res) => res.json())
@@ -107,10 +126,14 @@ class SignIn extends Component {
         console.log(data);
         if (data.login == true) {
           this.setState({ isAuthenticated: true });
+        } else {
+          console.log("ERROR");
+          this.setState({ loginError: true });
         }
       })
       .catch((err) => {
         console.log(err);
+        this.setState({ loginError: true });
       });
   }
   whoami() {
@@ -131,7 +154,8 @@ class SignIn extends Component {
         console.log(err);
       });
   }
-  logout() {
+  logout(d) {
+    console.log("Failed");
     fetch("http://localhost:5000/api/logout", {
       credentials: "include",
     })
@@ -146,8 +170,13 @@ class SignIn extends Component {
     this.setState({ [input]: e.target.value });
   };
 
+  loginFailure() {
+    this.setState({ loginError: true });
+  }
+
   render() {
     const { classes } = this.props;
+    console.log(this.state.loginError);
     if (this.state.isAuthenticated) {
       return (
         <MuiThemeProvider>
@@ -168,24 +197,41 @@ class SignIn extends Component {
         <MuiThemeProvider>
           <>
             <TopBar />
-            <h1>Log in</h1>
-            <TextField
-              placeholder="Username"
-              label="username"
-              onChange={this.handleChange("username")}
-              defaultValue={this.state.username}
-              margin="normal"
-            />
-            <TextField
-              placeholder="Password"
-              label="password"
-              onChange={this.handleChange("password")}
-              defaultValue={this.state.password}
-              margin="normal"
-            />
-            <Button onClick={this.login} variant="contained">
-              login
-            </Button>
+            <Container component="main" maxWidth="xs">
+              <CssBaseline />
+              <div className={classes.paper}>
+                <Avatar className={classes.avatar}>
+                  <LockOutlinedIcon />
+                </Avatar>
+                <Typography component="h1" variant="h5">
+                  Sign in
+                </Typography>
+                <br />
+                <br />
+                <GoogleLogin
+                  clientId="400000931739-oqett115tft12ja9u5lehnimqu87bebd.apps.googleusercontent.com"
+                  buttonText="Log in with Google"
+                  onSuccess={this.login}
+                  onFailure={this.loginFailure}
+                  g
+                  cookiePolicy={"single_host_origin"}
+                  redirectUri="postmessage"
+                  scope="openid"
+                />
+                <Snackbar
+                  open={this.state.loginError}
+                  autoHideDuration={10000}
+                  onClose={() => this.setState({ loginError: false })}
+                >
+                  <Alert elevation={6} severity="error" variant="filled">
+                    Error logging in
+                  </Alert>
+                </Snackbar>
+              </div>
+              <Box mt={8}>
+                <Copyright />
+              </Box>
+            </Container>
           </>
         </MuiThemeProvider>
       );

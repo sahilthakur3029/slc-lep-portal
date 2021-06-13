@@ -35,9 +35,28 @@ class Home extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { redirect: null };
+    this.state = { redirect: null, isAuthenticated: false };
     this.logout = this.logout.bind(this);
   }
+
+  componentDidMount() {
+    fetch("http://localhost:5000/api/getsession", {
+      credentials: "include",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        if (data.login == true) {
+          this.setState({ isAuthenticated: true });
+        } else {
+          this.setState({ redirect: <Redirect push to="/signin" /> });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
   logout(d) {
     fetch("http://localhost:5000/api/logout", {
       credentials: "include",

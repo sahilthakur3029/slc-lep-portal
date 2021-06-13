@@ -79,7 +79,9 @@ class SignIn extends Component {
       .then((data) => {
         console.log(data);
         if (data.login == true) {
+          console.log("AUTRHIERAIDNCI");
           this.setState({ isAuthenticated: true });
+          this.setState({ redirect: <Redirect push to="/adminhome" /> });
         } else {
           this.setState({ isAuthenticated: false });
           this.csrf();
@@ -123,6 +125,7 @@ class SignIn extends Component {
         console.log(data);
         if (data.login == true) {
           this.setState({ isAuthenticated: true });
+          this.setState({ redirect: <Redirect push to="/adminhome" /> });
         } else {
           console.log("ERROR");
           this.setState({ loginError: true });
@@ -157,7 +160,6 @@ class SignIn extends Component {
     })
       .then(() => {
         this.setState({ isAuthenticated: false });
-        this.setState({ redirect: <Redirect push to="/adminhome" /> });
       })
       .catch((err) => {
         console.log(err);
@@ -173,20 +175,11 @@ class SignIn extends Component {
 
   render() {
     const { classes } = this.props;
-    console.log(this.state.loginError);
+    console.log(this.state.redirect);
     if (this.state.isAuthenticated) {
       return (
         <MuiThemeProvider>
-          <>
-            <TopBar />
-            <h1>You are authenticated!</h1>
-            <Button onClick={this.whoami} variant="contained">
-              whoami
-            </Button>
-            <Button onClick={this.logout} variant="contained">
-              logout
-            </Button>
-          </>
+          <>{this.state.redirect}</>
         </MuiThemeProvider>
       );
     } else {

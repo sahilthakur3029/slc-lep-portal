@@ -61,6 +61,7 @@ class SignIn extends Component {
       csrfToken: "",
       isAuthenticated: false,
       loginError: false,
+      redirect: null,
     };
     this.csrf = this.csrf.bind(this);
     this.login = this.login.bind(this);
@@ -151,12 +152,12 @@ class SignIn extends Component {
       });
   }
   logout(d) {
-    console.log("Failed");
     fetch("http://localhost:5000/api/logout", {
       credentials: "include",
     })
       .then(() => {
         this.setState({ isAuthenticated: false });
+        this.setState({ redirect: <Redirect push to="/adminhome" /> });
       })
       .catch((err) => {
         console.log(err);
@@ -193,6 +194,7 @@ class SignIn extends Component {
         <MuiThemeProvider>
           <>
             <TopBar />
+            {this.state.redirect}
             <Container component="main" maxWidth="xs">
               <CssBaseline />
               <div className={classes.paper}>

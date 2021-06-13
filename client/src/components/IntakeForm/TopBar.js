@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import AppBar from "@material-ui/core/AppBar";
 import { withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import HeaderImg from './test_img.png';
+import HeaderImg from "./test_img.png";
 
 const useStyles = (theme) => ({
   root: {
@@ -21,9 +21,9 @@ const useStyles = (theme) => ({
   },
   topBar: {
     backgroundImage: `url(${HeaderImg})`,
-    backgroundPosition: 'center',
-    backgroundSize: 'cover',
-    backgroundRepeat: 'no-repeat'
+    backgroundPosition: "center",
+    backgroundSize: "cover",
+    backgroundRepeat: "no-repeat",
     // backgroundColor: "#003262", // "#003262",
     // backgroundImage: "url(test_img.png)",
   },

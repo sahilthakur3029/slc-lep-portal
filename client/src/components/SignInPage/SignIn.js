@@ -58,8 +58,6 @@ class SignIn extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: "",
-      password: "",
       csrfToken: "",
       isAuthenticated: false,
       loginError: false,
@@ -116,8 +114,6 @@ class SignIn extends Component {
       },
       credentials: "include",
       body: JSON.stringify({
-        username: "test",
-        password: "test",
         id_token: d.tokenObj.id_token,
       }),
     })
@@ -148,7 +144,7 @@ class SignIn extends Component {
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
-        alert(`Welcome, ${data.username}!`);
+        alert(`Welcome, ${data.email}!`);
       })
       .catch((err) => {
         console.log(err);
@@ -204,7 +200,7 @@ class SignIn extends Component {
                   <LockOutlinedIcon />
                 </Avatar>
                 <Typography component="h1" variant="h5">
-                  Sign in
+                  SLC Admin Sign In
                 </Typography>
                 <br />
                 <br />

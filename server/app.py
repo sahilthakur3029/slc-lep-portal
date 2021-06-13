@@ -22,8 +22,6 @@ app.register_blueprint(algorithm)
 
 # Connect to your postgres DB
 conn = psycopg2.connect("dbname=slcapplication user=postgres")
-# Open a cursor to perform database operations
-cur = conn.cursor()
 
 app.config.update(
     DEBUG=True,
@@ -47,34 +45,48 @@ cors = CORS(
 
 app.config['GOOGLE_CLIENT_ID'] = "400000931739-oqett115tft12ja9u5lehnimqu87bebd.apps.googleusercontent.com"
 
-# database
-users = [
-    {
-        "id": 1,
-        "username": "test",
-        "password": "test",
-    }
-]
+@login_manager.unauthorized_handler     
+def unauthorized_callback():  
+    print("User unauthorized - Something went wrong")          
+    return jsonify({"login": False})
 
 
 class User(UserMixin):
-    ...
+    def __init__(self, ident, email):
+        self.id = ident
+        self.email = email
 
 
 def get_user(user_id: int):
-    for user in users:
-        if int(user["id"]) == int(user_id):
-            return user
+    cur = conn.cursor()
+    sql = """SELECT email FROM authusers WHERE id=%s"""
+    # Execute a query
+    cur.execute(sql, (user_id,))
+    # Retrieve query results
+    records = cur.fetchall()
+    print(records)
+    # Close cursor
+    cur.close()
+    try:
+        if records[0][0]:
+            return records[0][0]
+    except:
+        return None
     return None
 
-
+# The user loader looks up a user by their user ID, and is called by
+# flask-login to get the current user from the session.  Return None
+# if the user ID isn't valid.
 @login_manager.user_loader
 def user_loader(id: int):
-    user = get_user(id)
-    if user:
-        user_model = User()
-        user_model.id = user["id"]
+    print("ID Below")
+    print(id)
+    user_email = get_user(id)
+    print(user_email)
+    if user_email:
+        user_model = User(id, user_email)
         return user_model
+    # If this is hit something went wrong with the database (will call unauthorized_callback)
     return None
 
 
@@ -94,8 +106,6 @@ def get_csrf():
 @app.route("/api/login", methods=["POST"])
 def login():
     data = request.json
-    username = data.get("username")
-    password = data.get("password")
     id_token = data.get("id_token")
 
     # Case 1: Null Check
@@ -110,23 +120,27 @@ def login():
         return jsonify({"login": False})
     
     # Case 3: Unexpected Response
-    if ('sub' not in identity or
-            'name' not in identity or
-            'picture' not in identity):
+    if ('email' not in identity):
         return jsonify({"login": False})
 
-    print(identity['sub'])
-    print(identity['name'])
-    print(identity['picture'])
-    for user in users:
-        if user["username"] == username and user["password"] == password:
-            user_model = User()
-            user_model.id = user["id"]
-            user_model.name = identity['name']
-            login_user(user_model)
-            return jsonify({"login": True})
+    # Case 4: Unauthorized @berkeley.edu email login
+    cur = conn.cursor()
+    sql = """SELECT id FROM authusers WHERE email=%s"""
+    # Execute a query
+    cur.execute(sql, (identity['email'],))
+    # Retrieve query results
+    records = cur.fetchall()
+    print(records)
+    # Close cursor
+    cur.close()
+    if len(records) == 0:
+        return jsonify({"login": False})
+    print(records[0][0])
 
-    return jsonify({"login": False})
+    # Create user and signin
+    user_model = User(records[0][0], identity['email'])
+    login_user(user_model)
+    return jsonify({"login": True})
 
 
 @app.route("/api/data", methods=["GET"])
@@ -134,7 +148,7 @@ def login():
 def user_data():
     print(current_user.id)
     user = get_user(current_user.id)
-    return jsonify({"username": current_user.name})
+    return jsonify({"email": user})
 
 
 @app.route("/api/getsession", methods=["GET"])

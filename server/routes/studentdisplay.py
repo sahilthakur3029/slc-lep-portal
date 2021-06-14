@@ -6,7 +6,7 @@ studentdisplay = Blueprint('studentdisplay', __name__, template_folder='template
 CORS(studentdisplay)
 
 # Connect to your postgres DB
-conn = psycopg2.connect("dbname=slcapplication user=postgres password=ksshiraja")
+conn = psycopg2.connect("dbname=slcapplication user=postgres")
 
 
 @studentdisplay.route('/names', methods = ['GET', 'POST'])

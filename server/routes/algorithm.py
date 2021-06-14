@@ -13,7 +13,7 @@ algorithm = Blueprint('algorithm', __name__, template_folder='templates')
 CORS(algorithm)
 
 # Connect to your postgres DB
-conn = psycopg2.connect("dbname=slcapplication user=postgres password=ksshiraja")
+conn = psycopg2.connect("dbname=slcapplication user=postgres")
 
 def postgresql_to_dataframe(conn, select_query, column_names):
     """

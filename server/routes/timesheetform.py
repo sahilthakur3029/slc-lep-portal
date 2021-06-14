@@ -7,7 +7,7 @@ timesheetform = Blueprint('timesheetform', __name__, template_folder='templates'
 CORS(timesheetform)
 
 # Connect to your postgres DB
-conn = psycopg2.connect("dbname=slcapplication user=postgres password=ksshiraja")
+conn = psycopg2.connect("dbname=slcapplication user=postgres")
 
 @timesheetform.route('/loghours', methods = ['POST'])
 def insertApplicant():

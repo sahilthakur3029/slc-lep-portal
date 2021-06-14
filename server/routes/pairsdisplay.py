@@ -6,7 +6,7 @@ pairsdisplay = Blueprint('pairsdisplay', __name__, template_folder='templates')
 CORS(pairsdisplay)
 
 # Connect to your postgres DB
-conn = psycopg2.connect("dbname=slcapplication user=postgres password=ksshiraja")
+conn = psycopg2.connect("dbname=slcapplication user=postgres")
 
 
 @pairsdisplay.route('/paired', methods = ['GET', 'POST'])

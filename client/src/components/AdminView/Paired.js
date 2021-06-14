@@ -198,9 +198,7 @@ class Paired extends Component {
               {/* <TableFixedColumns
                 leftColumns={leftColumns}
               /> */}
-              <TableColumnVisibility
-                // defaultHiddenColumnNames={defaultHiddenColumnNames}
-              />
+              <TableColumnVisibility/>
               <Toolbar />
               <ColumnChooser />
               <SearchPanel />

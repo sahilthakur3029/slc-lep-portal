@@ -2,6 +2,9 @@ from flask import Flask, jsonify, request
 from routes.algorithm import algorithm
 from routes.intakeform import intakeform
 from routes.timesheetform import timesheetform
+from routes.studentdisplay import studentdisplay
+from routes.pairsdisplay import pairsdisplay
+from routes.unpaireddisplay import unpaireddisplay
 from flask_cors import CORS
 from flask_login import (
     LoginManager,
@@ -19,9 +22,15 @@ app = Flask(__name__, static_folder="public")
 app.register_blueprint(intakeform)
 app.register_blueprint(timesheetform)
 app.register_blueprint(algorithm)
+app.register_blueprint(studentdisplay)
+app.register_blueprint(pairsdisplay)
+app.register_blueprint(unpaireddisplay)
+CORS(app)
 
 # Connect to your postgres DB
 conn = psycopg2.connect("dbname=slcapplication user=postgres")
+# Open a cursor to perform database operations
+cur = conn.cursor()
 
 app.config.update(
     DEBUG=True,

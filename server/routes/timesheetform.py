@@ -32,4 +32,5 @@ def updatepage():
         return {"allWeeks": json.loads(records[0][2]),
             "calendarLink": records[0][3],
             "semester": records[0][1],
+            "orientationKey": records[0][0],
         }

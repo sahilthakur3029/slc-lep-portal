@@ -11,6 +11,8 @@ import TopBar from "../IntakeForm/TopBar";
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
 import { withStyles } from "@material-ui/core/styles";
 import { Redirect } from "react-router-dom";
+import SettingsIcon from "@material-ui/icons/Settings";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 
 const useStyles = (theme) => ({
   formControl: {
@@ -102,7 +104,15 @@ class Home extends Component {
             Form new pairs
           </Button>
           <Button className={classes.buttonRoot} onClick={this.logout}>
-            Logout
+            Logout <ExitToAppIcon />
+          </Button>
+          <Button
+            className={classes.buttonRoot}
+            onClick={() =>
+              this.setState({ redirect: <Redirect push to="/settings" /> })
+            }
+          >
+            Settings <SettingsIcon />
           </Button>
         </>
       </MuiThemeProvider>

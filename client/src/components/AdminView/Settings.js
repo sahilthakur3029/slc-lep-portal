@@ -47,6 +47,7 @@ class Settings extends Component {
       pair_info: "",
       orientationKey: "",
     };
+    this.jsonParser = this.jsonParser.bind(this);
   }
 
   componentDidMount() {
@@ -121,22 +122,22 @@ class Settings extends Component {
             email_1: pairing[3],
             SID_1: pairing[4],
             level_1: pairing[5],
-            teach_1: JSON.stringify(JSON.parse(pairing[6])),
-            learn_1: JSON.stringify(JSON.parse(pairing[7])),
+            teach_1: this.jsonParser(JSON.parse(pairing[6])),
+            learn_1: this.jsonParser(JSON.parse(pairing[7])),
             comments_1: pairing[8],
             name_2: pairing[10] + " " + pairing[11],
             email_2: pairing[12],
             SID_2: pairing[13],
             level_2: pairing[14],
-            teach_2: JSON.stringify(JSON.parse(pairing[15])),
-            learn_2: JSON.stringify(JSON.parse(pairing[16])),
+            teach_2: this.jsonParser(JSON.parse(pairing[15])),
+            learn_2: this.jsonParser(JSON.parse(pairing[16])),
             comments_2: pairing[17],
-            name_3: pairing[19] + " " + pairing[20] ?? "",
+            name_3: pairing[19] ? pairing[19] + " " + pairing[20] ?? "" : "",
             email_3: pairing[21] ?? "",
             SID_3: pairing[22] ?? "",
             level_3: pairing[23] ?? "",
-            teach_3: JSON.stringify(JSON.parse(pairing[24])) ?? "",
-            learn_3: JSON.stringify(JSON.parse(pairing[25])) ?? "",
+            teach_3: this.jsonParser(JSON.parse(pairing[24])) ?? "",
+            learn_3: this.jsonParser(JSON.parse(pairing[25])) ?? "",
             comments_3: pairing[26] ?? "",
           });
         }
@@ -146,6 +147,18 @@ class Settings extends Component {
         });
       })
       .catch((error) => console.log("Error", error));
+  }
+
+  jsonParser(p) {
+    let returnString = "";
+    for (var key in p) {
+      if (p.hasOwnProperty(key) && returnString === "") {
+        returnString = returnString + key + ": " + p[key];
+      } else if (p.hasOwnProperty(key) && returnString !== "") {
+        returnString = returnString + ", " + key + ": " + p[key];
+      }
+    }
+    return returnString;
   }
 
   handleChange = (input) => (e) => {

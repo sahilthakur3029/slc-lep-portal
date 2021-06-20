@@ -5,6 +5,7 @@ import { withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import CsvDownload from "react-json-to-csv";
 import Button from "@material-ui/core/Button";
+import Modal from "@material-ui/core/Modal";
 
 const useStyles = (theme) => ({
   formControl: {
@@ -19,6 +20,14 @@ const useStyles = (theme) => ({
     color: "black",
     textAlign: "center",
     fontSize: 40,
+  },
+  paper: {
+    position: "absolute",
+    width: 400,
+    backgroundColor: theme.palette.background.paper,
+    border: "2px solid #000",
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
   },
 });
 
@@ -57,6 +66,12 @@ class Settings extends Component {
       pair_info: "",
       u_student_info: "",
       orientationKey: "",
+      modalStyle: {
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+      },
+      open: false,
     };
     this.jsonParser = this.jsonParser.bind(this);
     this.dangerZone = this.dangerZone.bind(this);
@@ -202,8 +217,17 @@ class Settings extends Component {
 
   dangerZone() {
     console.log("Danger Zone");
-    return "hi";
+    this.handleClose();
+    return "Success";
   }
+
+  handleOpen = () => {
+    this.setState({ open: true });
+  };
+
+  handleClose = () => {
+    this.setState({ open: false });
+  };
 
   render() {
     const { classes } = this.props;
@@ -342,10 +366,30 @@ class Settings extends Component {
             variant="contained"
             color="primary"
             className={classes.margin}
-            onClick={this.dangerZone}
+            onClick={this.handleOpen}
           >
             Clear & Reset
           </ColorButton>
+          <Modal
+            open={this.state.open}
+            onClose={this.handleClose}
+            aria-labelledby="simple-modal-title"
+            aria-describedby="simple-modal-description"
+          >
+            <div style={this.state.modalStyle} className={classes.paper}>
+              <h2 id="simple-modal-title">Are you sure?</h2>
+              <p id="simple-modal-description">
+                Clicking yes will clear all data and will be unrecoverable.
+                Please download your data before performing this action.
+              </p>
+              <button type="button" onClick={this.dangerZone}>
+                &nbsp;Yes&nbsp;
+              </button>{" "}
+              <button type="button" onClick={this.handleClose}>
+                &nbsp;No&nbsp;
+              </button>
+            </div>
+          </Modal>
         </>
       </MuiThemeProvider>
     );

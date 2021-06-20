@@ -9,6 +9,8 @@ CORS(settings)
 # Connect to your postgres DB
 conn = psycopg2.connect("dbname=slcapplication user=postgres")
 
+
+# Change to Post later
 @settings.route('/save', methods = ['GET'])
 def saveInfo():
     return jsonify({"save": True})

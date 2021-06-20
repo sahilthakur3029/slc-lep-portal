@@ -97,8 +97,6 @@ class StudentDisplay extends Component {
             partner_gender_weight: student[29],
           });
         }
-        console.log(data);
-        console.log(student_info_array);
         this.setState({
           student_info: student_info_array,
         });

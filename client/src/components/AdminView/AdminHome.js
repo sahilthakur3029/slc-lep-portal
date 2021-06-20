@@ -42,7 +42,8 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    fetch("http://localhost:5000/api/getsession", {
+    const { REACT_APP_GET_SESSION } = process.env;
+    fetch(REACT_APP_GET_SESSION, {
       credentials: "include",
     })
       .then((res) => res.json())
@@ -60,7 +61,8 @@ class Home extends Component {
   }
 
   logout(d) {
-    fetch("http://localhost:5000/api/logout", {
+    const { REACT_APP_LOGOUT } = process.env;
+    fetch(REACT_APP_LOGOUT, {
       credentials: "include",
     })
       .then(() => {

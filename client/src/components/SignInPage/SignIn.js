@@ -71,15 +71,14 @@ class SignIn extends Component {
   }
 
   componentDidMount() {
-    console.log("Mounted");
-    fetch("http://localhost:5000/api/getsession", {
+    const { REACT_APP_GET_SESSION } = process.env;
+    fetch(REACT_APP_GET_SESSION, {
       credentials: "include",
     })
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
         if (data.login == true) {
-          console.log("AUTRHIERAIDNCI");
           this.setState({ isAuthenticated: true });
           this.setState({ redirect: <Redirect push to="/adminhome" /> });
         } else {
@@ -93,8 +92,8 @@ class SignIn extends Component {
   }
 
   csrf() {
-    console.log("csrf called");
-    fetch("http://localhost:5000/api/getcsrf", {
+    const { REACT_APP_CSRF } = process.env;
+    fetch(REACT_APP_CSRF, {
       credentials: "include",
     })
       .then((res) => {
@@ -107,8 +106,8 @@ class SignIn extends Component {
   }
 
   login(d) {
-    console.log(this.state.csrfToken);
-    fetch("http://localhost:5000/api/login", {
+    const { REACT_APP_LOGIN } = process.env;
+    fetch(REACT_APP_LOGIN, {
       method: "POST",
       headers: {
         Accept: "application/json, text/javascript, */*; q=0.01",
@@ -137,7 +136,8 @@ class SignIn extends Component {
       });
   }
   whoami() {
-    fetch("http://localhost:5000/api/data", {
+    const { REACT_APP_WHOAMI } = process.env;
+    fetch(REACT_APP_WHOAMI, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -155,7 +155,8 @@ class SignIn extends Component {
       });
   }
   logout(d) {
-    fetch("http://localhost:5000/api/logout", {
+    const { REACT_APP_LOGOUT } = process.env;
+    fetch(REACT_APP_LOGOUT, {
       credentials: "include",
     })
       .then(() => {

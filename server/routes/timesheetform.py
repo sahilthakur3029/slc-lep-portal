@@ -17,7 +17,7 @@ def insertApplicant():
         print(data_json)
         # Close cursor
         cur.close()
-        return 'Successful'
+        return jsonify({'Successful': 'Successful'})
 
 @timesheetform.route('/tsrender')
 def updatepage():

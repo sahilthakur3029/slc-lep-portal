@@ -54,9 +54,22 @@ class Timesheet extends Component {
       allWeeks: [],
       calendarLink: "",
       semester: "",
+      csrfToken: "",
     };
   }
   componentDidMount() {
+    const { REACT_APP_CSRF } = process.env;
+    fetch(REACT_APP_CSRF, {
+      credentials: "include",
+    })
+      .then((res) => {
+        console.log(res.headers.get(["X-CSRFToken"]));
+        this.setState({ csrfToken: res.headers.get(["X-CSRFToken"]) });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
     const { REACT_APP_TSRENDER } = process.env;
     fetch(REACT_APP_TSRENDER)
       .then((response) => response.json())
@@ -87,24 +100,21 @@ class Timesheet extends Component {
       this.setState({ open: true });
       return;
     }
-    // PROCESS FORM! //
-    let data = JSON.stringify({
-      firstName: this.props.values.firstName,
-      lastName: this.props.values.lastName,
-      sid: this.props.values.sid,
-      partnerNames: this.props.values.partnerNames,
-      hours: this.props.values.hours,
-      week: this.props.values.week,
-    });
     const { REACT_APP_LOGHOURS } = process.env;
     fetch(REACT_APP_LOGHOURS, {
       method: "POST",
       mode: "cors",
       headers: {
         "Content-Type": "application/json",
+        "X-CSRFToken": this.state.csrfToken,
       },
       body: JSON.stringify({
-        userData: data,
+        firstName: this.props.values.firstName,
+        lastName: this.props.values.lastName,
+        sid: this.props.values.sid,
+        partnerNames: this.props.values.partnerNames,
+        hours: this.props.values.hours,
+        week: this.props.values.week,
       }),
     })
       .then((response) => response.json())

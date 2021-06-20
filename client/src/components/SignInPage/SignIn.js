@@ -176,7 +176,6 @@ class SignIn extends Component {
 
   render() {
     const { classes } = this.props;
-    console.log(this.state.redirect);
     if (this.state.isAuthenticated) {
       return (
         <MuiThemeProvider>

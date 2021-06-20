@@ -40,7 +40,21 @@ class Confirm extends Component {
 
     this.state = {
       open: false,
+      csrfToken: "",
     };
+  }
+  componentDidMount() {
+    const { REACT_APP_CSRF } = process.env;
+    fetch(REACT_APP_CSRF, {
+      credentials: "include",
+    })
+      .then((res) => {
+        console.log(res.headers.get(["X-CSRFToken"]));
+        this.setState({ csrfToken: res.headers.get(["X-CSRFToken"]) });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
   handleClose = (e, reason) => {
     if (reason === "clickaway") {
@@ -71,47 +85,14 @@ class Confirm extends Component {
       this.setState({ open: true });
       return;
     }
-    // PROCESS FORM! //
-    let body = JSON.stringify({
-      firstName: titleCase(this.props.values.firstName.trim()),
-      lastName: titleCase(this.props.values.lastName.trim()),
-      email: this.props.values.email,
-      sid: this.props.values.sid,
-      academicTitle: this.props.values.academicTitle,
-      residency: this.props.values.residency,
-      major: this.props.values.major,
-      gender: this.props.values.gender,
-      genderCustom: this.props.values.genderCustom,
-      availability: this.props.values.availability,
-      hopeToGain: this.props.values.hopeToGain,
-      planToMeet: this.props.values.planToMeet,
-      firstChoiceLearn: this.props.values.firstChoiceLearn,
-      firstChoiceLearnOther: this.props.values.firstChoiceLearnOther,
-      firstChoiceLearnLevel: this.props.values.firstChoiceLearnLevel,
-      secondChoiceLearn: this.props.values.secondChoiceLearn,
-      secondChoiceLearnOther: this.props.values.secondChoiceLearnOther,
-      secondChoiceLearnLevel: this.props.values.secondChoiceLearnLevel,
-      firstChoiceTeach: this.props.values.firstChoiceTeach,
-      firstChoiceTeachOther: this.props.values.firstChoiceTeachOther,
-      firstChoiceTeachLevel: this.props.values.firstChoiceTeachLevel,
-      secondChoiceTeach: this.props.values.secondChoiceTeach,
-      secondChoiceTeachOther: this.props.values.secondChoiceTeachOther,
-      secondChoiceTeachLevel: this.props.values.secondChoiceTeachLevel,
-      comments: this.props.values.comments,
-      preferredMajor: this.props.values.preferredMajor,
-      preferredMajorWeight: this.props.values.preferredMajorWeight,
-      preferredGender: this.props.values.preferredGender,
-      preferredGenderCustom: this.props.values.preferredGenderCustom,
-      preferredGenderWeight: this.props.values.preferredGenderWeight,
-      waiverAccept: this.props.values.waiverAccept,
-    });
-    console.log(body);
+
     const { REACT_APP_APPLICANT } = process.env;
     fetch(REACT_APP_APPLICANT, {
       method: "POST",
       mode: "cors",
       headers: {
         "Content-Type": "application/json",
+        "X-CSRFToken": this.state.csrfToken,
       },
       body: JSON.stringify({
         firstName: titleCase(this.props.values.firstName.trim()),

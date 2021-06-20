@@ -24,11 +24,21 @@ const useStyles = (theme) => ({
 
 const ColorButton = withStyles((theme) => ({
   root: {
-    color: theme.palette.getContrastText("#859438"),
-    backgroundColor: "#859438",
-    "&:hover": {
-      backgroundColor: "#848438",
-    },
+    boxShadow: "0 3px 5px 2px rgba(60, 75, 120, .3)",
+    background: "linear-gradient(45deg, #687732 30%, #7A8B39 90%)",
+    backgroundColor: "#c123de",
+    borderRadius: "6px",
+    border: "0",
+    display: "inline-block",
+    cursor: "pointer",
+    color: "white",
+    fontSize: "15px",
+    fontWeight: "bold",
+    padding: "6px 24px",
+    textDecoration: "none",
+    textShadow: "0px 1px 0px #9b14b3",
+    marginLeft: "30px",
+    height: 32,
     margin: theme.spacing(1),
     marginLeft: "30px",
   },
@@ -45,9 +55,11 @@ class Settings extends Component {
       endWeek: "",
       student_info: "",
       pair_info: "",
+      u_student_info: "",
       orientationKey: "",
     };
     this.jsonParser = this.jsonParser.bind(this);
+    this.dangerZone = this.dangerZone.bind(this);
   }
 
   componentDidMount() {
@@ -147,6 +159,29 @@ class Settings extends Component {
         });
       })
       .catch((error) => console.log("Error", error));
+
+    const { REACT_APP_UNPAIRS } = process.env;
+    let u_student_info_array = [];
+    fetch(REACT_APP_UNPAIRS)
+      .then((response) => response.json())
+      .then((data) => {
+        for (const student of data) {
+          u_student_info_array.push({
+            first_name: student[1],
+            last_name: student[2],
+            email: student[3],
+            SID: student[4],
+            level: student[5],
+            teach: this.jsonParser(JSON.parse(student[6])),
+            learn: this.jsonParser(JSON.parse(student[7])),
+            comments: student[8],
+          });
+        }
+        this.setState({
+          u_student_info: u_student_info_array,
+        });
+      })
+      .catch((error) => console.log("Error", error));
   }
 
   jsonParser(p) {
@@ -165,11 +200,17 @@ class Settings extends Component {
     this.setState({ [input]: e.target.value });
   };
 
+  dangerZone() {
+    console.log("Danger Zone");
+    return "hi";
+  }
+
   render() {
     const { classes } = this.props;
     return (
       <MuiThemeProvider>
         <>
+          {console.log(/^\d+$/.test(this.state.startWeek))}
           <TopBar />
           <br />
           <h1 className={classes.heads}>Settings</h1>
@@ -269,6 +310,42 @@ class Settings extends Component {
           >
             Pair Data
           </CsvDownload>
+          <CsvDownload
+            data={this.state.u_student_info}
+            filename="unpaired.csv"
+            style={{
+              boxShadow: "0 3px 5px 2px rgba(60, 75, 120, .3)",
+              background: "linear-gradient(45deg, #687732 30%, #7A8B39 90%)",
+              backgroundColor: "#c123de",
+              borderRadius: "6px",
+              border: "0",
+              display: "inline-block",
+              cursor: "pointer",
+              color: "white",
+              fontSize: "15px",
+              fontWeight: "bold",
+              padding: "6px 24px",
+              textDecoration: "none",
+              textShadow: "0px 1px 0px #9b14b3",
+              marginLeft: "30px",
+              height: 32,
+            }}
+          >
+            Unpaired Data
+          </CsvDownload>
+          <br />
+          <br />
+          <h2 style={{ color: "red" }} className={classes.formControl}>
+            <u>Reset Algorithm [DANGER ZONE]</u>
+          </h2>
+          <ColorButton
+            variant="contained"
+            color="primary"
+            className={classes.margin}
+            onClick={this.dangerZone}
+          >
+            Clear & Reset
+          </ColorButton>
         </>
       </MuiThemeProvider>
     );

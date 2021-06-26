@@ -6,6 +6,7 @@ import TextField from "@material-ui/core/TextField";
 import CsvDownload from "react-json-to-csv";
 import Button from "@material-ui/core/Button";
 import Modal from "@material-ui/core/Modal";
+import { Redirect } from "react-router-dom";
 
 const useStyles = (theme) => ({
   formControl: {
@@ -66,6 +67,10 @@ class Settings extends Component {
       pair_info: "",
       u_student_info: "",
       orientationKey: "",
+      timesheet_info: "",
+      csrfToken: "",
+      redirect: null,
+      deleteData: false,
       modalStyle: {
         top: "50%",
         left: "50%",
@@ -75,9 +80,22 @@ class Settings extends Component {
     };
     this.jsonParser = this.jsonParser.bind(this);
     this.dangerZone = this.dangerZone.bind(this);
+    this.saveChanges = this.saveChanges.bind(this);
   }
 
   componentDidMount() {
+    const { REACT_APP_CSRF } = process.env;
+    fetch(REACT_APP_CSRF, {
+      credentials: "include",
+    })
+      .then((res) => {
+        this.setState({ csrfToken: res.headers.get(["X-CSRFToken"]) });
+      })
+      .catch((err) => {
+        alert(
+          "Something went wrong in receiving data. Please try again later."
+        );
+      });
     const { REACT_APP_TSRENDER } = process.env;
     fetch(REACT_APP_TSRENDER)
       .then((response) => response.json())
@@ -90,7 +108,9 @@ class Settings extends Component {
           orientationKey: data.orientationKey,
         });
       })
-      .catch((error) => console.log("Error", error));
+      .catch((error) =>
+        alert("Something went wrong in receiving data. Please try again later.")
+      );
     const { REACT_APP_NAMES } = process.env;
     let student_info_array = [];
 
@@ -135,14 +155,15 @@ class Settings extends Component {
           student_info: student_info_array,
         });
       })
-      .catch((error) => console.log("Error", error));
+      .catch((error) =>
+        alert("Something went wrong in receiving data. Please try again later.")
+      );
 
     const { REACT_APP_PAIRS } = process.env;
     let pair_info_array = [];
     fetch(REACT_APP_PAIRS)
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         for (const pairing of data) {
           pair_info_array.push({
             name_1: pairing[1] + " " + pairing[2],
@@ -168,12 +189,13 @@ class Settings extends Component {
             comments_3: pairing[26] ?? "",
           });
         }
-        console.log(pair_info_array);
         this.setState({
           pair_info: pair_info_array,
         });
       })
-      .catch((error) => console.log("Error", error));
+      .catch((error) =>
+        alert("Something went wrong in receiving data. Please try again later.")
+      );
 
     const { REACT_APP_UNPAIRS } = process.env;
     let u_student_info_array = [];
@@ -196,7 +218,30 @@ class Settings extends Component {
           u_student_info: u_student_info_array,
         });
       })
-      .catch((error) => console.log("Error", error));
+      .catch((error) =>
+        alert("Something went wrong in receiving data. Please try again later.")
+      );
+    const { REACT_APP_TIMESHEET } = process.env;
+    let timesheet_info_array = [];
+    fetch(REACT_APP_TIMESHEET)
+      .then((response) => response.json())
+      .then((data) => {
+        for (const student of data) {
+          timesheet_info_array.push({
+            first_name: student[0],
+            last_name: student[1],
+            partner_names: student[2],
+            hours: student[3],
+            week: student[4],
+          });
+        }
+        this.setState({
+          timesheet_info: timesheet_info_array,
+        });
+      })
+      .catch((error) =>
+        alert("Something went wrong in receiving data. Please try again later.")
+      );
   }
 
   jsonParser(p) {
@@ -217,8 +262,45 @@ class Settings extends Component {
 
   dangerZone() {
     console.log("Danger Zone");
+    this.setState({ deleteData: true });
     this.handleClose();
     return "Success";
+  }
+
+  saveChanges() {
+    console.log("Saved worked!");
+    const { REACT_APP_SAVE } = process.env;
+    let endWeek = this.state.endWeek;
+    let startWeek = this.state.startWeek;
+    if (
+      !/^\d+$/.test(startWeek) ||
+      !/^\d+$/.test(endWeek) ||
+      startWeek >= endWeek
+    ) {
+      startWeek = 3;
+      endWeek = 16;
+    }
+    fetch(REACT_APP_SAVE, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": this.state.csrfToken,
+      },
+      body: JSON.stringify({
+        currSem: this.state.currSem,
+        calendarLink: this.state.calendarLink,
+        orientationKey: this.state.orientationKey,
+        startWeek: startWeek,
+        endWeek: endWeek,
+        deleteData: this.state.deleteData,
+      }),
+    })
+      .then((response) => response.json())
+      .catch((error) =>
+        alert("Something went wrong in pushing data. Please try again later.")
+      );
+    return "Success;";
   }
 
   handleOpen = () => {
@@ -229,12 +311,17 @@ class Settings extends Component {
     this.setState({ open: false });
   };
 
+  handleCloseOnNo = () => {
+    this.setState({ open: false, deleteData: false });
+  };
+
   render() {
     const { classes } = this.props;
     return (
       <MuiThemeProvider>
         <>
-          {console.log(/^\d+$/.test(this.state.startWeek))}
+          {this.state.redirect}
+          {/* {console.log(/^\d+$/.test(this.state.startWeek))} */}
           <TopBar />
           <br />
           <h1 className={classes.heads}>Settings</h1>
@@ -357,6 +444,29 @@ class Settings extends Component {
           >
             Unpaired Data
           </CsvDownload>
+          <CsvDownload
+            data={this.state.timesheet_info}
+            filename="timesheet.csv"
+            style={{
+              boxShadow: "0 3px 5px 2px rgba(60, 75, 120, .3)",
+              background: "linear-gradient(45deg, #687732 30%, #7A8B39 90%)",
+              backgroundColor: "#c123de",
+              borderRadius: "6px",
+              border: "0",
+              display: "inline-block",
+              cursor: "pointer",
+              color: "white",
+              fontSize: "15px",
+              fontWeight: "bold",
+              padding: "6px 24px",
+              textDecoration: "none",
+              textShadow: "0px 1px 0px #9b14b3",
+              marginLeft: "30px",
+              height: 32,
+            }}
+          >
+            Timesheet Data
+          </CsvDownload>
           <br />
           <br />
           <h2 style={{ color: "red" }} className={classes.formControl}>
@@ -379,17 +489,45 @@ class Settings extends Component {
             <div style={this.state.modalStyle} className={classes.paper}>
               <h2 id="simple-modal-title">Are you sure?</h2>
               <p id="simple-modal-description">
-                Clicking yes will clear all data and will be unrecoverable.
-                Please download your data before performing this action.
+                Clicking yes will clear all data and will be unrecoverable on
+                save. Please download your data before performing this action.
               </p>
               <button type="button" onClick={this.dangerZone}>
                 &nbsp;Yes&nbsp;
               </button>{" "}
-              <button type="button" onClick={this.handleClose}>
+              <button type="button" onClick={this.handleCloseOnNo}>
                 &nbsp;No&nbsp;
               </button>
             </div>
           </Modal>
+          <br />
+          <br />
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <ColorButton
+              variant="contained"
+              color="primary"
+              className={classes.margin}
+              onClick={() =>
+                this.setState({ redirect: <Redirect push to="/adminhome" /> })
+              }
+            >
+              Back
+            </ColorButton>
+            <ColorButton
+              variant="contained"
+              color="primary"
+              className={classes.margin}
+              onClick={this.saveChanges}
+            >
+              Save
+            </ColorButton>
+          </div>
         </>
       </MuiThemeProvider>
     );

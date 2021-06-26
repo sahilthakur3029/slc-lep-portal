@@ -92,7 +92,6 @@ class Timesheet extends Component {
     if (
       this.props.values.firstName.trim() === "" ||
       this.props.values.lastName.trim() === "" ||
-      this.props.values.sid.trim() === "" ||
       this.props.values.partnerNames.trim() === "" ||
       this.props.values.week.trim() === "" ||
       this.props.values.hours.trim() === ""
@@ -111,7 +110,6 @@ class Timesheet extends Component {
       body: JSON.stringify({
         firstName: this.props.values.firstName,
         lastName: this.props.values.lastName,
-        sid: this.props.values.sid,
         partnerNames: this.props.values.partnerNames,
         hours: this.props.values.hours,
         week: this.props.values.week,
@@ -172,20 +170,10 @@ class Timesheet extends Component {
           />
           <br />
           <TextField
-            placeholder="Enter Your Student ID Number"
-            label="SID"
-            onChange={handleChange("sid")}
-            defaultValue={values.sid}
-            margin="normal"
-            required
-            className={classes.formControl}
-          />
-          <br />
-          <TextField
             placeholder="Enter Your Partner(s) Names"
             label="Partner Names"
             onChange={handleChange("partnerNames")}
-            defaultValue={values.sid}
+            defaultValue={values.partnerNames}
             margin="normal"
             required
             className={classes.formControl}

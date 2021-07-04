@@ -147,8 +147,19 @@ class FormPairings extends Component {
             <u>Configurations</u>
           </h2>
           <p className={classes.formControl}>
-            Please select the level of strictness for forming trios: 1 for
-            strict, 2 for medium, or 3 for loose:
+            Please select the level of strictness for forming trios:{" "}
+            <b>1 for strict</b> -{" "}
+            <em>
+              third person must match the exchange profile of someone in the
+              pair
+            </em>
+            , <b>2 for medium</b> -{" "}
+            <em>
+              third person should have exchange language levels +-1 compared to
+              pairs; <u>preferred</u>
+            </em>
+            , or <b>3 for loose</b> -{" "}
+            <em>third person just has to match exchange profile of pair</em>:
           </p>
           <FormControl className={classes.formControl} required>
             <InputLabel id="strictness-label">Algorithm Strictness</InputLabel>

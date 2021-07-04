@@ -70,16 +70,14 @@ def error_major_fixer(major_set):
         return set(["No Response"])
     return set(updated_set)
 
-@algorithm.route('/algorithm')
+@algorithm.route('/algorithm', methods=["POST"])
 def run_algorithm():
     column_names = ["First", "Last", "Email", "SID", "Academic Title", "Residency", "Major", "Gender", "Gender Custom", "Availability", "Hope To Gain", "Plan to Meet", "F_C_Learn", 
     "F_C_Learn_Other", "F_C_Learn_Level", "S_C_Learn", "S_C_Learn_Other", "S_C_Learn_Level", "F_C_Teach", "F_C_Teach_Other", "F_C_Teach_Level", "S_C_Teach", "S_C_Teach_Other",
     "S_C_Teach_Level", "Comments", "P_Major", "P_Major_Weight", "P_Gender", "P_Gender_Custom", "P_Gender_Weight", "Waiver Accept", "Timestamp"]
     df = postgresql_to_dataframe(conn, "select * from intakeform", column_names)
-    # TODO Have to remove people from if already paired and maybe duplicate applicants (Step 1)
+    data_json = request.get_json()
     # Step 2 of algorithm
-    # print(df)
-    # Checks which round of pairing and if not first updated dataframe with only relevant names
     df = checkRemoveDups(df)
     df = updatePairRound(df)
     formatted_data = []
@@ -152,15 +150,16 @@ def run_algorithm():
         "Partner Major Weight": row["P_Major_Weight"], "Partner Gender": row["P_Gender"].strip(), "Partner Gender Weight": row["P_Gender_Weight"]})
     step_2 = pd.DataFrame(formatted_data, columns=["Timestamp", "First", "Last", "Email", "SID", "Level", "Gender", "Major", "Teach", "Learn", "Comments", "Days Available", 
     "Partner Major", "Partner Major Weight", "Partner Gender", "Partner Gender Weight"])
-    step_3(step_2)     
-    return "Algorithm Completed"
+    step_3(step_2, data_json["strictness"])     
+    return jsonify({"Success": True})
 
 # Step 3 of the algorithm 
-def step_3(app_df):
+def step_3(app_df, strictness):
     # First cell block
     people = [0] #people is 1-indexed
     n = len(app_df)
-    criteria = 2
+    # CHANGE THIS AT ONE POINT
+    criteria = strictness
     for index, row in app_df.iterrows():
         timestamp = row['Timestamp'].to_pydatetime().strftime('%Y-%m-%d %H:%M:%S')
 

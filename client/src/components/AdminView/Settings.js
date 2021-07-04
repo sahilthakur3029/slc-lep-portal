@@ -7,6 +7,12 @@ import CsvDownload from "react-json-to-csv";
 import Button from "@material-ui/core/Button";
 import Modal from "@material-ui/core/Modal";
 import { Redirect } from "react-router-dom";
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 const useStyles = (theme) => ({
   formControl: {
@@ -71,6 +77,7 @@ class Settings extends Component {
       csrfToken: "",
       redirect: null,
       deleteData: false,
+      openAlert: false,
       modalStyle: {
         top: "50%",
         left: "50%",
@@ -300,6 +307,7 @@ class Settings extends Component {
       .catch((error) =>
         alert("Something went wrong in pushing data. Please try again later.")
       );
+    this.setState({ openAlert: true });
     return "Success;";
   }
 
@@ -315,12 +323,29 @@ class Settings extends Component {
     this.setState({ open: false, deleteData: false });
   };
 
+  handleCloseOnAlert = (e, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    this.setState({ openAlert: false });
+  };
+
   render() {
     const { classes } = this.props;
     return (
       <MuiThemeProvider>
         <>
           {this.state.redirect}
+          <Snackbar
+            open={this.state.openAlert}
+            autoHideDuration={5000}
+            onClose={() => this.setState({ openAlert: false })}
+          >
+            <Alert onClose={this.handleCloseOnAlert} severity="success">
+              Save Successful!
+            </Alert>
+          </Snackbar>
           {/* {console.log(/^\d+$/.test(this.state.startWeek))} */}
           <TopBar />
           <br />
@@ -525,8 +550,9 @@ class Settings extends Component {
               className={classes.margin}
               onClick={this.saveChanges}
             >
-              Save
+              Save Changes
             </ColorButton>
+            <br />
           </div>
         </>
       </MuiThemeProvider>

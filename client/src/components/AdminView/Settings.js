@@ -84,8 +84,11 @@ class Settings extends Component {
         transform: "translate(-50%, -50%)",
       },
       open: false,
+      mail_merge: "",
     };
     this.jsonParser = this.jsonParser.bind(this);
+    this.formatNames = this.formatNames.bind(this);
+    this.formatEmail = this.formatEmail.bind(this);
     this.dangerZone = this.dangerZone.bind(this);
     this.saveChanges = this.saveChanges.bind(this);
   }
@@ -168,10 +171,37 @@ class Settings extends Component {
 
     const { REACT_APP_PAIRS } = process.env;
     let pair_info_array = [];
+    let mail_merge_array = [];
+    let mail_merge_counter = 0;
+
     fetch(REACT_APP_PAIRS)
       .then((response) => response.json())
       .then((data) => {
         for (const pairing of data) {
+          let pair_size = "";
+          if (pairing[19] === null) {
+            pair_size = "pair";
+          } else {
+            pair_size = "trio";
+          }
+          mail_merge_array.push({
+            "": mail_merge_counter,
+            "First Name": this.formatNames(
+              pairing[1],
+              pairing[10],
+              pairing[19]
+            ),
+            "Last Name": "",
+            "Subject Pair Size":
+              pair_size[0].toUpperCase() + pair_size.substring(1),
+            "Body Pair Size": pair_size,
+            "Email Address": this.formatEmail(
+              pairing[3],
+              pairing[12],
+              pairing[21]
+            ),
+          });
+          mail_merge_counter = mail_merge_counter + 1;
           pair_info_array.push({
             name_1: pairing[1] + " " + pairing[2],
             email_1: pairing[3],
@@ -198,6 +228,7 @@ class Settings extends Component {
         }
         this.setState({
           pair_info: pair_info_array,
+          mail_merge: mail_merge_array,
         });
       })
       .catch((error) =>
@@ -261,6 +292,23 @@ class Settings extends Component {
       }
     }
     return returnString;
+  }
+
+  formatNames(p1name, p2name, p3name) {
+    console.log(p1name);
+    if (p3name === null) {
+      return p1name + " and " + p2name;
+    } else {
+      return p1name + ", " + p2name + " and " + p3name;
+    }
+  }
+
+  formatEmail(p1email, p2email, p3email) {
+    if (p3email === null) {
+      return p1email + ", " + p2email;
+    } else {
+      return p1email + ", " + p2email + ", " + p3email;
+    }
   }
 
   handleChange = (input) => (e) => {
@@ -394,6 +442,35 @@ class Settings extends Component {
             margin="normal"
             className={classes.formControl}
           />
+          <br />
+          <br />
+          <h2 className={classes.formControl}>
+            <u>Mail Merge Data</u>
+          </h2>
+          <br />
+          <CsvDownload
+            data={this.state.mail_merge}
+            filename="mailmerge.csv"
+            style={{
+              boxShadow: "0 3px 5px 2px rgba(60, 75, 120, .3)",
+              background: "linear-gradient(45deg, #687732 30%, #7A8B39 90%)",
+              backgroundColor: "#c123de",
+              borderRadius: "6px",
+              border: "0",
+              display: "inline-block",
+              cursor: "pointer",
+              color: "white",
+              fontSize: "15px",
+              fontWeight: "bold",
+              padding: "6px 24px",
+              textDecoration: "none",
+              textShadow: "0px 1px 0px #9b14b3",
+              marginLeft: "30px",
+              height: 32,
+            }}
+          >
+            Mailmerge Pairs
+          </CsvDownload>
           <br />
           <br />
           <h2 className={classes.formControl}>

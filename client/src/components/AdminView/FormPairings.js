@@ -73,6 +73,8 @@ class FormPairings extends Component {
       redirect: null,
       csrfToken: "",
       openAlert: false,
+      isAuthenticated: false,
+      redirect: null,
     };
     this.runAlgorithm = this.runAlgorithm.bind(this);
   }
@@ -89,6 +91,22 @@ class FormPairings extends Component {
         alert(
           "Something went wrong in receiving data. Please try again later."
         );
+      });
+    const { REACT_APP_GET_SESSION } = process.env;
+    fetch(REACT_APP_GET_SESSION, {
+      credentials: "include",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        if (data.login == true) {
+          this.setState({ isAuthenticated: true });
+        } else {
+          this.setState({ redirect: <Redirect push to="/signin" /> });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
       });
   }
 

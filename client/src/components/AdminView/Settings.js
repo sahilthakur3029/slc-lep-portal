@@ -172,7 +172,6 @@ class Settings extends Component {
     const { REACT_APP_PAIRS } = process.env;
     let pair_info_array = [];
     let mail_merge_array = [];
-    let mail_merge_counter = 0;
 
     fetch(REACT_APP_PAIRS)
       .then((response) => response.json())
@@ -185,13 +184,11 @@ class Settings extends Component {
             pair_size = "trio";
           }
           mail_merge_array.push({
-            "": mail_merge_counter,
             "First Name": this.formatNames(
               pairing[1],
               pairing[10],
               pairing[19]
             ),
-            "Last Name": "",
             "Subject Pair Size":
               pair_size[0].toUpperCase() + pair_size.substring(1),
             "Body Pair Size": pair_size,
@@ -201,7 +198,6 @@ class Settings extends Component {
               pairing[21]
             ),
           });
-          mail_merge_counter = mail_merge_counter + 1;
           pair_info_array.push({
             name_1: pairing[1] + " " + pairing[2],
             email_1: pairing[3],

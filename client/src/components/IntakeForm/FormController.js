@@ -6,7 +6,7 @@ import FormWaiver from "./FormWaiver";
 import Confirm from "./Confirm";
 import Success from "./Success";
 
-// Controls the form, displaying the next and previous buttons 
+// Controls the form, displaying the next and previous buttons
 // and controlling which page shows since it is a multi page form
 
 // Initial State
@@ -16,7 +16,6 @@ class FormController extends Component {
     firstName: "",
     lastName: "",
     email: "",
-    sid: "",
     academicTitle: "",
     residency: "",
     major: "",
@@ -75,7 +74,6 @@ class FormController extends Component {
       firstName,
       lastName,
       email,
-      sid,
       academicTitle,
       residency,
       major,
@@ -109,7 +107,6 @@ class FormController extends Component {
       firstName,
       lastName,
       email,
-      sid,
       academicTitle,
       residency,
       major,

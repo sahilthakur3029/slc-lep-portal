@@ -71,7 +71,6 @@ class Confirm extends Component {
       this.props.values.firstName.trim() === "" ||
       this.props.values.lastName.trim() === "" ||
       this.props.values.email.trim() === "" ||
-      this.props.values.sid.trim() === "" ||
       this.props.values.academicTitle.trim() === "" ||
       this.props.values.residency.trim() === "" ||
       this.props.values.hopeToGain.trim() === "" ||
@@ -98,7 +97,6 @@ class Confirm extends Component {
         firstName: titleCase(this.props.values.firstName.trim()),
         lastName: titleCase(this.props.values.lastName.trim()),
         email: this.props.values.email,
-        sid: this.props.values.sid,
         academicTitle: this.props.values.academicTitle,
         residency: this.props.values.residency,
         major: this.props.values.major,
@@ -145,7 +143,6 @@ class Confirm extends Component {
         firstName,
         lastName,
         email,
-        sid,
         academicTitle,
         residency,
         major,
@@ -201,9 +198,6 @@ class Confirm extends Component {
             </ListItem>
             <ListItem>
               <ListItemText primary="Email:*" secondary={email} />
-            </ListItem>
-            <ListItem>
-              <ListItemText primary="SID:*" secondary={sid} />
             </ListItem>
             <ListItem>
               <ListItemText

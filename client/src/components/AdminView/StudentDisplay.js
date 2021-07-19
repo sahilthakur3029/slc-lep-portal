@@ -16,7 +16,8 @@ import {
   TableRowDetail,
   TableFixedColumns,
   ColumnChooser,
-  TableColumnVisibility
+  TableColumnVisibility,
+  TableEditColumn
 } from "@devexpress/dx-react-grid-material-ui";
 import {
   SearchState,
@@ -24,7 +25,21 @@ import {
   SortingState,
   IntegratedSorting
 } from '@devexpress/dx-react-grid';
+import TextField from '@material-ui/core/TextField';
+import FormGroup from '@material-ui/core/FormGroup';
 import { RowDetailState } from '@devexpress/dx-react-grid';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import MuiGrid from '@material-ui/core/Grid';
+import {
+  Plugin, Template, TemplateConnector, TemplatePlaceholder,
+} from '@devexpress/dx-react-core';
+import { EditingState } from '@devexpress/dx-react-grid';
+
+
 
 // Things to do: Editing in a popup form
 
@@ -67,33 +82,32 @@ class StudentDisplay extends Component {
             student_info_array.push({ "first_name":student[0],
              "last_name":student[1],
              "email":student[2],
-             "SID":student[3],
-             "class_standing":student[4],
-             "domestic_status":student[5],
-             "major":student[6],
-             "gender":student[7],
-             "gender_custom":student[8],
-             "days_of_week":student[9],
-             "hope_to_gain":student[10],
-             "plan_to_meet":student[11],
-             "lang_1_learn":student[12],
-             "lang_1_learn_other":student[13],
-             "lang_1_learn_level":student[14],
-             "lang_2_learn":student[15],
-             "lang_2_learn_other":student[16],
-             "lang_2_learn_level":student[17],
-             "lang_1_teach":student[18],
-             "lang_1_teach_other":student[19],
-             "lang_1_teach_level":student[20],
-             "lang_2_teach":student[21],
-             "lang_2_teach_other":student[22],
-             "lang_2_teach_level":student[23],
-             "comments":student[24],
-             "partner_major":student[25],
-             "partner_major_weight":student[26],
-             "partner_gender":student[27],
-             "partner_gender_custom":student[28],
-             "partner_gender_weight":student[29],
+             "class_standing":student[3],
+             "domestic_status":student[4],
+             "major":student[5],
+             "gender":student[6],
+             "gender_custom":student[7],
+             "days_of_week":student[8],
+             "hope_to_gain":student[9],
+             "plan_to_meet":student[10],
+             "lang_1_learn":student[11],
+             "lang_1_learn_other":student[12],
+             "lang_1_learn_level":student[13],
+             "lang_2_learn":student[14],
+             "lang_2_learn_other":student[15],
+             "lang_2_learn_level":student[16],
+             "lang_1_teach":student[17],
+             "lang_1_teach_other":student[18],
+             "lang_1_teach_level":student[19],
+             "lang_2_teach":student[20],
+             "lang_2_teach_other":student[21],
+             "lang_2_teach_level":student[22],
+             "comments":student[23],
+             "partner_major":student[24],
+             "partner_major_weight":student[25],
+             "partner_gender":student[26],
+             "partner_gender_custom":student[27],
+             "partner_gender_weight":student[28],
             } );
           }
           this.setState({
@@ -117,7 +131,6 @@ class StudentDisplay extends Component {
       const columns = [{ name: "first_name", title: "First Name"},
       { name: "last_name", title: "Last Name"},
       { name: "email", title: "Email"},
-      { name: "SID", title: "SID"},
       { name: "class_standing", title: "Class Standing"},
       { name: "domestic_status", title: "Domestic Status"},
       { name: "major", title: "Major"},
@@ -144,6 +157,8 @@ class StudentDisplay extends Component {
     ];
       const rows = student_info_array;
 
+      const getRowId = row => row.id;
+
       const RowDetail = ({ row }) => (
         <div>
           What the student hopes to gain: 
@@ -165,7 +180,6 @@ class StudentDisplay extends Component {
         { columnName: 'first_name', width: 240 },
         { columnName: 'last_name', width: 240 },
         { columnName: 'email', width: 300 },
-        { columnName: 'SID', width: 180 },
         { columnName: 'class_standing', width: 180 },
         { columnName: 'domestic_status', width: 180 },
         { columnName: 'major', width: 240 },
@@ -193,6 +207,180 @@ class StudentDisplay extends Component {
 
       const leftColumns = ['first_name', 'last_name'];
 
+      // Popup editing
+      const Popup = ({
+        row,
+        onChange,
+        onApplyChanges,
+        onCancelChanges,
+        open,
+      }) => (
+        
+        <Dialog open={open} onClose={onCancelChanges} aria-labelledby="form-dialog-title">
+          <DialogTitle id="form-dialog-title">Student Details</DialogTitle>
+          <DialogContent>
+            <MuiGrid container spacing={3}>
+              <MuiGrid item xs={6}>
+                <FormGroup>
+                  <TextField
+                    margin="normal"
+                    name="firstName"
+                    label="First Name"
+                    value={row.first_name || ''}
+                    onChange={onChange}
+                  />
+                  <TextField
+                    margin="normal"
+                    name="lastName"
+                    label="Last Name"
+                    value={row.last_name || ''}
+                    onChange={onChange}
+                  />
+                  <TextField
+                    margin="normal"
+                    name="email"
+                    label="Email"
+                    value={row.email || ''}
+                    onChange={onChange}
+                  />
+                </FormGroup>
+              </MuiGrid>
+              <MuiGrid item xs={6}>
+                <FormGroup>
+                  <TextField
+                    margin="normal"
+                    name="major"
+                    label="Major"
+                    value={row.major || ''}
+                    onChange={onChange}
+                  />
+                
+                  <TextField
+                    margin="normal"
+                    name="gender"
+                    label="Gender"
+                    value={row.gender || ''}
+                    onChange={onChange}
+                  />
+                </FormGroup>
+              </MuiGrid>
+            </MuiGrid>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={onCancelChanges} color="primary">
+              Cancel
+            </Button>
+            <Button onClick={onApplyChanges} color="primary">
+              Save
+            </Button>
+          </DialogActions>
+        </Dialog>
+      );
+
+      const PopupEditing = React.memo(({ popupComponent: Popup }) => (
+        <Plugin>
+          <Template name="popupEditing">
+            <TemplateConnector>
+              {(
+                {
+                  rows,
+                  getRowId,
+                  addedRows,
+                  editingRowIds,
+                  createRowChange,
+                  rowChanges,
+                },
+                {
+                  changeRow, changeAddedRow, commitChangedRows, commitAddedRows,
+                  stopEditRows, cancelAddedRows, cancelChangedRows,
+                },
+              ) => {
+                const isNew = addedRows.length > 0;
+                let editedRow;
+                let rowId;
+                if (isNew) {
+                  rowId = 0;
+                  editedRow = addedRows[rowId];
+                } else {
+                  [rowId] = editingRowIds;
+                  const targetRow = rows.filter(row => getRowId(row) === rowId)[0];
+                  editedRow = { ...targetRow, ...rowChanges[rowId] };
+                }
+                
+      
+                const processValueChange = ({ target: { name, value } }) => {
+                  const changeArgs = {
+                    rowId,
+                    change: createRowChange(editedRow, value, name),
+                  };
+                  if (isNew) {
+                    changeAddedRow(changeArgs);
+                  } else {
+                    changeRow(changeArgs);
+                    changeAddedRow(changeArgs);
+                  }
+                };
+                const rowIds = isNew ? [0] : editingRowIds;
+                const applyChanges = () => {
+                  if (isNew) {
+                    commitAddedRows({ rowIds });
+                  } else {
+                    stopEditRows({ rowIds });
+                    commitChangedRows({ rowIds });
+                  }
+                };
+                const cancelChanges = () => {
+                  if (isNew) {
+                    cancelAddedRows({ rowIds });
+                  } else {
+                    stopEditRows({ rowIds });
+                    cancelChangedRows({ rowIds });
+                  }
+                };
+      
+                const open = editingRowIds.length > 0 || isNew;
+                console.log("EDITED ROW IS")
+                console.log(editedRow)
+                return (
+                  <Popup
+                    open={open}
+                    row={editedRow}
+                    onChange={processValueChange}
+                    onApplyChanges={applyChanges}
+                    onCancelChanges={cancelChanges}
+                  />
+                );
+              }}
+            </TemplateConnector>
+          </Template>
+          <Template name="root">
+            <TemplatePlaceholder />
+            <TemplatePlaceholder name="popupEditing" />
+          </Template>
+        </Plugin>
+      ));
+
+      const commitChanges = ({ added, changed }) => {
+        let changedRows;
+        if (added) {
+          const startingAddedId = rows.length > 0 ? rows[rows.length - 1].id + 1 : 0;
+          changedRows = [
+            ...rows,
+            ...added.map((row, index) => ({
+              id: startingAddedId + index,
+              ...row,
+            })),
+          ];
+        }
+        if (changed) {
+          console.log("THE CHANGES ARE")
+          console.log(changed);
+          // changedRows = rows.map(row => (changed[row.id] ? { ...row, ...changed[row.id] } : row));
+        }
+        // setRows(changedRows);
+      };
+      
+
       return (
         <MuiThemeProvider>
           <TopBar />
@@ -216,6 +404,13 @@ class StudentDisplay extends Component {
               <TableRowDetail
                 contentComponent={RowDetail}
               />
+              <EditingState
+                onCommitChanges={commitChanges}
+              />
+              <TableEditColumn
+                showAddCommand
+                showEditCommand
+              />
               <TableFixedColumns
                 leftColumns={leftColumns}
               />
@@ -223,6 +418,8 @@ class StudentDisplay extends Component {
                 // defaultHiddenColumnNames={defaultHiddenColumnNames}
               />
               <Toolbar />
+              
+              <PopupEditing popupComponent={Popup} />
               <ColumnChooser />
               <SearchPanel />
             </Grid>

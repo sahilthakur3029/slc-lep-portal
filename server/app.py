@@ -28,7 +28,7 @@ app.register_blueprint(unpaireddisplay)
 CORS(app)
 
 # Connect to your postgres DB
-conn = psycopg2.connect("dbname=slcapplication user=postgres")
+conn = psycopg2.connect("dbname=slcapplication user=postgres password=ksshiraja")
 # Open a cursor to perform database operations
 cur = conn.cursor()
 

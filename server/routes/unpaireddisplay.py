@@ -6,7 +6,7 @@ unpaireddisplay = Blueprint('unpaireddisplay', __name__, template_folder='templa
 CORS(unpaireddisplay)
 
 # Connect to your postgres DB
-conn = psycopg2.connect("dbname=slcapplication user=postgres")
+conn = psycopg2.connect("dbname=slcapplication user=postgres password=ksshiraja")
 
 
 @unpaireddisplay.route('/unpaired', methods = ['GET', 'POST'])

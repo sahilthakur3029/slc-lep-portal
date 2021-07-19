@@ -66,11 +66,10 @@ class Unpaired extends Component {
             student_info_array.push({ "first_name":student[1],
             "last_name":student[2],
             "email":student[3],
-            "SID":student[4],
-            "level":student[5],
-            "teach":student[6],
-            "learn":student[7],
-            "comments":student[8],
+            "level":student[4],
+            "teach":student[5],
+            "learn":student[6],
+            "comments":student[7],
            } );
           }
           this.setState({
@@ -95,7 +94,6 @@ class Unpaired extends Component {
       const columns = [{ name: "first_name", title: "First Name"},
       { name: "last_name", title: "Last Name"},
       { name: "email", title: "Email"},
-      { name: "SID", title: "SID"},
       { name: "level", title: "Level"},
       { name: "teach", title: "Teach"},
       { name: "learn", title: "Learn"},
@@ -114,7 +112,6 @@ class Unpaired extends Component {
         { columnName: 'first_name', width: 240 },
         { columnName: 'last_name', width: 240 },
         { columnName: 'email', width: 300 },
-        { columnName: 'SID', width: 180 },
         { columnName: 'level', width: 180 },
         { columnName: 'learn', width: 90 },
         { columnName: 'teach', width: 180 },

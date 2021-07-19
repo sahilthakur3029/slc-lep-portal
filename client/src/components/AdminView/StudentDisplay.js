@@ -17,7 +17,8 @@ import {
   TableFixedColumns,
   ColumnChooser,
   TableColumnVisibility,
-  TableEditColumn
+  TableEditColumn,
+  TableEditRow
 } from "@devexpress/dx-react-grid-material-ui";
 import {
   SearchState,
@@ -306,6 +307,8 @@ class StudentDisplay extends Component {
                   const targetRow = rows.filter(row => getRowId(row) === rowId)[0];
                   editedRow = { ...targetRow, ...rowChanges[rowId] };
                 }
+                console.log("EDITED ROW AT THE BEGINNING IS")
+                console.log(editedRow)
                 
       
                 const processValueChange = ({ target: { name, value } }) => {

@@ -11,6 +11,7 @@ import Unpaired from "./components/AdminView/Unpaired";
 import FormPairings from "./components/AdminView/FormPairings";
 import StudentDisplay from "./components/AdminView/StudentDisplay";
 import SignIn from "./components/SignInPage/SignIn";
+import TimesheetData from "./components/AdminView/TimesheetData"
 
 
 const theme = createMuiTheme({
@@ -36,6 +37,7 @@ class App extends React.Component {
             <Route exact path="/formpairs" component={FormPairings} />
             <Route exact path="/studentlist" component={StudentDisplay} />
             <Route exact path="/signin" component={SignIn} />
+            <Route exact path="/timesheetdata" component={TimesheetData} />
           </Switch>
         </BrowserRouter>
       </ThemeProvider>

@@ -8,6 +8,9 @@ import itertools
 import json
 from collections import Counter
 from datetime import datetime
+from flask_login import (
+    login_required,
+)
 
 algorithm = Blueprint('algorithm', __name__, template_folder='templates')
 CORS(algorithm)
@@ -71,6 +74,7 @@ def error_major_fixer(major_set):
     return set(updated_set)
 
 @algorithm.route('/algorithm', methods=["POST"])
+@login_required
 def run_algorithm():
     column_names = ["First", "Last", "Email", "Academic Title", "Residency", "Major", "Gender", "Gender Custom", "Availability", "Hope To Gain", "Plan to Meet", "F_C_Learn", 
     "F_C_Learn_Other", "F_C_Learn_Level", "S_C_Learn", "S_C_Learn_Other", "S_C_Learn_Level", "F_C_Teach", "F_C_Teach_Other", "F_C_Teach_Level", "S_C_Teach", "S_C_Teach_Other",
@@ -151,7 +155,7 @@ def run_algorithm():
     step_2 = pd.DataFrame(formatted_data, columns=["Timestamp", "First", "Last", "Email", "Level", "Gender", "Major", "Teach", "Learn", "Comments", "Days Available", 
     "Partner Major", "Partner Major Weight", "Partner Gender", "Partner Gender Weight"])
     step_3(step_2, data_json["strictness"])     
-    return jsonify({"Success": True})
+    return jsonify({"success": True})
 
 # Step 3 of the algorithm 
 def step_3(app_df, strictness):

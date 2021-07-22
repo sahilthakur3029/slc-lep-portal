@@ -2,6 +2,9 @@ from flask import Flask, Blueprint, jsonify, request
 from flask_cors import CORS
 import psycopg2
 import json
+from flask_login import (
+    login_required,
+)
 
 settings = Blueprint('settings', __name__, template_folder='templates')
 CORS(settings)
@@ -11,7 +14,9 @@ conn = psycopg2.connect("dbname=slcapplication user=postgres")
 
 # ON DEPLOYMENT UNCOMMENT DELETING INTAKEFORM
 @settings.route('/savedata', methods=["POST"])
+@login_required
 def delete():
+    print("DELETE RUNS")
     # Open a cursor to perform database operations
     cur = conn.cursor()
     data_json = request.get_json()
@@ -31,4 +36,4 @@ def delete():
     conn.commit()
     # Close cursor
     cur.close()
-    return jsonify({"Success": True})
+    return jsonify({"success": True})

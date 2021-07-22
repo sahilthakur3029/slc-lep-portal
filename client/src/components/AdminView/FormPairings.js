@@ -74,7 +74,6 @@ class FormPairings extends Component {
       csrfToken: "",
       openAlert: false,
       isAuthenticated: false,
-      redirect: null,
     };
     this.runAlgorithm = this.runAlgorithm.bind(this);
   }
@@ -88,9 +87,7 @@ class FormPairings extends Component {
         this.setState({ csrfToken: res.headers.get(["X-CSRFToken"]) });
       })
       .catch((err) => {
-        alert(
-          "Something went wrong in receiving data. Please try again later."
-        );
+        this.setState({ redirect: <Redirect push to="/signin" /> });
       });
     const { REACT_APP_GET_SESSION } = process.env;
     fetch(REACT_APP_GET_SESSION, {
@@ -106,7 +103,7 @@ class FormPairings extends Component {
         }
       })
       .catch((err) => {
-        console.log(err);
+        this.setState({ redirect: <Redirect push to="/signin" /> });
       });
   }
 
@@ -128,11 +125,19 @@ class FormPairings extends Component {
       }),
     })
       .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        if (data.success == true) {
+          this.setState({ openAlert: true });
+          return "Success";
+        } else {
+          this.setState({ redirect: <Redirect push to="/signin" /> });
+        }
+      })
       .catch((error) =>
-        alert("Something went wrong in pushing data. Please try again later.")
+        alert("Something went horribly wrong. Please try again later.")
       );
-    this.setState({ openAlert: true });
-    return "Success;";
+    return "Failed";
   }
 
   handleCloseOnAlert = (e, reason) => {
@@ -173,7 +178,7 @@ class FormPairings extends Component {
             </em>
             , <b>2 for medium</b> -{" "}
             <em>
-              third person should have exchange language levels +-1 compared to
+              third person should have exchange language levels ±1 compared to
               pairs; <u>preferred</u>
             </em>
             , or <b>3 for loose</b> -{" "}

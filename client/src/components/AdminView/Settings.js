@@ -106,171 +106,201 @@ class Settings extends Component {
           "Something went wrong in receiving data. Please try again later."
         );
       });
-    const { REACT_APP_TSRENDER } = process.env;
-    fetch(REACT_APP_TSRENDER)
-      .then((response) => response.json())
+    const { REACT_APP_GET_SESSION } = process.env;
+    fetch(REACT_APP_GET_SESSION, {
+      credentials: "include",
+    })
+      .then((res) => res.json())
       .then((data) => {
-        this.setState({
-          calendarLink: data.calendarLink,
-          currSem: data.semester,
-          startWeek: data.allWeeks[0],
-          endWeek: data.allWeeks[data.allWeeks.length - 1],
-          orientationKey: data.orientationKey,
-        });
-      })
-      .catch((error) =>
-        alert("Something went wrong in receiving data. Please try again later.")
-      );
-    const { REACT_APP_NAMES } = process.env;
-    let student_info_array = [];
+        console.log(data);
+        if (data.login == true) {
+          this.setState({ isAuthenticated: true });
+          const { REACT_APP_TSRENDER } = process.env;
+          fetch(REACT_APP_TSRENDER)
+            .then((response) => response.json())
+            .then((data) => {
+              this.setState({
+                calendarLink: data.calendarLink,
+                currSem: data.semester,
+                startWeek: data.allWeeks[0],
+                endWeek: data.allWeeks[data.allWeeks.length - 1],
+                orientationKey: data.orientationKey,
+              });
+            })
+            .catch((error) =>
+              alert(
+                "Something went wrong in receiving data. Please try again later."
+              )
+            );
+          const { REACT_APP_NAMES } = process.env;
+          let student_info_array = [];
 
-    fetch(REACT_APP_NAMES)
-      .then((response) => response.json())
-      .then((data) => {
-        for (const student of data) {
-          student_info_array.push({
-            first_name: student[0],
-            last_name: student[1],
-            email: student[2],
-            class_standing: student[3],
-            domestic_status: student[4],
-            major: student[5],
-            gender: student[6],
-            gender_custom: student[7],
-            days_of_week: student[8].toString(),
-            hope_to_gain: student[9],
-            plan_to_meet: student[10],
-            lang_1_learn: student[11],
-            lang_1_learn_other: student[12],
-            lang_1_learn_level: student[13],
-            lang_2_learn: student[14],
-            lang_2_learn_other: student[15],
-            lang_2_learn_level: student[16],
-            lang_1_teach: student[17],
-            lang_1_teach_other: student[18],
-            lang_1_teach_level: student[19],
-            lang_2_teach: student[20],
-            lang_2_teach_other: student[21],
-            lang_2_teach_level: student[22],
-            comments: student[23],
-            partner_major: student[24],
-            partner_major_weight: student[25],
-            partner_gender: student[26],
-            partner_gender_custom: student[27],
-            partner_gender_weight: student[28],
-          });
-        }
-        this.setState({
-          student_info: student_info_array,
-        });
-      })
-      .catch((error) =>
-        alert("Something went wrong in receiving data. Please try again later.")
-      );
+          fetch(REACT_APP_NAMES)
+            .then((response) => response.json())
+            .then((data) => {
+              for (const student of data) {
+                student_info_array.push({
+                  first_name: student[0],
+                  last_name: student[1],
+                  email: student[2],
+                  class_standing: student[3],
+                  domestic_status: student[4],
+                  major: student[5],
+                  gender: student[6],
+                  gender_custom: student[7],
+                  days_of_week: student[8].toString(),
+                  hope_to_gain: student[9],
+                  plan_to_meet: student[10],
+                  lang_1_learn: student[11],
+                  lang_1_learn_other: student[12],
+                  lang_1_learn_level: student[13],
+                  lang_2_learn: student[14],
+                  lang_2_learn_other: student[15],
+                  lang_2_learn_level: student[16],
+                  lang_1_teach: student[17],
+                  lang_1_teach_other: student[18],
+                  lang_1_teach_level: student[19],
+                  lang_2_teach: student[20],
+                  lang_2_teach_other: student[21],
+                  lang_2_teach_level: student[22],
+                  comments: student[23],
+                  partner_major: student[24],
+                  partner_major_weight: student[25],
+                  partner_gender: student[26],
+                  partner_gender_custom: student[27],
+                  partner_gender_weight: student[28],
+                });
+              }
+              this.setState({
+                student_info: student_info_array,
+              });
+            })
+            .catch((error) =>
+              alert(
+                "Something went wrong in receiving data. Please try again later."
+              )
+            );
 
-    const { REACT_APP_PAIRS } = process.env;
-    let pair_info_array = [];
-    let mail_merge_array = [];
+          const { REACT_APP_PAIRS } = process.env;
+          let pair_info_array = [];
+          let mail_merge_array = [];
 
-    fetch(REACT_APP_PAIRS)
-      .then((response) => response.json())
-      .then((data) => {
-        for (const pairing of data) {
-          let pair_size = "";
-          if (pairing[19] === null) {
-            pair_size = "pair";
-          } else {
-            pair_size = "trio";
-          }
-          mail_merge_array.push({
-            "First Name": this.formatNames(
-              pairing[1],
-              pairing[10],
-              pairing[19]
-            ),
-            "Subject Pair Size":
-              pair_size[0].toUpperCase() + pair_size.substring(1),
-            "Body Pair Size": pair_size,
-            "Email Address": this.formatEmail(
-              pairing[3],
-              pairing[12],
-              pairing[21]
-            ),
-          });
-          pair_info_array.push({
-            name_1: pairing[1] + " " + pairing[2],
-            email_1: pairing[3],
-            level_1: pairing[4],
-            teach_1: this.jsonParser(JSON.parse(pairing[5])),
-            learn_1: this.jsonParser(JSON.parse(pairing[6])),
-            comments_1: pairing[7],
-            name_2: pairing[9] + " " + pairing[10],
-            email_2: pairing[11],
-            level_2: pairing[12],
-            teach_2: this.jsonParser(JSON.parse(pairing[13])),
-            learn_2: this.jsonParser(JSON.parse(pairing[14])),
-            comments_2: pairing[15],
-            name_3: pairing[17] ? pairing[17] + " " + pairing[18] ?? "" : "",
-            email_3: pairing[19] ?? "",
-            level_3: pairing[20] ?? "",
-            teach_3: this.jsonParser(JSON.parse(pairing[21])) ?? "",
-            learn_3: this.jsonParser(JSON.parse(pairing[22])) ?? "",
-            comments_3: pairing[23] ?? "",
-          });
-        }
-        this.setState({
-          pair_info: pair_info_array,
-          mail_merge: mail_merge_array,
-        });
-      })
-      .catch((error) =>
-        alert("Something went wrong in receiving data. Please try again later.")
-      );
+          fetch(REACT_APP_PAIRS)
+            .then((response) => response.json())
+            .then((data) => {
+              for (const pairing of data) {
+                let pair_size = "";
+                if (pairing[19] === null) {
+                  pair_size = "pair";
+                } else {
+                  pair_size = "trio";
+                }
+                mail_merge_array.push({
+                  "First Name": this.formatNames(
+                    pairing[1],
+                    pairing[10],
+                    pairing[19]
+                  ),
+                  "Subject Pair Size":
+                    pair_size[0].toUpperCase() + pair_size.substring(1),
+                  "Body Pair Size": pair_size,
+                  "Email Address": this.formatEmail(
+                    pairing[3],
+                    pairing[12],
+                    pairing[21]
+                  ),
+                });
+                pair_info_array.push({
+                  name_1: pairing[1] + " " + pairing[2],
+                  email_1: pairing[3],
+                  level_1: pairing[4],
+                  teach_1: this.jsonParser(JSON.parse(pairing[5])),
+                  learn_1: this.jsonParser(JSON.parse(pairing[6])),
+                  comments_1: pairing[7],
+                  name_2: pairing[9] + " " + pairing[10],
+                  email_2: pairing[11],
+                  level_2: pairing[12],
+                  teach_2: this.jsonParser(JSON.parse(pairing[13])),
+                  learn_2: this.jsonParser(JSON.parse(pairing[14])),
+                  comments_2: pairing[15],
+                  name_3: pairing[17]
+                    ? pairing[17] + " " + pairing[18] ?? ""
+                    : "",
+                  email_3: pairing[19] ?? "",
+                  level_3: pairing[20] ?? "",
+                  teach_3: this.jsonParser(JSON.parse(pairing[21])) ?? "",
+                  learn_3: this.jsonParser(JSON.parse(pairing[22])) ?? "",
+                  comments_3: pairing[23] ?? "",
+                });
+              }
+              this.setState({
+                pair_info: pair_info_array,
+                mail_merge: mail_merge_array,
+              });
+            })
+            .catch((error) =>
+              alert(
+                "Something went wrong in receiving data. Please try again later."
+              )
+            );
 
-    const { REACT_APP_UNPAIRS } = process.env;
-    let u_student_info_array = [];
-    fetch(REACT_APP_UNPAIRS)
-      .then((response) => response.json())
-      .then((data) => {
-        for (const student of data) {
-          u_student_info_array.push({
-            first_name: student[1],
-            last_name: student[2],
-            email: student[3],
-            level: student[4],
-            teach: this.jsonParser(JSON.parse(student[5])),
-            learn: this.jsonParser(JSON.parse(student[6])),
-            comments: student[7],
-          });
+          const { REACT_APP_UNPAIRS } = process.env;
+          let u_student_info_array = [];
+          fetch(REACT_APP_UNPAIRS)
+            .then((response) => response.json())
+            .then((data) => {
+              for (const student of data) {
+                u_student_info_array.push({
+                  first_name: student[1],
+                  last_name: student[2],
+                  email: student[3],
+                  level: student[4],
+                  teach: this.jsonParser(JSON.parse(student[5])),
+                  learn: this.jsonParser(JSON.parse(student[6])),
+                  comments: student[7],
+                });
+              }
+              this.setState({
+                u_student_info: u_student_info_array,
+              });
+            })
+            .catch((error) =>
+              alert(
+                "Something went wrong in receiving data. Please try again later."
+              )
+            );
+          const { REACT_APP_TIMESHEET } = process.env;
+          let timesheet_info_array = [];
+          fetch(REACT_APP_TIMESHEET)
+            .then((response) => response.json())
+            .then((data) => {
+              for (const student of data) {
+                timesheet_info_array.push({
+                  first_name: student[0],
+                  last_name: student[1],
+                  partner_names: student[2],
+                  hours: student[3],
+                  week: student[4],
+                });
+              }
+              this.setState({
+                timesheet_info: timesheet_info_array,
+              });
+            })
+            .catch((error) =>
+              alert(
+                "Something went wrong in receiving data. Please try again later."
+              )
+            );
+        } else {
+          this.setState({ redirect: <Redirect push to="/signin" /> });
         }
-        this.setState({
-          u_student_info: u_student_info_array,
-        });
       })
-      .catch((error) =>
-        alert("Something went wrong in receiving data. Please try again later.")
-      );
-    const { REACT_APP_TIMESHEET } = process.env;
-    let timesheet_info_array = [];
-    fetch(REACT_APP_TIMESHEET)
-      .then((response) => response.json())
-      .then((data) => {
-        for (const student of data) {
-          timesheet_info_array.push({
-            first_name: student[0],
-            last_name: student[1],
-            partner_names: student[2],
-            hours: student[3],
-            week: student[4],
-          });
-        }
-        this.setState({
-          timesheet_info: timesheet_info_array,
-        });
-      })
-      .catch((error) =>
-        alert("Something went wrong in receiving data. Please try again later.")
-      );
+      .catch((err) => {
+        console.log(
+          "Something went wrong in receiving data. Please try again later."
+        );
+      });
   }
 
   jsonParser(p) {
@@ -307,14 +337,12 @@ class Settings extends Component {
   };
 
   dangerZone() {
-    console.log("Danger Zone");
     this.setState({ deleteData: true });
     this.handleClose();
     return "Success";
   }
 
   saveChanges() {
-    console.log("Saved worked!");
     const { REACT_APP_SAVE } = process.env;
     let endWeek = this.state.endWeek;
     let startWeek = this.state.startWeek;
@@ -343,11 +371,18 @@ class Settings extends Component {
       }),
     })
       .then((response) => response.json())
+      .then((data) => {
+        if (data.success == true) {
+          this.setState({ openAlert: true });
+          return "Success";
+        } else {
+          this.setState({ redirect: <Redirect push to="/signin" /> });
+        }
+      })
       .catch((error) =>
-        alert("Something went wrong in pushing data. Please try again later.")
+        alert("Something went horribly wrong. Please try again later.")
       );
-    this.setState({ openAlert: true });
-    return "Success;";
+    return "Failed";
   }
 
   handleOpen = () => {

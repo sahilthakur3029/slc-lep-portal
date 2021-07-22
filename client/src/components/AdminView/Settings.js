@@ -102,9 +102,7 @@ class Settings extends Component {
         this.setState({ csrfToken: res.headers.get(["X-CSRFToken"]) });
       })
       .catch((err) => {
-        alert(
-          "Something went wrong in receiving data. Please try again later."
-        );
+        this.setState({ redirect: <Redirect push to="/signin" /> });
       });
     const { REACT_APP_GET_SESSION } = process.env;
     fetch(REACT_APP_GET_SESSION, {
@@ -297,9 +295,7 @@ class Settings extends Component {
         }
       })
       .catch((err) => {
-        console.log(
-          "Something went wrong in receiving data. Please try again later."
-        );
+        alert("Something went horribly wrong. Please try again later.");
       });
   }
 

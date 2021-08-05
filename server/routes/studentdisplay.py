@@ -17,7 +17,6 @@ def getStudents():
     cur.execute("SELECT * FROM intakeform")
     # Retrieve query results
     records = cur.fetchall()
-    print(records)
     # Close cursor
     cur.close()
     return jsonify(records)

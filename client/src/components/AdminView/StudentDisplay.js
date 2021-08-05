@@ -35,7 +35,6 @@ import {
   ColumnChooser,
   TableColumnVisibility,
   TableEditColumn,
-  TableEditRow,
 } from "@devexpress/dx-react-grid-material-ui";
 import {
   SearchState,
@@ -77,27 +76,233 @@ const EditPopup = ({
   <Dialog open={open} onClose={onCancelChanges}>
     <DialogTitle>Edit Row</DialogTitle>
     <DialogContent>
-      <FormControl fullWidth>
-        <InputLabel>Name</InputLabel>
+      <FormControl>
+        <InputLabel>First Name</InputLabel>
         <Input
           value={row.first_name || ""}
           onChange={(event) => onChange("first_name", event.target.value)}
         />
-      </FormControl>
-      {/* <FormControl fullWidth>
-        <InputLabel>City</InputLabel>
+      </FormControl>{" "}
+      <FormControl>
+        <InputLabel>Last Name</InputLabel>
         <Input
-          value={row.city || ""}
-          onChange={event => onChange("city", event.target.value)}
+          value={row.last_name || ""}
+          onChange={(event) => onChange("last_name", event.target.value)}
+        />
+      </FormControl>{" "}
+      <FormControl>
+        <InputLabel>Email</InputLabel>
+        <Input
+          value={row.email || ""}
+          onChange={(event) => onChange("email", event.target.value)}
         />
       </FormControl>
+      <FormControl>
+        <InputLabel>Class Standing</InputLabel>
+        <Input
+          value={row.class_standing || ""}
+          onChange={(event) => onChange("class_standing", event.target.value)}
+        />
+      </FormControl>{" "}
+      <FormControl>
+        <InputLabel>Domestic Status</InputLabel>
+        <Input
+          value={row.domestic_status || ""}
+          onChange={(event) => onChange("domestic_status", event.target.value)}
+        />
+      </FormControl>{" "}
+      <FormControl>
+        <InputLabel>Major</InputLabel>
+        <Input
+          value={row.major || ""}
+          onChange={(event) => onChange("major", event.target.value)}
+        />
+      </FormControl>{" "}
+      <FormControl>
+        <InputLabel>Gender</InputLabel>
+        <Input
+          value={row.gender || ""}
+          onChange={(event) => onChange("gender", event.target.value)}
+        />
+      </FormControl>{" "}
+      <FormControl>
+        <InputLabel>Custom Gender</InputLabel>
+        <Input
+          value={row.gender_custom || ""}
+          onChange={(event) => onChange("gender_custom", event.target.value)}
+        />
+      </FormControl>{" "}
       <FormControl fullWidth>
-        <InputLabel>Car</InputLabel>
+        <InputLabel>Availability</InputLabel>
         <Input
-          value={row.car || ""}
-          onChange={event => onChange("car", event.target.value)}
+          value={row.days_of_week || ""}
+          onChange={(event) => onChange("days_of_week", event.target.value)}
         />
-      </FormControl> */}
+      </FormControl>{" "}
+      <FormControl>
+        <InputLabel>Lang. 1 Learn</InputLabel>
+        <Input
+          value={row.lang_1_learn || ""}
+          onChange={(event) => onChange("lang_1_learn", event.target.value)}
+        />
+      </FormControl>{" "}
+      <FormControl>
+        <InputLabel>Lang. 1 Learn Other</InputLabel>
+        <Input
+          value={row.lang_1_learn_other || ""}
+          onChange={(event) =>
+            onChange("lang_1_learn_other", event.target.value)
+          }
+        />
+      </FormControl>{" "}
+      <FormControl>
+        <InputLabel>Lang. 1 Learn Level</InputLabel>
+        <Input
+          value={row.lang_1_learn_level || ""}
+          onChange={(event) =>
+            onChange("lang_1_learn_level", event.target.value)
+          }
+        />
+      </FormControl>{" "}
+      <FormControl>
+        <InputLabel>Lang. 2 Learn</InputLabel>
+        <Input
+          value={row.lang_2_learn || ""}
+          onChange={(event) => onChange("lang_2_learn", event.target.value)}
+        />
+      </FormControl>{" "}
+      <FormControl>
+        <InputLabel>Lang. 2 Learn Other</InputLabel>
+        <Input
+          value={row.lang_2_learn_other || ""}
+          onChange={(event) =>
+            onChange("lang_2_learn_other", event.target.value)
+          }
+        />
+      </FormControl>{" "}
+      <FormControl>
+        <InputLabel>Lang. 2 Learn Level</InputLabel>
+        <Input
+          value={row.lang_2_learn_level || ""}
+          onChange={(event) =>
+            onChange("lang_2_learn_level", event.target.value)
+          }
+        />
+      </FormControl>{" "}
+      <FormControl>
+        <InputLabel>Lang. 1 Teach</InputLabel>
+        <Input
+          value={row.lang_1_teach || ""}
+          onChange={(event) => onChange("lang_1_teach", event.target.value)}
+        />
+      </FormControl>{" "}
+      <FormControl>
+        <InputLabel>Lang. 1 Teach Other</InputLabel>
+        <Input
+          value={row.lang_1_teach_other || ""}
+          onChange={(event) =>
+            onChange("lang_1_teach_other", event.target.value)
+          }
+        />
+      </FormControl>{" "}
+      <FormControl>
+        <InputLabel>Lang. 1 Teach Level</InputLabel>
+        <Input
+          value={row.lang_1_teach_level || ""}
+          onChange={(event) =>
+            onChange("lang_1_teach_level", event.target.value)
+          }
+        />
+      </FormControl>{" "}
+      <FormControl>
+        <InputLabel>Lang. 2 Teach</InputLabel>
+        <Input
+          value={row.lang_2_teach || ""}
+          onChange={(event) => onChange("lang_2_teach", event.target.value)}
+        />
+      </FormControl>{" "}
+      <FormControl>
+        <InputLabel>Lang. 2 Teach Other</InputLabel>
+        <Input
+          value={row.lang_2_teach_other || ""}
+          onChange={(event) =>
+            onChange("lang_2_teach_other", event.target.value)
+          }
+        />
+      </FormControl>{" "}
+      <FormControl>
+        <InputLabel>Lang. 2 Teach Level</InputLabel>
+        <Input
+          value={row.lang_2_teach_level || ""}
+          onChange={(event) =>
+            onChange("lang_2_teach_level", event.target.value)
+          }
+        />
+      </FormControl>{" "}
+      <FormControl>
+        <InputLabel>Pref. Partner Major</InputLabel>
+        <Input
+          value={row.partner_major || ""}
+          onChange={(event) => onChange("partner_major", event.target.value)}
+        />
+      </FormControl>{" "}
+      <FormControl>
+        <InputLabel>Pref. Major Weight</InputLabel>
+        <Input
+          value={row.partner_major_weight || ""}
+          onChange={(event) =>
+            onChange("partner_major_weight", event.target.value)
+          }
+        />
+      </FormControl>{" "}
+      <div>
+        <FormControl>
+          <InputLabel>Pref. Partner Gender</InputLabel>
+          <Input
+            value={row.partner_gender || ""}
+            onChange={(event) => onChange("partner_gender", event.target.value)}
+          />
+        </FormControl>{" "}
+        <FormControl>
+          <InputLabel>Pref. Custom Gender</InputLabel>
+          <Input
+            value={row.partner_gender_custom || ""}
+            onChange={(event) =>
+              onChange("partner_gender_custom", event.target.value)
+            }
+          />
+        </FormControl>{" "}
+        <FormControl>
+          <InputLabel>Pref. Gender Weight</InputLabel>
+          <Input
+            value={row.partner_gender_weight || ""}
+            onChange={(event) =>
+              onChange("partner_gender_weight", event.target.value)
+            }
+          />
+        </FormControl>{" "}
+      </div>
+      <FormControl fullWidth>
+        <InputLabel>Hope to Gain</InputLabel>
+        <Input
+          value={row.hope_to_gain || ""}
+          onChange={(event) => onChange("hope_to_gain", event.target.value)}
+        />
+      </FormControl>{" "}
+      <FormControl fullWidth>
+        <InputLabel>Plan to Meet</InputLabel>
+        <Input
+          value={row.plan_to_meet || ""}
+          onChange={(event) => onChange("plan_to_meet", event.target.value)}
+        />
+      </FormControl>{" "}
+      <FormControl fullWidth>
+        <InputLabel>Comments</InputLabel>
+        <Input
+          value={row.comments || ""}
+          onChange={(event) => onChange("comments", event.target.value)}
+        />
+      </FormControl>
     </DialogContent>
     <DialogActions>
       <Button onClick={onCancelChanges} color="primary">
@@ -213,23 +418,23 @@ class StudentDisplay extends Component {
         { name: "gender", title: "Gender" },
         { name: "gender_custom", title: "Custom Gender" },
         { name: "days_of_week", title: "Availability" },
-        { name: "lang_1_learn", title: "Language 1 (learn)" },
-        { name: "lang_1_learn_other", title: "Other" },
-        { name: "lang_1_learn_level", title: "Level" },
-        { name: "lang_2_learn", title: "Language 2 (learn)" },
-        { name: "lang_2_learn_other", title: "Other" },
-        { name: "lang_2_learn_level", title: "Level" },
-        { name: "lang_1_teach", title: "Language 1 (teach)" },
-        { name: "lang_1_teach_other", title: "Other" },
-        { name: "lang_1_teach_level", title: "Level" },
-        { name: "lang_2_teach", title: "Language 2 (teach)" },
-        { name: "lang_2_teach_other", title: "Other" },
-        { name: "lang_2_teach_level", title: "Level" },
+        { name: "lang_1_learn", title: "Lang. 1 Learn" },
+        { name: "lang_1_learn_other", title: "Lang. 1 Learn Other" },
+        { name: "lang_1_learn_level", title: "Lang. 1 Learn Level" },
+        { name: "lang_2_learn", title: "Lang. 2 Learn" },
+        { name: "lang_2_learn_other", title: "Lang. 2 Learn Other" },
+        { name: "lang_2_learn_level", title: "Lang. 2 Learn Level" },
+        { name: "lang_1_teach", title: "Lang. 1 Teach" },
+        { name: "lang_1_teach_other", title: "Lang. 1 Teach Other" },
+        { name: "lang_1_teach_level", title: "Lang. 1 Teach Level" },
+        { name: "lang_2_teach", title: "Lang. 2 Teach" },
+        { name: "lang_2_teach_other", title: "Lang. 2 Teach Other" },
+        { name: "lang_2_teach_level", title: "Lang. 2 Teach Level" },
         { name: "partner_major", title: "Pref. Partner Major" },
-        { name: "partner_major_weight", title: "Weight" },
+        { name: "partner_major_weight", title: "Pref. Major Weight" },
         { name: "partner_gender", title: "Pref. Partner Gender" },
         { name: "partner_gender_custom", title: "Pref. Custom Gender" },
-        { name: "partner_gender_weight", title: "Weight" },
+        { name: "partner_gender_weight", title: "Pref. Gender Weight" },
       ],
       rows: null,
     };
@@ -254,7 +459,7 @@ class StudentDisplay extends Component {
             major: student[5],
             gender: student[6],
             gender_custom: student[7],
-            days_of_week: student[8],
+            days_of_week: student[8].join(", "),
             hope_to_gain: student[9],
             plan_to_meet: student[10],
             lang_1_learn: student[11],
@@ -321,8 +526,8 @@ class StudentDisplay extends Component {
 
     const RowDetail = ({ row }) => (
       <div>
-        What the student hopes to gain: {row.hope_to_gain} <br />
-        Meeting plan: {row.plan_to_meet}
+        Hope to Gain: {row.hope_to_gain} <br />
+        Plan to Meet: {row.plan_to_meet}
         <br />
         Comments: {row.comments}
       </div>
@@ -340,21 +545,21 @@ class StudentDisplay extends Component {
       { columnName: "days_of_week", width: 240 },
       { columnName: "lang_1_learn", width: 180 },
       { columnName: "lang_1_learn_other", width: 180 },
-      { columnName: "lang_1_learn_level", width: 90 },
+      { columnName: "lang_1_learn_level", width: 180 },
       { columnName: "lang_2_learn", width: 180 },
       { columnName: "lang_2_learn_other", width: 180 },
-      { columnName: "lang_2_learn_level", width: 90 },
+      { columnName: "lang_2_learn_level", width: 180 },
       { columnName: "lang_1_teach", width: 180 },
       { columnName: "lang_1_teach_other", width: 180 },
-      { columnName: "lang_1_teach_level", width: 90 },
+      { columnName: "lang_1_teach_level", width: 180 },
       { columnName: "lang_2_teach", width: 180 },
       { columnName: "lang_2_teach_other", width: 180 },
-      { columnName: "lang_2_teach_level", width: 90 },
+      { columnName: "lang_2_teach_level", width: 180 },
       { columnName: "partner_major", width: 180 },
-      { columnName: "partner_major_weight", width: 90 },
+      { columnName: "partner_major_weight", width: 180 },
       { columnName: "partner_gender", width: 180 },
       { columnName: "partner_gender_custom", width: 180 },
-      { columnName: "partner_gender_weight", width: 90 },
+      { columnName: "partner_gender_weight", width: 180 },
     ];
 
     const leftColumns = ["first_name", "last_name"];

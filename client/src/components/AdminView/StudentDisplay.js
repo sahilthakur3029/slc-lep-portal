@@ -26,9 +26,24 @@ import { EditingState } from "@devexpress/dx-react-grid";
 import {
   Grid,
   Table,
+  Toolbar,
+  SearchPanel,
   TableHeaderRow,
+  TableColumnResizing,
+  TableRowDetail,
+  TableFixedColumns,
+  ColumnChooser,
+  TableColumnVisibility,
   TableEditColumn,
+  TableEditRow,
 } from "@devexpress/dx-react-grid-material-ui";
+import {
+  SearchState,
+  IntegratedFiltering,
+  SortingState,
+  IntegratedSorting,
+  RowDetailState,
+} from "@devexpress/dx-react-grid";
 
 // Things to do: Editing in a popup form
 
@@ -97,7 +112,7 @@ const EditPopup = ({
 
 class EditPopupPlugin extends React.PureComponent {
   render() {
-    console.log("POPUP ", this.props.popupComponent);
+    // console.log("POPUP ", this.props.popupComponent);
     const { popupComponent: Popup } = this.props;
     return (
       <Plugin>
@@ -198,23 +213,23 @@ class StudentDisplay extends Component {
         { name: "gender", title: "Gender" },
         { name: "gender_custom", title: "Custom Gender" },
         { name: "days_of_week", title: "Availability" },
-        { name: "lang_1_learn", title: "Language 1(learn)" },
+        { name: "lang_1_learn", title: "Language 1 (learn)" },
         { name: "lang_1_learn_other", title: "Other" },
         { name: "lang_1_learn_level", title: "Level" },
-        { name: "lang_2_learn", title: "Language 2(learn)" },
+        { name: "lang_2_learn", title: "Language 2 (learn)" },
         { name: "lang_2_learn_other", title: "Other" },
         { name: "lang_2_learn_level", title: "Level" },
-        { name: "lang_1_teach", title: "Language 1(teach)" },
+        { name: "lang_1_teach", title: "Language 1 (teach)" },
         { name: "lang_1_teach_other", title: "Other" },
         { name: "lang_1_teach_level", title: "Level" },
-        { name: "lang_2_teach", title: "Language 2(teach)" },
+        { name: "lang_2_teach", title: "Language 2 (teach)" },
         { name: "lang_2_teach_other", title: "Other" },
         { name: "lang_2_teach_level", title: "Level" },
-        { name: "partner_major", title: "Partner's preferred major" },
-        { name: "partner_major_weight", title: "Weightage" },
-        { name: "partner_gender", title: "Partner's preferred gender" },
-        { name: "partner_gender_custom", title: "Custom gender" },
-        { name: "partner_gender_weight", title: "Weightage" },
+        { name: "partner_major", title: "Pref. Partner Major" },
+        { name: "partner_major_weight", title: "Weight" },
+        { name: "partner_gender", title: "Pref. Partner Gender" },
+        { name: "partner_gender_custom", title: "Pref. Custom Gender" },
+        { name: "partner_gender_weight", title: "Weight" },
       ],
       rows: null,
     };
@@ -303,246 +318,73 @@ class StudentDisplay extends Component {
     // props is the useStyles variable
     const { values, handleChange, classes } = this.props;
     const { rows, columns } = this.state;
-    {
-      console.log(this.state);
-    }
 
-    // const RowDetail = ({ row }) => (
-    //   <div>
-    //     What the student hopes to gain: {row.hope_to_gain} <br />
-    //     Meeting plan: {row.plan_to_meet}
-    //     <br />
-    //     Comments: {row.comments}
-    //   </div>
-    // );
+    const RowDetail = ({ row }) => (
+      <div>
+        What the student hopes to gain: {row.hope_to_gain} <br />
+        Meeting plan: {row.plan_to_meet}
+        <br />
+        Comments: {row.comments}
+      </div>
+    );
 
-    // const columnWid = [
-    //   { columnName: "first_name", width: 240 },
-    //   { columnName: "last_name", width: 240 },
-    //   { columnName: "email", width: 300 },
-    //   { columnName: "class_standing", width: 180 },
-    //   { columnName: "domestic_status", width: 180 },
-    //   { columnName: "major", width: 240 },
-    //   { columnName: "gender", width: 180 },
-    //   { columnName: "gender_custom", width: 180 },
-    //   { columnName: "days_of_week", width: 240 },
-    //   { columnName: "lang_1_learn", width: 180 },
-    //   { columnName: "lang_1_learn_other", width: 180 },
-    //   { columnName: "lang_1_learn_level", width: 90 },
-    //   { columnName: "lang_2_learn", width: 180 },
-    //   { columnName: "lang_2_learn_other", width: 180 },
-    //   { columnName: "lang_2_learn_level", width: 90 },
-    //   { columnName: "lang_1_teach", width: 180 },
-    //   { columnName: "lang_1_teach_other", width: 180 },
-    //   { columnName: "lang_1_teach_level", width: 90 },
-    //   { columnName: "lang_2_teach", width: 180 },
-    //   { columnName: "lang_2_teach_other", width: 180 },
-    //   { columnName: "lang_2_teach_level", width: 90 },
-    //   { columnName: "partner_major", width: 180 },
-    //   { columnName: "partner_major_weight", width: 90 },
-    //   { columnName: "partner_gender", width: 180 },
-    //   { columnName: "partner_gender_custom", width: 180 },
-    //   { columnName: "partner_gender_weight", width: 90 },
-    // ];
+    const columnWid = [
+      { columnName: "first_name", width: 240 },
+      { columnName: "last_name", width: 240 },
+      { columnName: "email", width: 300 },
+      { columnName: "class_standing", width: 180 },
+      { columnName: "domestic_status", width: 180 },
+      { columnName: "major", width: 240 },
+      { columnName: "gender", width: 180 },
+      { columnName: "gender_custom", width: 180 },
+      { columnName: "days_of_week", width: 240 },
+      { columnName: "lang_1_learn", width: 180 },
+      { columnName: "lang_1_learn_other", width: 180 },
+      { columnName: "lang_1_learn_level", width: 90 },
+      { columnName: "lang_2_learn", width: 180 },
+      { columnName: "lang_2_learn_other", width: 180 },
+      { columnName: "lang_2_learn_level", width: 90 },
+      { columnName: "lang_1_teach", width: 180 },
+      { columnName: "lang_1_teach_other", width: 180 },
+      { columnName: "lang_1_teach_level", width: 90 },
+      { columnName: "lang_2_teach", width: 180 },
+      { columnName: "lang_2_teach_other", width: 180 },
+      { columnName: "lang_2_teach_level", width: 90 },
+      { columnName: "partner_major", width: 180 },
+      { columnName: "partner_major_weight", width: 90 },
+      { columnName: "partner_gender", width: 180 },
+      { columnName: "partner_gender_custom", width: 180 },
+      { columnName: "partner_gender_weight", width: 90 },
+    ];
 
-    // const leftColumns = ["first_name", "last_name"];
-
-    // Popup editing
-    // const Popup = ({
-    //   row,
-    //   onChange,
-    //   onApplyChanges,
-    //   onCancelChanges,
-    //   open,
-    // }) => (
-    //   <Dialog
-    //     open={open}
-    //     onClose={onCancelChanges}
-    //     aria-labelledby="form-dialog-title"
-    //   >
-    //     <DialogTitle id="form-dialog-title">Student Details</DialogTitle>
-    //     <DialogContent>
-    //       <MuiGrid container spacing={3}>
-    //         <MuiGrid item xs={6}>
-    //           <FormGroup>
-    //             <TextField
-    //               margin="normal"
-    //               name="firstName"
-    //               label="First Name"
-    //               value={row.first_name || ""}
-    //               onChange={onChange}
-    //             />
-    //             <TextField
-    //               margin="normal"
-    //               name="lastName"
-    //               label="Last Name"
-    //               value={row.last_name || ""}
-    //               onChange={onChange}
-    //             />
-    //             <TextField
-    //               margin="normal"
-    //               name="email"
-    //               label="Email"
-    //               value={row.email || ""}
-    //               onChange={onChange}
-    //             />
-    //           </FormGroup>
-    //         </MuiGrid>
-    //         <MuiGrid item xs={6}>
-    //           <FormGroup>
-    //             <TextField
-    //               margin="normal"
-    //               name="major"
-    //               label="Major"
-    //               value={row.major || ""}
-    //               onChange={onChange}
-    //             />
-
-    //             <TextField
-    //               margin="normal"
-    //               name="gender"
-    //               label="Gender"
-    //               value={row.gender || ""}
-    //               onChange={onChange}
-    //             />
-    //           </FormGroup>
-    //         </MuiGrid>
-    //       </MuiGrid>
-    //     </DialogContent>
-    //     <DialogActions>
-    //       <Button onClick={onCancelChanges} color="primary">
-    //         Cancel
-    //       </Button>
-    //       <Button onClick={onApplyChanges} color="primary">
-    //         Save
-    //       </Button>
-    //     </DialogActions>
-    //   </Dialog>
-    // );
-
-    // const PopupEditing = React.memo(({ popupComponent: Popup }) => (
-    //   <Plugin>
-    //     <Template name="popupEditing">
-    //       <TemplateConnector>
-    //         {(
-    //           {
-    //             rows,
-    //             getRowId,
-    //             addedRows,
-    //             editingRowIds,
-    //             createRowChange,
-    //             rowChanges,
-    //           },
-    //           {
-    //             changeRow,
-    //             changeAddedRow,
-    //             commitChangedRows,
-    //             commitAddedRows,
-    //             stopEditRows,
-    //             cancelAddedRows,
-    //             cancelChangedRows,
-    //           }
-    //         ) => {
-    //           const isNew = addedRows.length > 0;
-    //           let editedRow;
-    //           let rowId;
-    //           if (isNew) {
-    //             rowId = 0;
-    //             editedRow = addedRows[rowId];
-    //           } else {
-    //             [rowId] = editingRowIds;
-    //             const targetRow = rows.filter(
-    //               (row) => getRowId(row) === rowId
-    //             )[0];
-    //             editedRow = { ...targetRow, ...rowChanges[rowId] };
-    //           }
-    //           console.log("EDITED ROW AT THE BEGINNING IS");
-    //           console.log(editedRow);
-
-    //           const processValueChange = ({ target: { name, value } }) => {
-    //             const changeArgs = {
-    //               rowId,
-    //               change: createRowChange(editedRow, value, name),
-    //             };
-    //             if (isNew) {
-    //               changeAddedRow(changeArgs);
-    //             } else {
-    //               changeRow(changeArgs);
-    //               changeAddedRow(changeArgs);
-    //             }
-    //           };
-    //           const rowIds = isNew ? [0] : editingRowIds;
-    //           const applyChanges = () => {
-    //             if (isNew) {
-    //               commitAddedRows({ rowIds });
-    //             } else {
-    //               stopEditRows({ rowIds });
-    //               commitChangedRows({ rowIds });
-    //             }
-    //           };
-    //           const cancelChanges = () => {
-    //             if (isNew) {
-    //               cancelAddedRows({ rowIds });
-    //             } else {
-    //               stopEditRows({ rowIds });
-    //               cancelChangedRows({ rowIds });
-    //             }
-    //           };
-
-    //           const open = editingRowIds.length > 0 || isNew;
-    //           console.log("EDITED ROW IS");
-    //           console.log(editedRow);
-    //           return (
-    //             <Popup
-    //               open={open}
-    //               row={editedRow}
-    //               onChange={processValueChange}
-    //               onApplyChanges={applyChanges}
-    //               onCancelChanges={cancelChanges}
-    //             />
-    //           );
-    //         }}
-    //       </TemplateConnector>
-    //     </Template>
-    //     <Template name="root">
-    //       <TemplatePlaceholder />
-    //       <TemplatePlaceholder name="popupEditing" />
-    //     </Template>
-    //   </Plugin>
-    // ));
-
-    // const commitChanges = ({ added, changed }) => {
-    //   let changedRows;
-    //   if (added) {
-    //     const startingAddedId =
-    //       rows.length > 0 ? rows[rows.length - 1].id + 1 : 0;
-    //     changedRows = [
-    //       ...rows,
-    //       ...added.map((row, index) => ({
-    //         id: startingAddedId + index,
-    //         ...row,
-    //       })),
-    //     ];
-    //   }
-    //   if (changed) {
-    //     console.log("THE CHANGES ARE");
-    //     console.log(changed);
-    //     // changedRows = rows.map(row => (changed[row.id] ? { ...row, ...changed[row.id] } : row));
-    //   }
-    //   // setRows(changedRows);
-    // };
+    const leftColumns = ["first_name", "last_name"];
 
     return (
       <MuiThemeProvider>
         <TopBar />
         <h2 className={classes.heads}>Student List</h2>
         <Paper>
+          {console.log(this.state.rows)}
           <Grid rows={rows} columns={columns} getRowId={getRowId}>
+            <SearchState defaultValue="" />
+            <IntegratedFiltering />
+            <RowDetailState defaultExpandedRowIds={[]} />
+            <SortingState />
+            <IntegratedSorting />
             <EditingState onCommitChanges={this.commitChanges} />
-            <Table />
-            <TableHeaderRow />
+            <Table className={classes.tableClass} />
+            <TableColumnResizing columnWidths={columnWid} />
+            <TableHeaderRow showSortingControls resizingEnabled={true} />
+            <TableRowDetail contentComponent={RowDetail} />
             <TableEditColumn showEditCommand showAddCommand />
+            <TableFixedColumns leftColumns={leftColumns} />
+            <TableColumnVisibility
+            // defaultHiddenColumnNames={defaultHiddenColumnNames}
+            />
+            <Toolbar />
             <EditPopupPlugin popupComponent={EditPopup} />
+            <ColumnChooser />
+            <SearchPanel />
           </Grid>
         </Paper>
       </MuiThemeProvider>

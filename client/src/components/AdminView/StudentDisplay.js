@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import TopBar from "../IntakeForm/TopBar";
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
 import { withStyles } from "@material-ui/core/styles";
+import { Redirect } from "react-router-dom";
 import // State or Local Processing Plugins
 "@devexpress/dx-react-grid";
 import "@devexpress/dx-react-grid-bootstrap4/dist/dx-react-grid-bootstrap4.css";
@@ -65,6 +66,28 @@ const useStyles = (theme) => ({
     color: "blue",
   },
 });
+
+const ColorButton = withStyles((theme) => ({
+  root: {
+    boxShadow: "0 3px 5px 2px rgba(60, 75, 120, .3)",
+    background: "linear-gradient(45deg, #687732 30%, #7A8B39 90%)",
+    backgroundColor: "#c123de",
+    borderRadius: "6px",
+    border: "0",
+    display: "inline-block",
+    cursor: "pointer",
+    color: "white",
+    fontSize: "15px",
+    fontWeight: "bold",
+    padding: "6px 24px",
+    textDecoration: "none",
+    textShadow: "0px 1px 0px #9b14b3",
+    marginLeft: "30px",
+    height: 32,
+    margin: theme.spacing(1),
+    marginLeft: "30px",
+  },
+}))(Button);
 
 const EditPopup = ({
   row,
@@ -437,8 +460,11 @@ class StudentDisplay extends Component {
         { name: "partner_gender_weight", title: "Pref. Gender Weight" },
       ],
       rows: null,
+      redirect: null,
     };
     this.commitChanges = this.commitChanges.bind(this);
+    this.saveChanges = this.saveChanges.bind(this);
+    this.deleteRows = this.deleteRows.bind(this);
   }
 
   componentDidMount() {
@@ -490,6 +516,61 @@ class StudentDisplay extends Component {
       .catch((error) => console.log("Error", error));
   }
 
+  saveChanges() {
+    console.log(this.state.rows);
+    // const { REACT_APP_SAVE } = process.env;
+    // let endWeek = this.state.endWeek;
+    // let startWeek = this.state.startWeek;
+    // if (
+    //   !/^\d+$/.test(startWeek) ||
+    //   !/^\d+$/.test(endWeek) ||
+    //   startWeek >= endWeek
+    // ) {
+    //   startWeek = 3;
+    //   endWeek = 16;
+    // }
+    // fetch(REACT_APP_SAVE, {
+    //   method: "POST",
+    //   mode: "cors",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //     "X-CSRFToken": this.state.csrfToken,
+    //   },
+    //   body: JSON.stringify({
+    //     currSem: this.state.currSem,
+    //     calendarLink: this.state.calendarLink,
+    //     orientationKey: this.state.orientationKey,
+    //     startWeek: startWeek,
+    //     endWeek: endWeek,
+    //     deleteData: this.state.deleteData,
+    //   }),
+    // })
+    //   .then((response) => response.json())
+    //   .then((data) => {
+    //     if (data.success == true) {
+    //       this.setState({ openAlert: true });
+    //       return "Success";
+    //     } else {
+    //       this.setState({ redirect: <Redirect push to="/signin" /> });
+    //     }
+    //   })
+    //   .catch((error) =>
+    //     alert("Something went horribly wrong. Please try again later.")
+    //   );
+    // return "Failed";
+  }
+  deleteRows(deletedIds) {
+    let { rows } = this.state;
+    const rowsForDelete = rows.slice();
+    deletedIds.forEach((rowId) => {
+      const index = rowsForDelete.findIndex((row) => row.id === rowId);
+      if (index > -1) {
+        rowsForDelete.splice(index, 1);
+      }
+    });
+    return rowsForDelete;
+  }
+
   commitChanges({ added, changed, deleted }) {
     let { rows } = this.state;
     let changedRows;
@@ -511,7 +592,7 @@ class StudentDisplay extends Component {
       ];
     }
     if (deleted) {
-      console.log("in MAIN commitChanges deleted", deleted);
+      changedRows = this.deleteRows(deleted);
     }
     this.setState({ rows: changedRows });
   }
@@ -568,6 +649,7 @@ class StudentDisplay extends Component {
       <MuiThemeProvider>
         <TopBar />
         <h2 className={classes.heads}>Student List</h2>
+        {this.state.redirect}
         <Paper>
           {console.log(this.state.rows)}
           <Grid rows={rows} columns={columns} getRowId={getRowId}>
@@ -581,7 +663,7 @@ class StudentDisplay extends Component {
             <TableColumnResizing columnWidths={columnWid} />
             <TableHeaderRow showSortingControls resizingEnabled={true} />
             <TableRowDetail contentComponent={RowDetail} />
-            <TableEditColumn showEditCommand showAddCommand />
+            <TableEditColumn showEditCommand showAddCommand showDeleteCommand />
             <TableFixedColumns leftColumns={leftColumns} />
             <TableColumnVisibility
             // defaultHiddenColumnNames={defaultHiddenColumnNames}
@@ -592,6 +674,34 @@ class StudentDisplay extends Component {
             <SearchPanel />
           </Grid>
         </Paper>
+        <br />
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <ColorButton
+            variant="contained"
+            color="primary"
+            className={classes.margin}
+            onClick={() =>
+              this.setState({ redirect: <Redirect push to="/adminhome" /> })
+            }
+          >
+            Back
+          </ColorButton>
+          <ColorButton
+            variant="contained"
+            color="primary"
+            className={classes.margin}
+            onClick={this.saveChanges}
+          >
+            Save Changes
+          </ColorButton>
+          <br />
+        </div>
       </MuiThemeProvider>
     );
   }

@@ -17,7 +17,6 @@ def getPairs():
     cur.execute("SELECT * FROM pairs")
     # Retrieve query results
     records = cur.fetchall()
-    print(records)
     # Close cursor
     cur.close()
     return jsonify(records)

@@ -5,6 +5,7 @@ from routes.timesheetform import timesheetform
 from routes.studentdisplay import studentdisplay
 from routes.pairsdisplay import pairsdisplay
 from routes.unpaireddisplay import unpaireddisplay
+from routes.settings import settings 
 from flask_cors import CORS
 from flask_login import (
     LoginManager,
@@ -25,6 +26,7 @@ app.register_blueprint(algorithm)
 app.register_blueprint(studentdisplay)
 app.register_blueprint(pairsdisplay)
 app.register_blueprint(unpaireddisplay)
+app.register_blueprint(settings)
 CORS(app)
 
 # Connect to your postgres DB
@@ -73,7 +75,6 @@ def get_user(user_id: int):
     cur.execute(sql, (user_id,))
     # Retrieve query results
     records = cur.fetchall()
-    print(records)
     # Close cursor
     cur.close()
     try:
@@ -88,10 +89,7 @@ def get_user(user_id: int):
 # if the user ID isn't valid.
 @login_manager.user_loader
 def user_loader(id: int):
-    print("ID Below")
-    print(id)
     user_email = get_user(id)
-    print(user_email)
     if user_email:
         user_model = User(id, user_email)
         return user_model
@@ -139,12 +137,10 @@ def login():
     cur.execute(sql, (identity['email'],))
     # Retrieve query results
     records = cur.fetchall()
-    print(records)
     # Close cursor
     cur.close()
     if len(records) == 0:
         return jsonify({"login": False})
-    print(records[0][0])
 
     # Create user and signin
     user_model = User(records[0][0], identity['email'])
@@ -155,7 +151,6 @@ def login():
 @app.route("/api/data", methods=["GET"])
 @login_required
 def user_data():
-    print(current_user.id)
     user = get_user(current_user.id)
     return jsonify({"email": user})
 
@@ -182,7 +177,6 @@ def index():
 
   # Retrieve query results
   records = cur.fetchall()
-  print(records)
   return {"Test":"Hello World!"}
 
 

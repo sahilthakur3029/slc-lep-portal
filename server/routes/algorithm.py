@@ -8,6 +8,9 @@ import itertools
 import json
 from collections import Counter
 from datetime import datetime
+from flask_login import (
+    login_required,
+)
 
 algorithm = Blueprint('algorithm', __name__, template_folder='templates')
 CORS(algorithm)
@@ -70,16 +73,15 @@ def error_major_fixer(major_set):
         return set(["No Response"])
     return set(updated_set)
 
-@algorithm.route('/algorithm')
+@algorithm.route('/algorithm', methods=["POST"])
+@login_required
 def run_algorithm():
-    column_names = ["First", "Last", "Email", "SID", "Academic Title", "Residency", "Major", "Gender", "Gender Custom", "Availability", "Hope To Gain", "Plan to Meet", "F_C_Learn", 
+    column_names = ["First", "Last", "Email", "Academic Title", "Residency", "Major", "Gender", "Gender Custom", "Availability", "Hope To Gain", "Plan to Meet", "F_C_Learn", 
     "F_C_Learn_Other", "F_C_Learn_Level", "S_C_Learn", "S_C_Learn_Other", "S_C_Learn_Level", "F_C_Teach", "F_C_Teach_Other", "F_C_Teach_Level", "S_C_Teach", "S_C_Teach_Other",
     "S_C_Teach_Level", "Comments", "P_Major", "P_Major_Weight", "P_Gender", "P_Gender_Custom", "P_Gender_Weight", "Waiver Accept", "Timestamp"]
     df = postgresql_to_dataframe(conn, "select * from intakeform", column_names)
-    # TODO Have to remove people from if already paired and maybe duplicate applicants (Step 1)
+    data_json = request.get_json()
     # Step 2 of algorithm
-    # print(df)
-    # Checks which round of pairing and if not first updated dataframe with only relevant names
     df = checkRemoveDups(df)
     df = updatePairRound(df)
     formatted_data = []
@@ -147,20 +149,21 @@ def run_algorithm():
                 row["P_Gender_Weight"] = 0
         except:
             pass
-        formatted_data.append({"Timestamp": row["Timestamp"], "First":row["First"], "Last":row["Last"], "Email":row["Email"], "SID":row["SID"], "Level": row["Academic Title"], 
+        formatted_data.append({"Timestamp": row["Timestamp"], "First":row["First"], "Last":row["Last"], "Email":row["Email"], "Level": row["Academic Title"], 
         "Gender": row["Gender"].strip(), "Major":row["Major"], "Teach":teach_dict, "Learn":learn_dict, "Comments":comments, "Days Available": d_o_w_set, "Partner Major": row["P_Major"], 
         "Partner Major Weight": row["P_Major_Weight"], "Partner Gender": row["P_Gender"].strip(), "Partner Gender Weight": row["P_Gender_Weight"]})
-    step_2 = pd.DataFrame(formatted_data, columns=["Timestamp", "First", "Last", "Email", "SID", "Level", "Gender", "Major", "Teach", "Learn", "Comments", "Days Available", 
+    step_2 = pd.DataFrame(formatted_data, columns=["Timestamp", "First", "Last", "Email", "Level", "Gender", "Major", "Teach", "Learn", "Comments", "Days Available", 
     "Partner Major", "Partner Major Weight", "Partner Gender", "Partner Gender Weight"])
-    step_3(step_2)     
-    return "Algorithm Completed"
+    step_3(step_2, data_json["strictness"])     
+    return jsonify({"success": True})
 
 # Step 3 of the algorithm 
-def step_3(app_df):
+def step_3(app_df, strictness):
     # First cell block
     people = [0] #people is 1-indexed
     n = len(app_df)
-    criteria = 2
+    # CHANGE THIS AT ONE POINT
+    criteria = strictness
     for index, row in app_df.iterrows():
         timestamp = row['Timestamp'].to_pydatetime().strftime('%Y-%m-%d %H:%M:%S')
 
@@ -577,10 +580,10 @@ def write_to_database(app_df, pairs, trios, leftovers, people):
         p1 = pair.p1.idx - 1
         p2 = pair.p2.idx - 1
         cursor = conn.cursor()
-        sql = """INSERT INTO pairs(timestamp, first, last, email, sid, level, teach, learn, comments, timestamp_1, first_1, last_1, email_1, sid_1, level_1, teach_1, learn_1, comments_1) VALUES(%s, %s, %s, %s, %s, %s, %s, 
-        %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
-        cursor.execute(sql, (app_df.iloc[p1]["Timestamp"], app_df.iloc[p1]["First"], app_df.iloc[p1]["Last"], app_df.iloc[p1]["Email"], app_df.iloc[p1]["SID"],  app_df.iloc[p1]["Level"],
-        json.dumps(pair.p1.teach), json.dumps(pair.p1.practice), app_df.iloc[p1]["Comments"], app_df.iloc[p2]["Timestamp"], app_df.iloc[p2]["First"], app_df.iloc[p2]["Last"], app_df.iloc[p2]["Email"], app_df.iloc[p2]["SID"],  
+        sql = """INSERT INTO pairs(timestamp, first, last, email, level, teach, learn, comments, timestamp_1, first_1, last_1, email_1, level_1, teach_1, learn_1, comments_1) VALUES(%s, %s, %s, %s, %s, %s, %s, 
+        %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
+        cursor.execute(sql, (app_df.iloc[p1]["Timestamp"], app_df.iloc[p1]["First"], app_df.iloc[p1]["Last"], app_df.iloc[p1]["Email"], app_df.iloc[p1]["Level"],
+        json.dumps(pair.p1.teach), json.dumps(pair.p1.practice), app_df.iloc[p1]["Comments"], app_df.iloc[p2]["Timestamp"], app_df.iloc[p2]["First"], app_df.iloc[p2]["Last"], app_df.iloc[p2]["Email"],
         app_df.iloc[p2]["Level"], json.dumps(pair.p2.teach), json.dumps(pair.p2.practice), app_df.iloc[p2]["Comments"]))
         conn.commit()
         cursor.close()
@@ -589,12 +592,12 @@ def write_to_database(app_df, pairs, trios, leftovers, people):
         p2 = people[trio[1]].idx - 1
         p3 = people[trio[2]].idx - 1
         cursor = conn.cursor()
-        sql = """INSERT INTO pairs(timestamp, first, last, email, sid, level, teach, learn, comments, timestamp_1, first_1, last_1, email_1, sid_1, level_1, teach_1, learn_1, comments_1, 
-        timestamp_2, first_2, last_2, email_2, sid_2, level_2, teach_2, learn_2, comments_2) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, 
-        %s, %s, %s, %s, %s)"""
-        cursor.execute(sql, (app_df.iloc[p1]["Timestamp"], app_df.iloc[p1]["First"], app_df.iloc[p1]["Last"], app_df.iloc[p1]["Email"], app_df.iloc[p1]["SID"],  app_df.iloc[p1]["Level"],
-        json.dumps(people[trio[0]].teach), json.dumps(people[trio[0]].practice), app_df.iloc[p1]["Comments"], app_df.iloc[p2]["Timestamp"], app_df.iloc[p2]["First"], app_df.iloc[p2]["Last"], app_df.iloc[p2]["Email"], app_df.iloc[p2]["SID"],  
-        app_df.iloc[p2]["Level"], json.dumps(people[trio[1]].teach), json.dumps(people[trio[1]].practice), app_df.iloc[p2]["Comments"], app_df.iloc[p3]["Timestamp"], app_df.iloc[p3]["First"], app_df.iloc[p3]["Last"], app_df.iloc[p3]["Email"], app_df.iloc[p3]["SID"],  
+        sql = """INSERT INTO pairs(timestamp, first, last, email, level, teach, learn, comments, timestamp_1, first_1, last_1, email_1, level_1, teach_1, learn_1, comments_1, 
+        timestamp_2, first_2, last_2, email_2, level_2, teach_2, learn_2, comments_2) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, 
+        %s, %s)"""
+        cursor.execute(sql, (app_df.iloc[p1]["Timestamp"], app_df.iloc[p1]["First"], app_df.iloc[p1]["Last"], app_df.iloc[p1]["Email"], app_df.iloc[p1]["Level"],
+        json.dumps(people[trio[0]].teach), json.dumps(people[trio[0]].practice), app_df.iloc[p1]["Comments"], app_df.iloc[p2]["Timestamp"], app_df.iloc[p2]["First"], app_df.iloc[p2]["Last"], app_df.iloc[p2]["Email"],
+        app_df.iloc[p2]["Level"], json.dumps(people[trio[1]].teach), json.dumps(people[trio[1]].practice), app_df.iloc[p2]["Comments"], app_df.iloc[p3]["Timestamp"], app_df.iloc[p3]["First"], app_df.iloc[p3]["Last"], app_df.iloc[p3]["Email"],   
         app_df.iloc[p3]["Level"], json.dumps(people[trio[2]].teach), json.dumps(people[trio[2]].practice), app_df.iloc[p3]["Comments"]))
         conn.commit()
         cursor.close()
@@ -607,8 +610,8 @@ def write_to_database(app_df, pairs, trios, leftovers, people):
     for leftover in leftovers:
         p1 = people[leftover].idx - 1
         cursor = conn.cursor()
-        sql = """INSERT INTO unpaired(timestamp, first, last, email, sid, level, teach, learn, comments) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s)"""
-        cursor.execute(sql, (app_df.iloc[p1]["Timestamp"], app_df.iloc[p1]["First"], app_df.iloc[p1]["Last"], app_df.iloc[p1]["Email"], app_df.iloc[p1]["SID"],  app_df.iloc[p1]["Level"],
+        sql = """INSERT INTO unpaired(timestamp, first, last, email, level, teach, learn, comments) VALUES(%s, %s, %s, %s, %s, %s, %s, %s)"""
+        cursor.execute(sql, (app_df.iloc[p1]["Timestamp"], app_df.iloc[p1]["First"], app_df.iloc[p1]["Last"], app_df.iloc[p1]["Email"],  app_df.iloc[p1]["Level"],
         json.dumps(people[leftover].teach), json.dumps(people[leftover].practice), app_df.iloc[p1]["Comments"]))
         conn.commit()
         cursor.close()
@@ -616,30 +619,27 @@ def write_to_database(app_df, pairs, trios, leftovers, people):
 
 # Pair judgement and update function
 def updatePairRound(df):
-    pair_column_names = ["Timestamp", "First", "Last", "Email", "SID", "Level", "Teach", "Learn", "Comments", "Timestamp.1", "First.1", "Last.1", "Email.1", "SID.1", "Level.1", "Teach.1", "Learn.1", "Comments.1", 
-    "Timestamp.2", "First.2", "Last.2", "Email.2", "SID.2", "Level.2", "Teach.2", "Learn.2", "Comments.2"]
+    pair_column_names = ["Timestamp", "First", "Last", "Email", "Level", "Teach", "Learn", "Comments", "Timestamp.1", "First.1", "Last.1", "Email.1", "Level.1", "Teach.1", "Learn.1", "Comments.1", 
+    "Timestamp.2", "First.2", "Last.2", "Email.2", "Level.2", "Teach.2", "Learn.2", "Comments.2"]
     paired_df = postgresql_to_dataframe(conn, "select * from pairs", pair_column_names)
     paired_length = len(paired_df.index)
     # This means that this is the first run and no modifications need to be made
     if paired_length == 0:
         # print("First run of algorithm! No changes needed!")
         return df
-    partner1_df = paired_df.loc[:, ["SID", "Email"]]
-    partner2_df = paired_df.loc[:, ["SID.1", "Email.1"]].rename(index=str, columns={"SID.1": "SID", "Email.1": "Email"})
-    partner3_df = paired_df.loc[:, ["SID.2", "Email.2"]].rename(index=str, columns={"SID.2": "SID", "Email.2": "Email"})
+    partner1_df = paired_df.loc[:, ["Email"]]
+    partner2_df = paired_df.loc[:, ["Email.1"]].rename(index=str, columns={"Email.1": "Email"})
+    partner3_df = paired_df.loc[:, ["Email.2"]].rename(index=str, columns={"Email.2": "Email"})
     # Combines into one list of all people who are paired
     all_partners_df = pd.concat([partner1_df, partner2_df, partner3_df])
     all_partners_df = all_partners_df.dropna(axis=0)
-    all_partners_df['SID'] = all_partners_df['SID'].apply(int)
     all_partners_df['Email'] = all_partners_df['Email'].str.lower().str.strip()
     # Set used later to iterate
-    paired_SIDs = set(all_partners_df['SID'])
     paired_emails = set(all_partners_df['Email'])
     keep = []
     for index, person in df.iterrows():
-        sid = person["SID"]
         email = person["Email"]
-        if sid in paired_SIDs or email in paired_emails:
+        if email in paired_emails:
             continue
         else:
             keep.append(index)
@@ -648,23 +648,20 @@ def updatePairRound(df):
 
 # Removes duplicates from pairing process (but keeps intakeform untouced for integrity)
 def checkRemoveDups(app_df):
-    # Creates a list of tuples, one from each list combined together (SID_1, Email_1)
-    app_SIDs = list(app_df['SID'])
-    app_SIDs.reverse()
+    # Creates a list of tuples
     app_emails = list(app_df['Email'])
     app_emails.reverse()
-    reversed_app_SIDs_emails = zip(app_SIDs, app_emails)
+    reversed_app_SIDs_emails = app_emails
     ht = {}
     count = len(app_emails) - 1
     # For each sid and email in the combined zip, it makes a seperate key, value of each each element in each tuple.
     # i.e. First tuple becomes {3034767503: 3034767503, 'chu00015@berkeley.edu': 'chu00015@berkeley.edu'} (2 keys)
-    for sid,email in reversed_app_SIDs_emails:
-        if sid in ht or email in ht:
+    for email in reversed_app_SIDs_emails:
+        if email in ht:
             # print("Person dropped!")
             # print(count) 
             app_df = app_df.drop([count])
         else:
-            ht[sid] = sid
             ht[email] = email
         count -= 1
     app_df = app_df.reset_index(drop=True)

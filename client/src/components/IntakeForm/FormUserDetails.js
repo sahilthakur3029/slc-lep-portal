@@ -117,7 +117,7 @@ class FormUserDetails extends Component {
     return (
       <MuiThemeProvider>
         <>
-        {/* Snackbar not required right? */}
+          {/* Snackbar not required right? */}
           <Snackbar
             open={this.state.open}
             autoHideDuration={5000}
@@ -159,16 +159,6 @@ class FormUserDetails extends Component {
             label="Email"
             onChange={handleChange("email")}
             defaultValue={values.email}
-            margin="normal"
-            required
-            className={classes.formControl}
-          />
-          <br />
-          <TextField
-            placeholder="Enter Your Student ID Number"
-            label="SID"
-            onChange={handleChange("sid")}
-            defaultValue={values.sid}
             margin="normal"
             required
             className={classes.formControl}

@@ -650,6 +650,7 @@ class StudentDisplay extends Component {
         <TopBar />
         <h2 className={classes.heads}>Student List</h2>
         {this.state.redirect}
+        {console.log(Date().toLocaleString())}
         <Paper>
           {console.log(this.state.rows)}
           <Grid rows={rows} columns={columns} getRowId={getRowId}>

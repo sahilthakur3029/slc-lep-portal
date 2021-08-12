@@ -1,10 +1,12 @@
 import React, { Component } from "react";
-
 import TopBar from "../IntakeForm/TopBar";
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
 import { withStyles } from "@material-ui/core/styles";
+import // State or Local Processing Plugins
+"@devexpress/dx-react-grid";
+import { Redirect } from "react-router-dom";
 import "@devexpress/dx-react-grid-bootstrap4/dist/dx-react-grid-bootstrap4.css";
-import Paper from "@material-ui/core/Paper";
+import {Paper, FormControl, Input, InputLabel,} from "@material-ui/core";
 import {
   Grid,
   Table,
@@ -16,6 +18,8 @@ import {
   TableFixedColumns,
   ColumnChooser,
   TableColumnVisibility,
+  TableEditColumn,
+  TableEditRow
 } from "@devexpress/dx-react-grid-material-ui";
 import {
   SearchState,
@@ -23,7 +27,19 @@ import {
   SortingState,
   IntegratedSorting
 } from '@devexpress/dx-react-grid';
+import TextField from '@material-ui/core/TextField';
+import FormGroup from '@material-ui/core/FormGroup';
 import { RowDetailState } from '@devexpress/dx-react-grid';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import MuiGrid from '@material-ui/core/Grid';
+import {
+  Plugin, Template, TemplateConnector, TemplatePlaceholder,
+} from '@devexpress/dx-react-core';
+import { EditingState } from '@devexpress/dx-react-grid';
 
 
 // Things to do: Editing in a popup form
@@ -48,203 +64,552 @@ const useStyles = (theme) => ({
   }
 });
 
-class Unpaired extends Component {
-    constructor(props) {
-      super(props);
-      this.state = {
-        student_info: null,
-      };
-    }
 
-    componentDidMount() {
-      const { REACT_APP_UNPAIRS } = process.env;
-      let student_info_array = [];
-      fetch(REACT_APP_UNPAIRS)
-        .then((response) => response.json())
-        .then((data) => {
-          for (const student of data) {
-            student_info_array.push({ "first_name":student[1],
-            "last_name":student[2],
-            "email":student[3],
-            "level":student[4],
-            "teach":student[5],
-            "learn":student[6],
-            "comments":student[7],
-           } );
+const ColorButton = withStyles((theme) => ({
+  root: {
+    boxShadow: "0 3px 5px 2px rgba(60, 75, 120, .3)",
+    background: "linear-gradient(45deg, #687732 30%, #7A8B39 90%)",
+    backgroundColor: "#c123de",
+    borderRadius: "6px",
+    border: "0",
+    display: "inline-block",
+    cursor: "pointer",
+    color: "white",
+    fontSize: "15px",
+    fontWeight: "bold",
+    padding: "6px 24px",
+    textDecoration: "none",
+    textShadow: "0px 1px 0px #9b14b3",
+    marginLeft: "30px",
+    height: 32,
+    margin: theme.spacing(1),
+    marginLeft: "30px",
+  },
+}))(Button);
+
+const EditPopup = ({
+  row,
+  onChange,
+  onApplyChanges,
+  onCancelChanges,
+  open,
+}) => (
+  <Dialog open={open} onClose={onCancelChanges}>
+    <DialogTitle>Edit Row</DialogTitle>
+    <DialogContent>
+      <FormControl>
+        <InputLabel>First Name</InputLabel>
+        <Input
+          value={row.first_name || ""}
+          onChange={(event) => onChange("first_name", event.target.value)}
+        />
+      </FormControl>{" "}
+      <FormControl>
+        <InputLabel>Last Name</InputLabel>
+        <Input
+          value={row.last_name || ""}
+          onChange={(event) => onChange("last_name", event.target.value)}
+        />
+      </FormControl>{" "}
+      <FormControl>
+        <InputLabel>Email</InputLabel>
+        <Input
+          value={row.email || ""}
+          onChange={(event) => onChange("email", event.target.value)}
+        />
+      </FormControl>
+      <FormControl>
+        <InputLabel>Class Standing</InputLabel>
+        <Input
+          value={row.class_standing || ""}
+          onChange={(event) => onChange("class_standing", event.target.value)}
+        />
+      </FormControl>{" "}
+      <FormControl>
+        <InputLabel>Domestic Status</InputLabel>
+        <Input
+          value={row.domestic_status || ""}
+          onChange={(event) => onChange("domestic_status", event.target.value)}
+        />
+      </FormControl>{" "}
+      <FormControl>
+        <InputLabel>Major</InputLabel>
+        <Input
+          value={row.major || ""}
+          onChange={(event) => onChange("major", event.target.value)}
+        />
+      </FormControl>{" "}
+      <FormControl>
+        <InputLabel>Gender</InputLabel>
+        <Input
+          value={row.gender || ""}
+          onChange={(event) => onChange("gender", event.target.value)}
+        />
+      </FormControl>{" "}
+      <FormControl>
+        <InputLabel>Custom Gender</InputLabel>
+        <Input
+          value={row.gender_custom || ""}
+          onChange={(event) => onChange("gender_custom", event.target.value)}
+        />
+      </FormControl>{" "}
+      <FormControl fullWidth>
+        <InputLabel>Availability</InputLabel>
+        <Input
+          value={row.days_of_week || ""}
+          onChange={(event) => onChange("days_of_week", event.target.value)}
+        />
+      </FormControl>{" "}
+      <FormControl>
+        <InputLabel>Lang. 1 Learn</InputLabel>
+        <Input
+          value={row.lang_1_learn || ""}
+          onChange={(event) => onChange("lang_1_learn", event.target.value)}
+        />
+      </FormControl>{" "}
+      <FormControl>
+        <InputLabel>Lang. 1 Learn Other</InputLabel>
+        <Input
+          value={row.lang_1_learn_other || ""}
+          onChange={(event) =>
+            onChange("lang_1_learn_other", event.target.value)
           }
-          this.setState({
-            student_info: student_info_array,
-          });
-        })
-        .catch((error) => console.log("Error", error));
-        
-    }
-    continue = (e) => {
-      e.preventDefault();
-    };
+        />
+      </FormControl>{" "}
+      <FormControl>
+        <InputLabel>Lang. 1 Learn Level</InputLabel>
+        <Input
+          value={row.lang_1_learn_level || ""}
+          onChange={(event) =>
+            onChange("lang_1_learn_level", event.target.value)
+          }
+        />
+      </FormControl>{" "}
+      <FormControl>
+        <InputLabel>Lang. 2 Learn</InputLabel>
+        <Input
+          value={row.lang_2_learn || ""}
+          onChange={(event) => onChange("lang_2_learn", event.target.value)}
+        />
+      </FormControl>{" "}
+      <FormControl>
+        <InputLabel>Lang. 2 Learn Other</InputLabel>
+        <Input
+          value={row.lang_2_learn_other || ""}
+          onChange={(event) =>
+            onChange("lang_2_learn_other", event.target.value)
+          }
+        />
+      </FormControl>{" "}
+      <FormControl>
+        <InputLabel>Lang. 2 Learn Level</InputLabel>
+        <Input
+          value={row.lang_2_learn_level || ""}
+          onChange={(event) =>
+            onChange("lang_2_learn_level", event.target.value)
+          }
+        />
+      </FormControl>{" "}
+      <FormControl>
+        <InputLabel>Lang. 1 Teach</InputLabel>
+        <Input
+          value={row.lang_1_teach || ""}
+          onChange={(event) => onChange("lang_1_teach", event.target.value)}
+        />
+      </FormControl>{" "}
+      <FormControl>
+        <InputLabel>Lang. 1 Teach Other</InputLabel>
+        <Input
+          value={row.lang_1_teach_other || ""}
+          onChange={(event) =>
+            onChange("lang_1_teach_other", event.target.value)
+          }
+        />
+      </FormControl>{" "}
+      <FormControl>
+        <InputLabel>Lang. 1 Teach Level</InputLabel>
+        <Input
+          value={row.lang_1_teach_level || ""}
+          onChange={(event) =>
+            onChange("lang_1_teach_level", event.target.value)
+          }
+        />
+      </FormControl>{" "}
+      <FormControl>
+        <InputLabel>Lang. 2 Teach</InputLabel>
+        <Input
+          value={row.lang_2_teach || ""}
+          onChange={(event) => onChange("lang_2_teach", event.target.value)}
+        />
+      </FormControl>{" "}
+      <FormControl>
+        <InputLabel>Lang. 2 Teach Other</InputLabel>
+        <Input
+          value={row.lang_2_teach_other || ""}
+          onChange={(event) =>
+            onChange("lang_2_teach_other", event.target.value)
+          }
+        />
+      </FormControl>{" "}
+      <FormControl>
+        <InputLabel>Lang. 2 Teach Level</InputLabel>
+        <Input
+          value={row.lang_2_teach_level || ""}
+          onChange={(event) =>
+            onChange("lang_2_teach_level", event.target.value)
+          }
+        />
+      </FormControl>{" "}
+      <FormControl>
+        <InputLabel>Pref. Partner Major</InputLabel>
+        <Input
+          value={row.partner_major || ""}
+          onChange={(event) => onChange("partner_major", event.target.value)}
+        />
+      </FormControl>{" "}
+      <FormControl>
+        <InputLabel>Pref. Major Weight</InputLabel>
+        <Input
+          value={row.partner_major_weight || ""}
+          onChange={(event) =>
+            onChange("partner_major_weight", event.target.value)
+          }
+        />
+      </FormControl>{" "}
+      <div>
+        <FormControl>
+          <InputLabel>Pref. Partner Gender</InputLabel>
+          <Input
+            value={row.partner_gender || ""}
+            onChange={(event) => onChange("partner_gender", event.target.value)}
+          />
+        </FormControl>{" "}
+        <FormControl>
+          <InputLabel>Pref. Custom Gender</InputLabel>
+          <Input
+            value={row.partner_gender_custom || ""}
+            onChange={(event) =>
+              onChange("partner_gender_custom", event.target.value)
+            }
+          />
+        </FormControl>{" "}
+        <FormControl>
+          <InputLabel>Pref. Gender Weight</InputLabel>
+          <Input
+            value={row.partner_gender_weight || ""}
+            onChange={(event) =>
+              onChange("partner_gender_weight", event.target.value)
+            }
+          />
+        </FormControl>{" "}
+      </div>
+      <FormControl fullWidth>
+        <InputLabel>Hope to Gain</InputLabel>
+        <Input
+          value={row.hope_to_gain || ""}
+          onChange={(event) => onChange("hope_to_gain", event.target.value)}
+        />
+      </FormControl>{" "}
+      <FormControl fullWidth>
+        <InputLabel>Plan to Meet</InputLabel>
+        <Input
+          value={row.plan_to_meet || ""}
+          onChange={(event) => onChange("plan_to_meet", event.target.value)}
+        />
+      </FormControl>{" "}
+      <FormControl fullWidth>
+        <InputLabel>Comments</InputLabel>
+        <Input
+          value={row.comments || ""}
+          onChange={(event) => onChange("comments", event.target.value)}
+        />
+      </FormControl>
+    </DialogContent>
+    <DialogActions>
+      <Button onClick={onCancelChanges} color="primary">
+        Cancel
+      </Button>
+      <Button onClick={onApplyChanges} color="secondary">
+        Apply
+      </Button>
+    </DialogActions>
+  </Dialog>
+);
 
-    render() {
-      if (!this.state.student_info) {
-          return <div />
-      }
-      // props is the useStyles variable
-      const { values, handleChange, classes } = this.props;
-      const student_info_array = this.state.student_info
+class EditPopupPlugin extends React.PureComponent {
+  render() {
+    // console.log("POPUP ", this.props.popupComponent);
+    const { popupComponent: Popup } = this.props;
+    return (
+      <Plugin>
+        <Template name="editPopup">
+          <TemplateConnector>
+            {(
+              {
+                addedRows,
+                rows,
+                getRowId,
+                editingRowIds,
+                createRowChange,
+                rowChanges,
+              },
+              {
+                changeRow,
+                commitChangedRows,
+                stopEditRows,
+                cancelAddedRows,
+                commitAddedRows,
+                changeAddedRow,
+              }
+            ) => {
+              const isAddMode = addedRows.length > 0;
+              const isEditMode = editingRowIds.length > 0;
 
-      const columns = [{ name: "first_name", title: "First Name"},
+              const editRowId = editingRowIds[0] || 0;
+
+              const open = isEditMode || isAddMode;
+              const targetRow = rows.filter(
+                (row) => getRowId(row) === editRowId
+              )[0];
+              const changedRow = isAddMode
+                ? addedRows[0]
+                : { ...targetRow, ...rowChanges[editRowId] };
+
+              const processValueChange = (fieldName, newValue) => {
+                const changeArgs = {
+                  rowId: editRowId,
+                  change: createRowChange(changedRow, newValue, fieldName),
+                };
+
+                if (isAddMode) {
+                  changeAddedRow(changeArgs);
+                } else {
+                  changeRow(changeArgs);
+                }
+              };
+              const applyChanges = () => {
+                if (isEditMode) {
+                  commitChangedRows({ rowIds: editingRowIds });
+                } else {
+                  commitAddedRows({ rowIds: [0] });
+                }
+                stopEditRows({ rowIds: editingRowIds });
+              };
+              const cancelChanges = () => {
+                if (isAddMode) {
+                  cancelAddedRows({ rowIds: [0] });
+                }
+                stopEditRows({ rowIds: editingRowIds });
+              };
+
+              return (
+                <Popup
+                  open={open}
+                  row={changedRow}
+                  onChange={processValueChange}
+                  onApplyChanges={applyChanges}
+                  onCancelChanges={cancelChanges}
+                />
+              );
+            }}
+          </TemplateConnector>
+        </Template>
+        <Template name="root">
+          <TemplatePlaceholder />
+          <TemplatePlaceholder name="editPopup" />
+        </Template>
+      </Plugin>
+    );
+  }
+}
+
+const getRowId = (row) => row.id;
+
+class Unpaired extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      columns: [
+      { name: "first_name", title: "First Name"},
       { name: "last_name", title: "Last Name"},
       { name: "email", title: "Email"},
       { name: "level", title: "Level"},
       { name: "teach", title: "Teach"},
       { name: "learn", title: "Learn"},
-    ];
-      const rows = student_info_array;
+    ],
+      rows: null,
+      redirect: null,
+    };
+    this.commitChanges = this.commitChanges.bind(this);
+    this.saveChanges = this.saveChanges.bind(this);
+    this.deleteRows = this.deleteRows.bind(this);
+  }
 
-      const RowDetail = ({ row }) => (
-        <div>
+  componentDidMount() {
+    const { REACT_APP_UNPAIRS } = process.env;
+    let rows_array = [];
+    let counter = 1;
+    
+    fetch(REACT_APP_UNPAIRS)
+      .then((response) => response.json())
+      .then((data) => {
+        for (const student of data) {
+          rows_array.push({ first_name:student[1],
+          last_name:student[2],
+          email:student[3],
+          level:student[4],
+          teach:student[5],
+          learn:student[6],
+          comments:student[7],
+         });
+          counter = counter + 1;
+        }
+        this.setState({
+          rows: rows_array,
+        });
+      })
+      .catch((error) => console.log("Error", error));
+  }
+  continue = (e) => {
+    e.preventDefault();
+  };
+
+  saveChanges() {
+    console.log(this.state.rows);
+  }
+  deleteRows(deletedIds) {
+    let { rows } = this.state;
+    const rowsForDelete = rows.slice();
+    deletedIds.forEach((rowId) => {
+      const index = rowsForDelete.findIndex((row) => row.id === rowId);
+      if (index > -1) {
+        rowsForDelete.splice(index, 1);
+      }
+    });
+    return rowsForDelete;
+  }
+
+  commitChanges({ added, changed, deleted }) {
+    let { rows } = this.state;
+    let changedRows;
+
+    if (changed) {
+      changedRows = rows.map((row) =>
+        changed[row.id] ? { ...row, ...changed[row.id] } : row
+      );
+    }
+    if (added) {
+      const startingAddedId =
+        rows.length > 0 ? rows[rows.length - 1].id + 1 : 0;
+      changedRows = [
+        ...rows,
+        ...added.map((row, index) => ({
+          id: startingAddedId + index,
+          ...row,
+        })),
+      ];
+    }
+    if (deleted) {
+      changedRows = this.deleteRows(deleted);
+    }
+    this.setState({ rows: changedRows });
+  }
+
+  render() {
+    if (!this.state.rows) {
+        return <div />
+    }
+    // props is the useStyles variable
+    const { values, handleChange, classes } = this.props;
+    const { rows, columns } = this.state;
+
+    // const rows = student_info_array;
+
+    // const getRowId = row => row.id;
+
+    const RowDetail = ({ row }) => (
+      <div>
           Comments:
           {' '}
           {row.comments}
         </div>
-      );
+    );
 
-      const columnWid = [
-        { columnName: 'first_name', width: 240 },
+    const columnWid = [
+      { columnName: 'first_name', width: 240 },
         { columnName: 'last_name', width: 240 },
         { columnName: 'email', width: 300 },
         { columnName: 'level', width: 180 },
         { columnName: 'learn', width: 90 },
         { columnName: 'teach', width: 180 },
-      ];
+    ];
 
-      const leftColumns = ['first_name', 'last_name'];
-
-      // const PopupEditing = ({ popupComponent: Popup }) => (
-      //   <Plugin name="PopupEditing">
-      //     <Template name="popupEditing">
-      //       <TemplateConnector>
-      //         {(
-      //           {
-      //             rows,
-      //             getRowId,
-      //             addedRows,
-      //             editingRowIds,
-      //             createRowChange,
-      //             rowChanges,
-      //           },
-      //           {
-      //             changeRow, changeAddedRow, commitChangedRows, commitAddedRows,
-      //             stopEditRows, cancelAddedRows, cancelChangedRows,
-      //           },
-      //         ) => {
-      //           const isNew = addedRows.length > 0;
-      //           let editedRow;
-      //           let rowId;
-      //           if (isNew) {
-      //             rowId = 0;
-      //             editedRow = addedRows[rowId];
-      //           } else {
-      //             [rowId] = editingRowIds;
-      //             const targetRow = rows.filter(row => getRowId(row) === rowId)[0];
-      //             editedRow = { ...targetRow, ...rowChanges[rowId] };
-      //           }
-      
-      //           const processValueChange = ({ target: { name, value } }) => {
-      //             const changeArgs = {
-      //               rowId,
-      //               change: createRowChange(editedRow, value, name),
-      //             };
-      //             if (isNew) {
-      //               changeAddedRow(changeArgs);
-      //             } else {
-      //               changeRow(changeArgs);
-      //             }
-      //           };
-      //           const rowIds = isNew ? [0] : editingRowIds;
-      //           const applyChanges = () => {
-      //             if (isNew) {
-      //               commitAddedRows({ rowIds });
-      //             } else {
-      //               stopEditRows({ rowIds });
-      //               commitChangedRows({ rowIds });
-      //             }
-      //           };
-      //           const cancelChanges = () => {
-      //             if (isNew) {
-      //               cancelAddedRows({ rowIds });
-      //             } else {
-      //               stopEditRows({ rowIds });
-      //               cancelChangedRows({ rowIds });
-      //             }
-      //           };
-      
-      //           const open = editingRowIds.length > 0 || isNew;
-      //           return (
-      //             <Popup
-      //               open={open}
-      //               row={editedRow}
-      //               onChange={processValueChange}
-      //               onApplyChanges={applyChanges}
-      //               onCancelChanges={cancelChanges}
-      //             />
-      //           );
-      //         }}
-      //       </TemplateConnector>
-      //     </Template>
-      //     {/* ... */}
-      //   </Plugin>
-
-      return (
-        <MuiThemeProvider>
-          <TopBar />
-          <h2 className={classes.heads}>
-            Unpaired Students
-          </h2>
-          <Paper>
-            <Grid rows={rows} columns={columns}>
-              <SearchState defaultValue="" />
-              <IntegratedFiltering />
-              <RowDetailState
-                defaultExpandedRowIds={[]}
-              />
-              <SortingState
-                defaultSorting={[{ columnName: 'first_name', direction: 'asc' }]}
-              />
-              <IntegratedSorting />
-              <Table className={classes.tableClass}/>
-              <TableColumnResizing columnWidths={columnWid}/>
-              <TableHeaderRow showSortingControls resizingEnabled={true}/> {/*Need to customise to make the headings more distinct!*/}
-              <TableRowDetail
-                contentComponent={RowDetail}
-              />
-              <TableFixedColumns
-                leftColumns={leftColumns}
-              />
-              <TableColumnVisibility/>
-              <Toolbar />
-              <ColumnChooser />
-              <SearchPanel />
-
-              {/* EDIT */}
-              {/* <Dialog open={open} onClose={onCancelChanges} aria-labelledby="form-dialog-title">
-              <DialogTitle id="form-dialog-title">Employee Details</DialogTitle>
-              <DialogContent></DialogContent>
-              <TextField
-              margin="normal"
-              name="firstName"
-              label="First Name"
-              value={row.firstName || ''}
-              onChange={onChange}
+    return (
+      <MuiThemeProvider>
+        <TopBar />
+        <h2 className={classes.heads}>
+          Unpaired Students
+        </h2>
+        {this.state.redirect}
+        {console.log(Date().toLocaleString())}
+        <Paper>
+        {console.log(this.state.rows)}
+          <Grid rows={rows} columns={columns} getRowId={getRowId}>
+            <SearchState defaultValue="" />
+            <IntegratedFiltering />
+            <RowDetailState
+              defaultExpandedRowIds={[]}
             />
-            </Dialog> */}
-
-            </Grid>
-          </Paper>
-
-        </MuiThemeProvider>
-      )
-    };
-  }
+            <SortingState/>
+            <IntegratedSorting />
+            <EditingState onCommitChanges={this.commitChanges} />
+            <Table className={classes.tableClass}/>
+            <TableColumnResizing columnWidths={columnWid} />
+          <TableHeaderRow showSortingControls resizingEnabled={true} />
+          <TableRowDetail contentComponent={RowDetail} />
+          <TableEditColumn showEditCommand showAddCommand showDeleteCommand />
+          <TableFixedColumns/>
+          <TableColumnVisibility
+          // defaultHiddenColumnNames={defaultHiddenColumnNames}
+          />
+            <Toolbar />
+            <EditPopupPlugin popupComponent={EditPopup} />
+            <ColumnChooser />
+            <SearchPanel />
+          </Grid>
+        </Paper>
+        <br />
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <ColorButton
+          variant="contained"
+          color="primary"
+          className={classes.margin}
+          onClick={() =>
+            this.setState({ redirect: <Redirect push to="/adminhome" /> })
+          }
+        >
+          Back
+        </ColorButton>
+        <ColorButton
+          variant="contained"
+          color="primary"
+          className={classes.margin}
+          onClick={this.saveChanges}
+        >
+          Save Changes
+        </ColorButton>
+        <br />
+      </div>
+      </MuiThemeProvider>
+    )
+  };
+}
   
   export default withStyles(useStyles)(Unpaired);
   

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import AppBar from "@material-ui/core/AppBar";
 import { withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import HeaderImg from "./test_img.png";
+import HeaderImg from "./LEP_header.png";
 
 const useStyles = (theme) => ({
   root: {
@@ -11,13 +11,9 @@ const useStyles = (theme) => ({
   title: {
     flexGrow: 3,
     alignSelf: "flex-start",
-    color: "#C4820E", //#C4820E
     padding: "0.5%",
-    margin: "25% 2% 5% 2%",
-    border: "solid #003262 2px",
-    backgroundColor: "#003262",
-    fontSize: "48px",
-    borderRadius: "2px",
+    margin: "50% 2% 5% 2%",
+    fontSize: "1px",
   },
   topBar: {
     backgroundImage: `url(${HeaderImg})`,
@@ -36,7 +32,7 @@ class TopBar extends Component {
       <div className={classes.root}>
         <AppBar className={classes.topBar} position="static">
           <Typography className={classes.title} variant="h4" noWrap>
-            Student Learning Center
+            .
           </Typography>
         </AppBar>
       </div>

@@ -15,10 +15,15 @@ import { Redirect } from "react-router-dom";
 const useStyles = (theme) => ({
   formControl: {
     margin: theme.spacing(1),
-    minWidth: 350,
+    // minWidth: 350,
   },
   selectEmpty: {
     marginTop: theme.spacing(2),
+  },
+  heads: {
+    color: "black",
+    textAlign: "center",
+    fontSize: 35,
   },
   buttonRoot: {
     background: "linear-gradient(45deg, #687732 30%, #7A8B39 90%)",
@@ -74,11 +79,13 @@ class Home extends Component {
       <MuiThemeProvider>
         <>
           <TopBar />
+          <div className={classes.formControl}>
+
           {this.state.redirect}
-          <h1>Home</h1>
-          <p>Welcome to the SLC</p>
+          <h1 className={classes.heads}>Home</h1>
+          <p className={classes.heads}>Welcome to the SLC</p>
           <Button
-            className={classes.buttonRoot}
+            className={classes.buttonRoot} style={{position: "absolute", left: 400, top:1000}}
             onClick={() =>
               this.setState({ redirect: <Redirect push to="/unpaired" /> })
             }
@@ -86,7 +93,7 @@ class Home extends Component {
             Unpaired
           </Button>
           <Button
-            className={classes.buttonRoot}
+            className={classes.buttonRoot} style={{position: "absolute", right:400, top:1000}}
             onClick={() =>
               this.setState({ redirect: <Redirect push to="/paired" /> })
             }
@@ -94,16 +101,17 @@ class Home extends Component {
             Paired
           </Button>
           <Button
-            className={classes.buttonRoot}
+            className={classes.buttonRoot} style={{position: "absolute", left: 400, top:1100}}
             onClick={() =>
               this.setState({ redirect: <Redirect push to="/formpairs" /> })
             }
           >
             Form new pairs
           </Button>
-          <Button className={classes.buttonRoot} onClick={this.logout}>
+          <Button className={classes.buttonRoot} style={{position: "absolute", right: 400, top:1100}} onClick={this.logout}>
             Logout
           </Button>
+          </div>
         </>
       </MuiThemeProvider>
     );

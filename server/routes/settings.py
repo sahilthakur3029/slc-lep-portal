@@ -10,7 +10,7 @@ settings = Blueprint('settings', __name__, template_folder='templates')
 CORS(settings)
 
 # Connect to your postgres DB
-conn = psycopg2.connect("dbname=slcapplication user=postgres")
+conn = psycopg2.connect("dbname=slcapplication user=postgres password=ksshiraja")
 
 # ON DEPLOYMENT UNCOMMENT DELETING INTAKEFORM
 @settings.route('/savedata', methods=["POST"])

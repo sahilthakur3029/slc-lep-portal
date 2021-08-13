@@ -3,6 +3,8 @@ import TopBar from "../IntakeForm/TopBar";
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
 import { withStyles } from "@material-ui/core/styles";
 import { Redirect } from "react-router-dom";
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
 import // State or Local Processing Plugins
 "@devexpress/dx-react-grid";
 import "@devexpress/dx-react-grid-bootstrap4/dist/dx-react-grid-bootstrap4.css";
@@ -46,6 +48,10 @@ import {
 } from "@devexpress/dx-react-grid";
 
 // Things to do: Editing in a popup form
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 const useStyles = (theme) => ({
   formControl: {
@@ -340,7 +346,6 @@ const EditPopup = ({
 
 class EditPopupPlugin extends React.PureComponent {
   render() {
-    // console.log("POPUP ", this.props.popupComponent);
     const { popupComponent: Popup } = this.props;
     return (
       <Plugin>
@@ -459,8 +464,11 @@ class StudentDisplay extends Component {
         { name: "partner_gender_custom", title: "Pref. Custom Gender" },
         { name: "partner_gender_weight", title: "Pref. Gender Weight" },
       ],
-      rows: null,
+      rows: [],
       redirect: null,
+      csrfToken: "",
+      isAuthenticated: "",
+      openAlert: false,
     };
     this.commitChanges = this.commitChanges.bind(this);
     this.saveChanges = this.saveChanges.bind(this);
@@ -468,96 +476,109 @@ class StudentDisplay extends Component {
   }
 
   componentDidMount() {
-    const { REACT_APP_NAMES } = process.env;
-    let rows_array = [];
-    let counter = 1;
-    fetch(REACT_APP_NAMES)
-      .then((response) => response.json())
-      .then((data) => {
-        for (const student of data) {
-          rows_array.push({
-            id: counter,
-            first_name: student[0],
-            last_name: student[1],
-            email: student[2],
-            class_standing: student[3],
-            domestic_status: student[4],
-            major: student[5],
-            gender: student[6],
-            gender_custom: student[7],
-            days_of_week: student[8].join(", "),
-            hope_to_gain: student[9],
-            plan_to_meet: student[10],
-            lang_1_learn: student[11],
-            lang_1_learn_other: student[12],
-            lang_1_learn_level: student[13],
-            lang_2_learn: student[14],
-            lang_2_learn_other: student[15],
-            lang_2_learn_level: student[16],
-            lang_1_teach: student[17],
-            lang_1_teach_other: student[18],
-            lang_1_teach_level: student[19],
-            lang_2_teach: student[20],
-            lang_2_teach_other: student[21],
-            lang_2_teach_level: student[22],
-            comments: student[23],
-            partner_major: student[24],
-            partner_major_weight: student[25],
-            partner_gender: student[26],
-            partner_gender_custom: student[27],
-            partner_gender_weight: student[28],
-          });
-          counter = counter + 1;
-        }
-        this.setState({
-          rows: rows_array,
-        });
+    const { REACT_APP_CSRF } = process.env;
+    fetch(REACT_APP_CSRF, {
+      credentials: "include",
+    })
+      .then((res) => {
+        this.setState({ csrfToken: res.headers.get(["X-CSRFToken"]) });
       })
-      .catch((error) => console.log("Error", error));
+      .catch((err) => {
+        this.setState({ redirect: <Redirect push to="/signin" /> });
+      });
+    const { REACT_APP_GET_SESSION } = process.env;
+    fetch(REACT_APP_GET_SESSION, {
+      credentials: "include",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.login == true) {
+          this.setState({ isAuthenticated: true });
+          const { REACT_APP_NAMES } = process.env;
+          let rows_array = [];
+          let counter = 1;
+          fetch(REACT_APP_NAMES)
+            .then((response) => response.json())
+            .then((data) => {
+              for (const student of data) {
+                rows_array.push({
+                  id: counter,
+                  first_name: student[0],
+                  last_name: student[1],
+                  email: student[2],
+                  class_standing: student[3],
+                  domestic_status: student[4],
+                  major: student[5],
+                  gender: student[6],
+                  gender_custom: student[7],
+                  days_of_week: student[8].join(", "),
+                  hope_to_gain: student[9],
+                  plan_to_meet: student[10],
+                  lang_1_learn: student[11],
+                  lang_1_learn_other: student[12],
+                  lang_1_learn_level: student[13],
+                  lang_2_learn: student[14],
+                  lang_2_learn_other: student[15],
+                  lang_2_learn_level: student[16],
+                  lang_1_teach: student[17],
+                  lang_1_teach_other: student[18],
+                  lang_1_teach_level: student[19],
+                  lang_2_teach: student[20],
+                  lang_2_teach_other: student[21],
+                  lang_2_teach_level: student[22],
+                  comments: student[23],
+                  partner_major: student[24],
+                  partner_major_weight: student[25],
+                  partner_gender: student[26],
+                  partner_gender_custom: student[27],
+                  partner_gender_weight: student[28],
+                });
+                counter = counter + 1;
+              }
+              this.setState({
+                rows: rows_array,
+              });
+            })
+            .catch((error) =>
+              alert(
+                "Something went wrong in receiving data. Please try again later."
+              )
+            );
+        } else {
+          this.setState({ redirect: <Redirect push to="/signin" /> });
+        }
+      })
+      .catch((err) => {
+        alert("Something went wrong. Please reload and try again later.");
+      });
   }
 
   saveChanges() {
-    console.log(this.state.rows);
-    // const { REACT_APP_SAVE } = process.env;
-    // let endWeek = this.state.endWeek;
-    // let startWeek = this.state.startWeek;
-    // if (
-    //   !/^\d+$/.test(startWeek) ||
-    //   !/^\d+$/.test(endWeek) ||
-    //   startWeek >= endWeek
-    // ) {
-    //   startWeek = 3;
-    //   endWeek = 16;
-    // }
-    // fetch(REACT_APP_SAVE, {
-    //   method: "POST",
-    //   mode: "cors",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //     "X-CSRFToken": this.state.csrfToken,
-    //   },
-    //   body: JSON.stringify({
-    //     currSem: this.state.currSem,
-    //     calendarLink: this.state.calendarLink,
-    //     orientationKey: this.state.orientationKey,
-    //     startWeek: startWeek,
-    //     endWeek: endWeek,
-    //     deleteData: this.state.deleteData,
-    //   }),
-    // })
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     if (data.success == true) {
-    //       this.setState({ openAlert: true });
-    //       return "Success";
-    //     } else {
-    //       this.setState({ redirect: <Redirect push to="/signin" /> });
-    //     }
-    //   })
-    //   .catch((error) =>
-    //     alert("Something went horribly wrong. Please try again later.")
-    //   );
-    // return "Failed";
+    const { REACT_APP_UPDATEINTAKE } = process.env;
+    fetch(REACT_APP_UPDATEINTAKE, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": this.state.csrfToken,
+      },
+      body: JSON.stringify({
+        intakedata: this.state.rows,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success == true) {
+          this.setState({ openAlert: true });
+          return "Success";
+        } else {
+          this.setState({ redirect: <Redirect push to="/signin" /> });
+        }
+      })
+      .catch((error) =>
+        alert("Something went wrong. Please reload try again later.")
+      );
+    return "Failed";
   }
   deleteRows(deletedIds) {
     let { rows } = this.state;
@@ -596,6 +617,14 @@ class StudentDisplay extends Component {
     }
     this.setState({ rows: changedRows });
   }
+
+  handleCloseOnAlert = (e, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    this.setState({ openAlert: false });
+  };
 
   render() {
     if (!this.state.rows) {
@@ -650,7 +679,15 @@ class StudentDisplay extends Component {
         <TopBar />
         <h2 className={classes.heads}>Student List</h2>
         {this.state.redirect}
-        {console.log(Date().toLocaleString())}
+        <Snackbar
+          open={this.state.openAlert}
+          autoHideDuration={5000}
+          onClose={() => this.setState({ openAlert: false })}
+        >
+          <Alert onClose={this.handleCloseOnAlert} severity="success">
+            Save Successful!
+          </Alert>
+        </Snackbar>
         <Paper>
           {console.log(this.state.rows)}
           <Grid rows={rows} columns={columns} getRowId={getRowId}>

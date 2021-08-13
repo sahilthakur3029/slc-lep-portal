@@ -1,6 +1,9 @@
 from flask import Flask, Blueprint, jsonify, request
 from flask_cors import CORS
 import psycopg2
+from flask_login import (
+    login_required,
+)
 
 studentdisplay = Blueprint('studentdisplay', __name__, template_folder='templates')
 CORS(studentdisplay)
@@ -20,3 +23,5 @@ def getStudents():
     # Close cursor
     cur.close()
     return jsonify(records)
+
+# @studentdisplay.route('/updateform', methods = ['POST'])

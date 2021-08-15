@@ -29,8 +29,9 @@ def getStudents():
 def updateIntake():
     # Open a cursor to perform database operations
     cur = conn.cursor()
-    data_json = request.get_json()
-    print(data_json)
+    data_json = request.get_json()['intakedata']
+    for student in data_json:
+        print(student)
     # Commit changes
     conn.commit()
     # Close cursor

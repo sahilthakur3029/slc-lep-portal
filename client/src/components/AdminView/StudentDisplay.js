@@ -5,6 +5,7 @@ import { withStyles } from "@material-ui/core/styles";
 import { Redirect } from "react-router-dom";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
+import { titleCase } from "title-case";
 import // State or Local Processing Plugins
 "@devexpress/dx-react-grid";
 import "@devexpress/dx-react-grid-bootstrap4/dist/dx-react-grid-bootstrap4.css";
@@ -106,21 +107,21 @@ const EditPopup = ({
     <DialogTitle>Edit Row</DialogTitle>
     <DialogContent>
       <FormControl>
-        <InputLabel>First Name</InputLabel>
+        <InputLabel>First Name *</InputLabel>
         <Input
           value={row.first_name || ""}
           onChange={(event) => onChange("first_name", event.target.value)}
         />
       </FormControl>{" "}
       <FormControl>
-        <InputLabel>Last Name</InputLabel>
+        <InputLabel>Last Name *</InputLabel>
         <Input
           value={row.last_name || ""}
           onChange={(event) => onChange("last_name", event.target.value)}
         />
       </FormControl>{" "}
       <FormControl>
-        <InputLabel>Email</InputLabel>
+        <InputLabel>Email *</InputLabel>
         <Input
           value={row.email || ""}
           onChange={(event) => onChange("email", event.target.value)}
@@ -169,7 +170,7 @@ const EditPopup = ({
         />
       </FormControl>{" "}
       <FormControl>
-        <InputLabel>Lang. 1 Learn</InputLabel>
+        <InputLabel>Lang. 1 Learn *</InputLabel>
         <Input
           value={row.lang_1_learn || ""}
           onChange={(event) => onChange("lang_1_learn", event.target.value)}
@@ -185,7 +186,7 @@ const EditPopup = ({
         />
       </FormControl>{" "}
       <FormControl>
-        <InputLabel>Lang. 1 Learn Level</InputLabel>
+        <InputLabel>Lang. 1 Learn Level *</InputLabel>
         <Input
           value={row.lang_1_learn_level || ""}
           onChange={(event) =>
@@ -219,7 +220,7 @@ const EditPopup = ({
         />
       </FormControl>{" "}
       <FormControl>
-        <InputLabel>Lang. 1 Teach</InputLabel>
+        <InputLabel>Lang. 1 Teach *</InputLabel>
         <Input
           value={row.lang_1_teach || ""}
           onChange={(event) => onChange("lang_1_teach", event.target.value)}
@@ -235,7 +236,7 @@ const EditPopup = ({
         />
       </FormControl>{" "}
       <FormControl>
-        <InputLabel>Lang. 1 Teach Level</InputLabel>
+        <InputLabel>Lang. 1 Teach Level *</InputLabel>
         <Input
           value={row.lang_1_teach_level || ""}
           onChange={(event) =>
@@ -323,6 +324,13 @@ const EditPopup = ({
         <Input
           value={row.plan_to_meet || ""}
           onChange={(event) => onChange("plan_to_meet", event.target.value)}
+        />
+      </FormControl>{" "}
+      <FormControl fullWidth>
+        <InputLabel>Waiver Accept</InputLabel>
+        <Input
+          value={row.waiver_accept || ""}
+          onChange={(event) => onChange("waiver_accept", event.target.value)}
         />
       </FormControl>{" "}
       <FormControl fullWidth>
@@ -473,6 +481,7 @@ class StudentDisplay extends Component {
     this.commitChanges = this.commitChanges.bind(this);
     this.saveChanges = this.saveChanges.bind(this);
     this.deleteRows = this.deleteRows.bind(this);
+    this.pushData = this.pushData.bind(this);
   }
 
   componentDidMount() {
@@ -532,6 +541,8 @@ class StudentDisplay extends Component {
                   partner_gender: student[26],
                   partner_gender_custom: student[27],
                   partner_gender_weight: student[28],
+                  waiver_accept: student[29],
+                  timestamp: student[30],
                 });
                 counter = counter + 1;
               }
@@ -554,6 +565,95 @@ class StudentDisplay extends Component {
   }
 
   saveChanges() {
+    let rowsCopy = [...this.state.rows];
+    let errors = false;
+    for (let i = 0; i < rowsCopy.length; i++) {
+      let student = { ...rowsCopy[i] };
+      if (
+        student["first_name"] === undefined ||
+        student["first_name"].trim() === "" ||
+        student["last_name"] === undefined ||
+        student["last_name"].trim() === "" ||
+        student["email"] === undefined ||
+        student["email"].trim() === "" ||
+        student["lang_1_learn"] === undefined ||
+        student["lang_1_learn"].trim() === "" ||
+        student["lang_1_learn_level"] === undefined ||
+        student["lang_1_teach"] === undefined ||
+        student["lang_1_teach"].trim() === "" ||
+        student["lang_1_teach_level"] === undefined ||
+        !/^[1-5]$/.test(student["lang_1_learn_level"]) ||
+        !/^[1-5]$/.test(student["lang_1_teach_level"])
+      ) {
+        errors = true;
+      } else {
+        student["first_name"] = titleCase(student["first_name"].trim());
+        student["last_name"] = titleCase(student["last_name"].trim());
+        student["email"] = student["email"].trim();
+        student["lang_1_learn"] = titleCase(student["lang_1_learn"].trim());
+        student["lang_1_teach"] = titleCase(student["lang_1_teach"].trim());
+        // if values do exist, trim them (gets rid of accidental whitespace)
+        if (student["lang_2_learn"] !== undefined) {
+          student["lang_2_learn"] = titleCase(student["lang_2_learn"].trim());
+          if (student["lang_2_learn"] !== "") {
+            if (!/^[1-5]$/.test(student["lang_2_learn_level"])) {
+              errors = true;
+            }
+          } else {
+            student["lang_2_learn_level"] = "";
+          }
+        }
+        if (student["lang_2_teach"] !== undefined) {
+          student["lang_2_teach"] = titleCase(student["lang_2_teach"].trim());
+          if (student["lang_2_teach"] !== "") {
+            if (!/^[1-5]$/.test(student["lang_2_teach_level"])) {
+              errors = true;
+            }
+          } else {
+            student["lang_2_teach_level"] = "";
+          }
+        }
+        if (student["partner_major"] !== undefined) {
+          student["partner_major"] = student["partner_major"].trim();
+          if (student["partner_major"] !== "") {
+            if (!/^[1-5]$/.test(student["partner_major_weight"])) {
+              errors = true;
+            }
+          } else {
+            student["partner_major_weight"] = "";
+          }
+        }
+        if (student["partner_gender"] !== undefined) {
+          student["partner_gender"] = titleCase(
+            student["partner_gender"].trim()
+          );
+          if (student["partner_gender"] !== "") {
+            if (!/^[1-5]$/.test(student["partner_gender_weight"])) {
+              errors = true;
+            }
+          } else {
+            student["partner_gender_weight"] = "";
+          }
+        }
+        if (student["gender"] !== undefined) {
+          student["gender"] = titleCase(student["gender"].trim());
+        }
+        if (student["major"] !== undefined) {
+          student["major"] = student["major"].trim();
+        }
+      }
+      rowsCopy[i] = student;
+    }
+    this.setState({ rows: rowsCopy }, () => {
+      this.pushData(errors);
+    });
+    return "Complete";
+  }
+  pushData(errors) {
+    if (errors) {
+      console.log("ERRORS");
+      return;
+    }
     const { REACT_APP_UPDATEINTAKE } = process.env;
     fetch(REACT_APP_UPDATEINTAKE, {
       method: "POST",
@@ -636,8 +736,11 @@ class StudentDisplay extends Component {
 
     const RowDetail = ({ row }) => (
       <div>
-        Hope to Gain: {row.hope_to_gain} <br />
+        Hope to Gain: {row.hope_to_gain}
+        <br />
         Plan to Meet: {row.plan_to_meet}
+        <br />
+        Waiver Acceptance: {row.waiver_accept}
         <br />
         Comments: {row.comments}
       </div>
@@ -689,7 +792,6 @@ class StudentDisplay extends Component {
           </Alert>
         </Snackbar>
         <Paper>
-          {console.log(this.state.rows)}
           <Grid rows={rows} columns={columns} getRowId={getRowId}>
             <SearchState defaultValue="" />
             <IntegratedFiltering />

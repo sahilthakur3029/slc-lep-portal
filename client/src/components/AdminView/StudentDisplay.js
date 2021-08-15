@@ -477,6 +477,7 @@ class StudentDisplay extends Component {
       csrfToken: "",
       isAuthenticated: "",
       openAlert: false,
+      openAlertFail: false,
     };
     this.commitChanges = this.commitChanges.bind(this);
     this.saveChanges = this.saveChanges.bind(this);
@@ -651,7 +652,7 @@ class StudentDisplay extends Component {
   }
   pushData(errors) {
     if (errors) {
-      console.log("ERRORS");
+      this.setState({ openAlertFail: true });
       return;
     }
     const { REACT_APP_UPDATEINTAKE } = process.env;
@@ -722,8 +723,15 @@ class StudentDisplay extends Component {
     if (reason === "clickaway") {
       return;
     }
-
     this.setState({ openAlert: false });
+  };
+
+  handleCloseOnAlertFail = (e, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    this.setState({ openAlertFail: false });
   };
 
   render() {
@@ -789,6 +797,15 @@ class StudentDisplay extends Component {
         >
           <Alert onClose={this.handleCloseOnAlert} severity="success">
             Save Successful!
+          </Alert>
+        </Snackbar>
+        <Snackbar
+          open={this.state.openAlertFail}
+          autoHideDuration={5000}
+          onClose={() => this.setState({ openAlertFail: false })}
+        >
+          <Alert onClose={this.handleCloseOnAlertFail} severity="error">
+            Please ensure you have filled out all necessary fields correctly
           </Alert>
         </Snackbar>
         <Paper>

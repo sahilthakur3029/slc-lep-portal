@@ -601,7 +601,7 @@ class StudentDisplay extends Component {
               errors = true;
             }
           } else {
-            student["lang_2_learn_level"] = "";
+            student["lang_2_learn_level"] = "0";
           }
         }
         if (student["lang_2_teach"] !== undefined) {
@@ -611,7 +611,7 @@ class StudentDisplay extends Component {
               errors = true;
             }
           } else {
-            student["lang_2_teach_level"] = "";
+            student["lang_2_teach_level"] = "0";
           }
         }
         if (student["partner_major"] !== undefined) {
@@ -621,7 +621,7 @@ class StudentDisplay extends Component {
               errors = true;
             }
           } else {
-            student["partner_major_weight"] = "";
+            student["partner_major_weight"] = "0";
           }
         }
         if (student["partner_gender"] !== undefined) {
@@ -633,7 +633,7 @@ class StudentDisplay extends Component {
               errors = true;
             }
           } else {
-            student["partner_gender_weight"] = "";
+            student["partner_gender_weight"] = "0";
           }
         }
         if (student["gender"] !== undefined) {

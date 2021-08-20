@@ -48,15 +48,15 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.session_protection = "strong"
 
-csrf = CSRFProtect(app)
+csrf = CSRFProtect(app) 
 cors = CORS(
     app,
-    resources={r"*": {"origins": "http://localhost:3000"}},
+    resources={r"*": {"origins": "*"}},
     expose_headers=["Content-Type", "X-CSRFToken"],
     supports_credentials=True,
 )
 
-app.config['GOOGLE_CLIENT_ID'] = "400000931739-oqett115tft12ja9u5lehnimqu87bebd.apps.googleusercontent.com"
+app.config['GOOGLE_CLIENT_ID'] = "765830083555-tnqn5hsvb0fodkq4h5foi7tat4d335ts.apps.googleusercontent.com"
 
 @login_manager.unauthorized_handler     
 def unauthorized_callback():  

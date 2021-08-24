@@ -85,6 +85,7 @@ class Settings extends Component {
       },
       open: false,
       mail_merge: "",
+      isAuthenticated: "",
     };
     this.jsonParser = this.jsonParser.bind(this);
     this.formatNames = this.formatNames.bind(this);
@@ -295,7 +296,7 @@ class Settings extends Component {
         }
       })
       .catch((err) => {
-        alert("Something went horribly wrong. Please try again later.");
+        alert("Something went wrong. Please try again later.");
       });
   }
 
@@ -376,7 +377,7 @@ class Settings extends Component {
         }
       })
       .catch((error) =>
-        alert("Something went horribly wrong. Please try again later.")
+        alert("Something went wrong. Please reload and try again later.")
       );
     return "Failed";
   }

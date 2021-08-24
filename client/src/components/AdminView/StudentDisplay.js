@@ -3,6 +3,9 @@ import TopBar from "../IntakeForm/TopBar";
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
 import { withStyles } from "@material-ui/core/styles";
 import { Redirect } from "react-router-dom";
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
+import { titleCase } from "title-case";
 import // State or Local Processing Plugins
 "@devexpress/dx-react-grid";
 import "@devexpress/dx-react-grid-bootstrap4/dist/dx-react-grid-bootstrap4.css";
@@ -46,6 +49,10 @@ import {
 } from "@devexpress/dx-react-grid";
 
 // Things to do: Editing in a popup form
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 const useStyles = (theme) => ({
   formControl: {
@@ -100,21 +107,21 @@ const EditPopup = ({
     <DialogTitle>Edit Row</DialogTitle>
     <DialogContent>
       <FormControl>
-        <InputLabel>First Name</InputLabel>
+        <InputLabel>First Name *</InputLabel>
         <Input
           value={row.first_name || ""}
           onChange={(event) => onChange("first_name", event.target.value)}
         />
       </FormControl>{" "}
       <FormControl>
-        <InputLabel>Last Name</InputLabel>
+        <InputLabel>Last Name *</InputLabel>
         <Input
           value={row.last_name || ""}
           onChange={(event) => onChange("last_name", event.target.value)}
         />
       </FormControl>{" "}
       <FormControl>
-        <InputLabel>Email</InputLabel>
+        <InputLabel>Email *</InputLabel>
         <Input
           value={row.email || ""}
           onChange={(event) => onChange("email", event.target.value)}
@@ -163,7 +170,7 @@ const EditPopup = ({
         />
       </FormControl>{" "}
       <FormControl>
-        <InputLabel>Lang. 1 Learn</InputLabel>
+        <InputLabel>Lang. 1 Learn *</InputLabel>
         <Input
           value={row.lang_1_learn || ""}
           onChange={(event) => onChange("lang_1_learn", event.target.value)}
@@ -179,7 +186,7 @@ const EditPopup = ({
         />
       </FormControl>{" "}
       <FormControl>
-        <InputLabel>Lang. 1 Learn Level</InputLabel>
+        <InputLabel>Lang. 1 Learn Level *</InputLabel>
         <Input
           value={row.lang_1_learn_level || ""}
           onChange={(event) =>
@@ -213,7 +220,7 @@ const EditPopup = ({
         />
       </FormControl>{" "}
       <FormControl>
-        <InputLabel>Lang. 1 Teach</InputLabel>
+        <InputLabel>Lang. 1 Teach *</InputLabel>
         <Input
           value={row.lang_1_teach || ""}
           onChange={(event) => onChange("lang_1_teach", event.target.value)}
@@ -229,7 +236,7 @@ const EditPopup = ({
         />
       </FormControl>{" "}
       <FormControl>
-        <InputLabel>Lang. 1 Teach Level</InputLabel>
+        <InputLabel>Lang. 1 Teach Level *</InputLabel>
         <Input
           value={row.lang_1_teach_level || ""}
           onChange={(event) =>
@@ -320,6 +327,13 @@ const EditPopup = ({
         />
       </FormControl>{" "}
       <FormControl fullWidth>
+        <InputLabel>Waiver Accept</InputLabel>
+        <Input
+          value={row.waiver_accept || ""}
+          onChange={(event) => onChange("waiver_accept", event.target.value)}
+        />
+      </FormControl>{" "}
+      <FormControl fullWidth>
         <InputLabel>Comments</InputLabel>
         <Input
           value={row.comments || ""}
@@ -340,7 +354,6 @@ const EditPopup = ({
 
 class EditPopupPlugin extends React.PureComponent {
   render() {
-    // console.log("POPUP ", this.props.popupComponent);
     const { popupComponent: Popup } = this.props;
     return (
       <Plugin>
@@ -459,105 +472,214 @@ class StudentDisplay extends Component {
         { name: "partner_gender_custom", title: "Pref. Custom Gender" },
         { name: "partner_gender_weight", title: "Pref. Gender Weight" },
       ],
-      rows: null,
+      rows: [],
       redirect: null,
+      csrfToken: "",
+      isAuthenticated: "",
+      openAlert: false,
+      openAlertFail: false,
     };
     this.commitChanges = this.commitChanges.bind(this);
     this.saveChanges = this.saveChanges.bind(this);
     this.deleteRows = this.deleteRows.bind(this);
+    this.pushData = this.pushData.bind(this);
   }
 
   componentDidMount() {
-    const { REACT_APP_NAMES } = process.env;
-    let rows_array = [];
-    let counter = 1;
-    fetch(REACT_APP_NAMES)
-      .then((response) => response.json())
-      .then((data) => {
-        for (const student of data) {
-          rows_array.push({
-            id: counter,
-            first_name: student[0],
-            last_name: student[1],
-            email: student[2],
-            class_standing: student[3],
-            domestic_status: student[4],
-            major: student[5],
-            gender: student[6],
-            gender_custom: student[7],
-            days_of_week: student[8].join(", "),
-            hope_to_gain: student[9],
-            plan_to_meet: student[10],
-            lang_1_learn: student[11],
-            lang_1_learn_other: student[12],
-            lang_1_learn_level: student[13],
-            lang_2_learn: student[14],
-            lang_2_learn_other: student[15],
-            lang_2_learn_level: student[16],
-            lang_1_teach: student[17],
-            lang_1_teach_other: student[18],
-            lang_1_teach_level: student[19],
-            lang_2_teach: student[20],
-            lang_2_teach_other: student[21],
-            lang_2_teach_level: student[22],
-            comments: student[23],
-            partner_major: student[24],
-            partner_major_weight: student[25],
-            partner_gender: student[26],
-            partner_gender_custom: student[27],
-            partner_gender_weight: student[28],
-          });
-          counter = counter + 1;
-        }
-        this.setState({
-          rows: rows_array,
-        });
+    const { REACT_APP_CSRF } = process.env;
+    fetch(REACT_APP_CSRF, {
+      credentials: "include",
+    })
+      .then((res) => {
+        this.setState({ csrfToken: res.headers.get(["X-CSRFToken"]) });
       })
-      .catch((error) => console.log("Error", error));
+      .catch((err) => {
+        this.setState({ redirect: <Redirect push to="/signin" /> });
+      });
+    const { REACT_APP_GET_SESSION } = process.env;
+    fetch(REACT_APP_GET_SESSION, {
+      credentials: "include",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.login == true) {
+          this.setState({ isAuthenticated: true });
+          const { REACT_APP_NAMES } = process.env;
+          let rows_array = [];
+          let counter = 1;
+          fetch(REACT_APP_NAMES)
+            .then((response) => response.json())
+            .then((data) => {
+              for (const student of data) {
+                rows_array.push({
+                  id: counter,
+                  first_name: student[0],
+                  last_name: student[1],
+                  email: student[2],
+                  class_standing: student[3],
+                  domestic_status: student[4],
+                  major: student[5],
+                  gender: student[6],
+                  gender_custom: student[7],
+                  days_of_week: student[8].join(", "),
+                  hope_to_gain: student[9],
+                  plan_to_meet: student[10],
+                  lang_1_learn: student[11],
+                  lang_1_learn_other: student[12],
+                  lang_1_learn_level: student[13],
+                  lang_2_learn: student[14],
+                  lang_2_learn_other: student[15],
+                  lang_2_learn_level: student[16],
+                  lang_1_teach: student[17],
+                  lang_1_teach_other: student[18],
+                  lang_1_teach_level: student[19],
+                  lang_2_teach: student[20],
+                  lang_2_teach_other: student[21],
+                  lang_2_teach_level: student[22],
+                  comments: student[23],
+                  partner_major: student[24],
+                  partner_major_weight: student[25],
+                  partner_gender: student[26],
+                  partner_gender_custom: student[27],
+                  partner_gender_weight: student[28],
+                  waiver_accept: student[29],
+                  timestamp: student[30],
+                });
+                counter = counter + 1;
+              }
+              this.setState({
+                rows: rows_array,
+              });
+            })
+            .catch((error) =>
+              alert(
+                "Something went wrong in receiving data. Please try again later."
+              )
+            );
+        } else {
+          this.setState({ redirect: <Redirect push to="/signin" /> });
+        }
+      })
+      .catch((err) => {
+        alert("Something went wrong. Please reload and try again later.");
+      });
   }
 
   saveChanges() {
-    console.log(this.state.rows);
-    // const { REACT_APP_SAVE } = process.env;
-    // let endWeek = this.state.endWeek;
-    // let startWeek = this.state.startWeek;
-    // if (
-    //   !/^\d+$/.test(startWeek) ||
-    //   !/^\d+$/.test(endWeek) ||
-    //   startWeek >= endWeek
-    // ) {
-    //   startWeek = 3;
-    //   endWeek = 16;
-    // }
-    // fetch(REACT_APP_SAVE, {
-    //   method: "POST",
-    //   mode: "cors",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //     "X-CSRFToken": this.state.csrfToken,
-    //   },
-    //   body: JSON.stringify({
-    //     currSem: this.state.currSem,
-    //     calendarLink: this.state.calendarLink,
-    //     orientationKey: this.state.orientationKey,
-    //     startWeek: startWeek,
-    //     endWeek: endWeek,
-    //     deleteData: this.state.deleteData,
-    //   }),
-    // })
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     if (data.success == true) {
-    //       this.setState({ openAlert: true });
-    //       return "Success";
-    //     } else {
-    //       this.setState({ redirect: <Redirect push to="/signin" /> });
-    //     }
-    //   })
-    //   .catch((error) =>
-    //     alert("Something went horribly wrong. Please try again later.")
-    //   );
-    // return "Failed";
+    let rowsCopy = [...this.state.rows];
+    let errors = false;
+    for (let i = 0; i < rowsCopy.length; i++) {
+      let student = { ...rowsCopy[i] };
+      if (
+        student["first_name"] === undefined ||
+        student["first_name"].trim() === "" ||
+        student["last_name"] === undefined ||
+        student["last_name"].trim() === "" ||
+        student["email"] === undefined ||
+        student["email"].trim() === "" ||
+        student["lang_1_learn"] === undefined ||
+        student["lang_1_learn"].trim() === "" ||
+        student["lang_1_learn_level"] === undefined ||
+        student["lang_1_teach"] === undefined ||
+        student["lang_1_teach"].trim() === "" ||
+        student["lang_1_teach_level"] === undefined ||
+        !/^[1-5]$/.test(student["lang_1_learn_level"]) ||
+        !/^[1-5]$/.test(student["lang_1_teach_level"])
+      ) {
+        errors = true;
+      } else {
+        student["first_name"] = titleCase(student["first_name"].trim());
+        student["last_name"] = titleCase(student["last_name"].trim());
+        student["email"] = student["email"].trim();
+        student["lang_1_learn"] = titleCase(student["lang_1_learn"].trim());
+        student["lang_1_teach"] = titleCase(student["lang_1_teach"].trim());
+        // if values do exist, trim them (gets rid of accidental whitespace)
+        if (student["lang_2_learn"] !== undefined) {
+          student["lang_2_learn"] = titleCase(student["lang_2_learn"].trim());
+          if (student["lang_2_learn"] !== "") {
+            if (!/^[1-5]$/.test(student["lang_2_learn_level"])) {
+              errors = true;
+            }
+          } else {
+            student["lang_2_learn_level"] = "0";
+          }
+        }
+        if (student["lang_2_teach"] !== undefined) {
+          student["lang_2_teach"] = titleCase(student["lang_2_teach"].trim());
+          if (student["lang_2_teach"] !== "") {
+            if (!/^[1-5]$/.test(student["lang_2_teach_level"])) {
+              errors = true;
+            }
+          } else {
+            student["lang_2_teach_level"] = "0";
+          }
+        }
+        if (student["partner_major"] !== undefined) {
+          student["partner_major"] = student["partner_major"].trim();
+          if (student["partner_major"] !== "") {
+            if (!/^[1-5]$/.test(student["partner_major_weight"])) {
+              errors = true;
+            }
+          } else {
+            student["partner_major_weight"] = "0";
+          }
+        }
+        if (student["partner_gender"] !== undefined) {
+          student["partner_gender"] = titleCase(
+            student["partner_gender"].trim()
+          );
+          if (student["partner_gender"] !== "") {
+            if (!/^[1-5]$/.test(student["partner_gender_weight"])) {
+              errors = true;
+            }
+          } else {
+            student["partner_gender_weight"] = "0";
+          }
+        }
+        if (student["gender"] !== undefined) {
+          student["gender"] = titleCase(student["gender"].trim());
+        }
+        if (student["major"] !== undefined) {
+          student["major"] = student["major"].trim();
+        }
+      }
+      rowsCopy[i] = student;
+    }
+    this.setState({ rows: rowsCopy }, () => {
+      this.pushData(errors);
+    });
+    return "Complete";
+  }
+  pushData(errors) {
+    if (errors) {
+      this.setState({ openAlertFail: true });
+      return;
+    }
+    const { REACT_APP_UPDATEINTAKE } = process.env;
+    fetch(REACT_APP_UPDATEINTAKE, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": this.state.csrfToken,
+      },
+      body: JSON.stringify({
+        intakedata: this.state.rows,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success == true) {
+          this.setState({ openAlert: true });
+          return "Success";
+        } else {
+          this.setState({ redirect: <Redirect push to="/signin" /> });
+        }
+      })
+      .catch((error) =>
+        alert("Something went wrong. Please reload try again later.")
+      );
+    return "Failed";
   }
   deleteRows(deletedIds) {
     let { rows } = this.state;
@@ -597,6 +719,21 @@ class StudentDisplay extends Component {
     this.setState({ rows: changedRows });
   }
 
+  handleCloseOnAlert = (e, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    this.setState({ openAlert: false });
+  };
+
+  handleCloseOnAlertFail = (e, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    this.setState({ openAlertFail: false });
+  };
+
   render() {
     if (!this.state.rows) {
       return <div />;
@@ -607,8 +744,11 @@ class StudentDisplay extends Component {
 
     const RowDetail = ({ row }) => (
       <div>
-        Hope to Gain: {row.hope_to_gain} <br />
+        Hope to Gain: {row.hope_to_gain}
+        <br />
         Plan to Meet: {row.plan_to_meet}
+        <br />
+        Waiver Acceptance: {row.waiver_accept}
         <br />
         Comments: {row.comments}
       </div>
@@ -650,9 +790,25 @@ class StudentDisplay extends Component {
         <TopBar />
         <h2 className={classes.heads}>Student List</h2>
         {this.state.redirect}
-        {console.log(Date().toLocaleString())}
+        <Snackbar
+          open={this.state.openAlert}
+          autoHideDuration={5000}
+          onClose={() => this.setState({ openAlert: false })}
+        >
+          <Alert onClose={this.handleCloseOnAlert} severity="success">
+            Save Successful!
+          </Alert>
+        </Snackbar>
+        <Snackbar
+          open={this.state.openAlertFail}
+          autoHideDuration={5000}
+          onClose={() => this.setState({ openAlertFail: false })}
+        >
+          <Alert onClose={this.handleCloseOnAlertFail} severity="error">
+            Please ensure you have filled out all necessary fields correctly
+          </Alert>
+        </Snackbar>
         <Paper>
-          {console.log(this.state.rows)}
           <Grid rows={rows} columns={columns} getRowId={getRowId}>
             <SearchState defaultValue="" />
             <IntegratedFiltering />

@@ -428,7 +428,10 @@ class Paired extends Component {
   };
 
   saveChanges() {
+    console.log("BUTTON CLICKED");
     console.log(this.state.rows);
+    let rowsCopy = [...this.state.rows];
+    let errors = false;
     // const { REACT_APP_SAVE } = process.env;
     // let endWeek = this.state.endWeek;
     // let startWeek = this.state.startWeek;

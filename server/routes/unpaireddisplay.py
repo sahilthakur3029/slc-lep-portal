@@ -30,7 +30,6 @@ def updatePairs():
      # Open a cursor to perform database operations
     cur = conn.cursor()
     data_json = request.get_json()['unpaireddata']
-    print(data_json)
     cur.execute("DELETE FROM unpaired")
     for student in data_json:
         if "timestamp" in student:

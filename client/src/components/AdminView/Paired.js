@@ -412,7 +412,7 @@ class Paired extends Component {
         if (data.login == true) {
           this.setState({ isAuthenticated: true });
           let rows_array = [];
-          let counter = 1;
+          let counter = 0;
           const { REACT_APP_PAIRS } = process.env;
           fetch(REACT_APP_PAIRS)
             .then((response) => response.json())
@@ -654,7 +654,6 @@ class Paired extends Component {
           </Alert>
         </Snackbar>
         <Paper>
-          {console.log(this.state.rows)}
           <Grid rows={rows} columns={columns} getRowId={getRowId}>
             <SearchState defaultValue="" />
             <IntegratedFiltering />

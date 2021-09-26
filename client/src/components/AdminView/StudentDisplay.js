@@ -506,7 +506,7 @@ class StudentDisplay extends Component {
           this.setState({ isAuthenticated: true });
           const { REACT_APP_NAMES } = process.env;
           let rows_array = [];
-          let counter = 1;
+          let counter = 0;
           fetch(REACT_APP_NAMES)
             .then((response) => response.json())
             .then((data) => {

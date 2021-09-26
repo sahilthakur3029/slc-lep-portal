@@ -3,6 +3,9 @@ import TopBar from "../IntakeForm/TopBar";
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
 import { withStyles } from "@material-ui/core/styles";
 import { Redirect } from "react-router-dom";
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
+import { titleCase } from "title-case";
 import // State or Local Processing Plugins
 "@devexpress/dx-react-grid";
 import "@devexpress/dx-react-grid-bootstrap4/dist/dx-react-grid-bootstrap4.css";
@@ -44,6 +47,10 @@ import {
   IntegratedSorting,
   RowDetailState,
 } from "@devexpress/dx-react-grid";
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 const useStyles = (theme) => ({
   formControl: {
@@ -356,7 +363,7 @@ class Paired extends Component {
         { name: "class_standing_1", title: "Class Standing 1" },
         { name: "teach_1", title: "Teach 1" },
         { name: "learn_1", title: "Learn 1" },
-        // { name: "comments_1", title: "Comments 1"},
+        // { name: "comments_1", title: "Comments 1" },
         { name: "first_name_2", title: "First Name 2" },
         { name: "last_name_2", title: "Last Name 2" },
         { name: "email_2", title: "Email 2" },
@@ -372,56 +379,90 @@ class Paired extends Component {
         { name: "learn_3", title: "Learn 3" },
         // { name: "comments_3", title: "Comments 3"},
       ],
-      rows: null,
+      rows: [],
       redirect: null,
+      csrfToken: "",
+      isAuthenticated: "",
+      openAlert: false,
+      openAlertFail: false,
     };
     this.commitChanges = this.commitChanges.bind(this);
     this.saveChanges = this.saveChanges.bind(this);
     this.deleteRows = this.deleteRows.bind(this);
+    this.pushData = this.pushData.bind(this);
   }
 
   componentDidMount() {
-    const { REACT_APP_PAIRS } = process.env;
-    let rows_array = [];
-    let counter = 1;
-    fetch(REACT_APP_PAIRS)
-      .then((response) => response.json())
-      .then((data) => {
-        for (const pairing of data) {
-          rows_array.push({
-            id: counter,
-            timestamp_1: pairing[0],
-            first_name_1: pairing[1],
-            last_name_1: pairing[2],
-            email_1: pairing[3],
-            class_standing_1: pairing[4],
-            teach_1: pairing[5],
-            learn_1: pairing[6],
-            comments_1: pairing[7],
-            timestamp_2: pairing[8],
-            first_name_2: pairing[9],
-            last_name_2: pairing[10],
-            email_2: pairing[11],
-            class_standing_2: pairing[12],
-            teach_2: pairing[13],
-            learn_2: pairing[14],
-            comments_2: pairing[15],
-            timestamp_3: pairing[16],
-            first_name_3: pairing[17],
-            last_name_3: pairing[18],
-            email_3: pairing[19],
-            class_standing_3: pairing[20],
-            teach_3: pairing[21],
-            learn_3: pairing[22],
-            comments_3: pairing[23],
-          });
-          counter = counter + 1;
-        }
-        this.setState({
-          rows: rows_array,
-        });
+    const { REACT_APP_CSRF } = process.env;
+    fetch(REACT_APP_CSRF, {
+      credentials: "include",
+    })
+      .then((res) => {
+        this.setState({ csrfToken: res.headers.get(["X-CSRFToken"]) });
       })
-      .catch((error) => console.log("Error", error));
+      .catch((err) => {
+        this.setState({ redirect: <Redirect push to="/signin" /> });
+      });
+    const { REACT_APP_GET_SESSION } = process.env;
+    fetch(REACT_APP_GET_SESSION, {
+      credentials: "include",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.login == true) {
+          this.setState({ isAuthenticated: true });
+          let rows_array = [];
+          let counter = 1;
+          const { REACT_APP_PAIRS } = process.env;
+          fetch(REACT_APP_PAIRS)
+            .then((response) => response.json())
+            .then((data) => {
+              for (const pairing of data) {
+                rows_array.push({
+                  id: counter,
+                  timestamp_1: pairing[0],
+                  first_name_1: pairing[1],
+                  last_name_1: pairing[2],
+                  email_1: pairing[3],
+                  class_standing_1: pairing[4],
+                  teach_1: pairing[5],
+                  learn_1: pairing[6],
+                  comments_1: pairing[7],
+                  timestamp_2: pairing[8],
+                  first_name_2: pairing[9],
+                  last_name_2: pairing[10],
+                  email_2: pairing[11],
+                  class_standing_2: pairing[12],
+                  teach_2: pairing[13],
+                  learn_2: pairing[14],
+                  comments_2: pairing[15],
+                  timestamp_3: pairing[16],
+                  first_name_3: pairing[17],
+                  last_name_3: pairing[18],
+                  email_3: pairing[19],
+                  class_standing_3: pairing[20],
+                  teach_3: pairing[21],
+                  learn_3: pairing[22],
+                  comments_3: pairing[23],
+                });
+                counter = counter + 1;
+              }
+              this.setState({
+                rows: rows_array,
+              });
+            })
+            .catch((error) =>
+              alert(
+                "Something went wrong in receiving data. Please try again later."
+              )
+            );
+        } else {
+          this.setState({ redirect: <Redirect push to="/signin" /> });
+        }
+      })
+      .catch((err) => {
+        alert("Something went wrong. Please reload and try again later.");
+      });
   }
   continue = (e) => {
     e.preventDefault();
@@ -432,46 +473,68 @@ class Paired extends Component {
     console.log(this.state.rows);
     let rowsCopy = [...this.state.rows];
     let errors = false;
-    // const { REACT_APP_SAVE } = process.env;
-    // let endWeek = this.state.endWeek;
-    // let startWeek = this.state.startWeek;
-    // if (
-    //   !/^\d+$/.test(startWeek) ||
-    //   !/^\d+$/.test(endWeek) ||
-    //   startWeek >= endWeek
-    // ) {
-    //   startWeek = 3;
-    //   endWeek = 16;
-    // }
-    // fetch(REACT_APP_SAVE, {
-    //   method: "POST",
-    //   mode: "cors",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //     "X-CSRFToken": this.state.csrfToken,
-    //   },
-    //   body: JSON.stringify({
-    //     currSem: this.state.currSem,
-    //     calendarLink: this.state.calendarLink,
-    //     orientationKey: this.state.orientationKey,
-    //     startWeek: startWeek,
-    //     endWeek: endWeek,
-    //     deleteData: this.state.deleteData,
-    //   }),
-    // })
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     if (data.success == true) {
-    //       this.setState({ openAlert: true });
-    //       return "Success";
-    //     } else {
-    //       this.setState({ redirect: <Redirect push to="/signin" /> });
-    //     }
-    //   })
-    //   .catch((error) =>
-    //     alert("Something went horribly wrong. Please try again later.")
-    //   );
-    // return "Failed";
+    for (let i = 0; i < rowsCopy.length; i++) {
+      let student = { ...rowsCopy[i] };
+      if (
+        student["first_name_1"] === undefined ||
+        student["first_name_1"].trim() === "" ||
+        student["last_name_1"] === undefined ||
+        student["last_name_1"].trim() === "" ||
+        student["email_1"] === undefined ||
+        student["email_1"].trim() === "" ||
+        student["first_name_2"] === undefined ||
+        student["first_name_2"].trim() === "" ||
+        student["last_name_2"] === undefined ||
+        student["last_name_2"].trim() === "" ||
+        student["email_2"] === undefined ||
+        student["email_2"].trim() === ""
+      ) {
+        errors = true;
+      } else {
+        student["first_name_1"] = titleCase(student["first_name_1"].trim());
+        student["last_name_1"] = titleCase(student["last_name_1"].trim());
+        student["email_1"] = student["email_1"].trim();
+        student["first_name_2"] = titleCase(student["first_name_2"].trim());
+        student["last_name_2"] = titleCase(student["last_name_2"].trim());
+        student["email_2"] = student["email_2"].trim();
+        //If errors occur could be due to third email
+      }
+    }
+    this.setState({ rows: rowsCopy }, () => {
+      this.pushData(errors);
+    });
+    return "Complete";
+  }
+  pushData(errors) {
+    if (errors) {
+      this.setState({ openAlertFail: true });
+      return;
+    }
+    const { REACT_APP_UPDATEPAIRS } = process.env;
+    fetch(REACT_APP_UPDATEPAIRS, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": this.state.csrfToken,
+      },
+      body: JSON.stringify({
+        pairsdata: this.state.rows,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success == true) {
+          this.setState({ openAlert: true });
+          return "Success";
+        } else {
+          this.setState({ redirect: <Redirect push to="/signin" /> });
+        }
+      })
+      .catch((error) =>
+        alert("Something went wrong. Please reload try again later.")
+      );
+    return "Failed";
   }
   deleteRows(deletedIds) {
     let { rows } = this.state;
@@ -511,6 +574,21 @@ class Paired extends Component {
     this.setState({ rows: changedRows });
   }
 
+  handleCloseOnAlert = (e, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    this.setState({ openAlert: false });
+  };
+
+  handleCloseOnAlertFail = (e, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    this.setState({ openAlertFail: false });
+  };
+
   render() {
     if (!this.state.rows) {
       return <div />;
@@ -535,21 +613,18 @@ class Paired extends Component {
       { columnName: "class_standing_1", width: 240 },
       { columnName: "teach_1", width: 240 },
       { columnName: "learn_1", width: 240 },
-      // { name: "comments_1", title: "Comments 1"},
       { columnName: "first_name_2", width: 240 },
       { columnName: "last_name_2", width: 240 },
       { columnName: "email_2", width: 240 },
       { columnName: "class_standing_2", width: 240 },
       { columnName: "teach_2", width: 240 },
       { columnName: "learn_2", width: 240 },
-      // { name: "comments_2", title: "Comments 2"},
       { columnName: "first_name_3", width: 240 },
       { columnName: "last_name_3", width: 240 },
       { columnName: "email_3", width: 240 },
       { columnName: "class_standing_3", width: 240 },
       { columnName: "teach_3", width: 240 },
       { columnName: "learn_3", width: 240 },
-      // { name: "comments_3", title: "Comments 3"},
     ];
 
     // const leftColumns = ['first_name', 'last_name'];
@@ -559,7 +634,25 @@ class Paired extends Component {
         <TopBar />
         <h2 className={classes.heads}>Pairs</h2>
         {this.state.redirect}
-        {console.log(Date().toLocaleString())}
+        {console.log(this.state)}
+        <Snackbar
+          open={this.state.openAlert}
+          autoHideDuration={5000}
+          onClose={() => this.setState({ openAlert: false })}
+        >
+          <Alert onClose={this.handleCloseOnAlert} severity="success">
+            Save Successful!
+          </Alert>
+        </Snackbar>
+        <Snackbar
+          open={this.state.openAlertFail}
+          autoHideDuration={5000}
+          onClose={() => this.setState({ openAlertFail: false })}
+        >
+          <Alert onClose={this.handleCloseOnAlertFail} severity="error">
+            Please ensure you have filled out all necessary fields correctly
+          </Alert>
+        </Snackbar>
         <Paper>
           {console.log(this.state.rows)}
           <Grid rows={rows} columns={columns} getRowId={getRowId}>

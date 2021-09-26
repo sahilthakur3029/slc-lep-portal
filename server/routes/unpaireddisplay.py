@@ -31,7 +31,17 @@ def updatePairs():
     cur = conn.cursor()
     data_json = request.get_json()['unpaireddata']
     print(data_json)
-    # cur.execute("DELETE FROM unpaired")
+    cur.execute("DELETE FROM unpaired")
+    for student in data_json:
+        if "timestamp" in student:
+            datetimeobject = datetime.strptime(student["timestamp"], '%a, %d %b %Y %H:%M:%S %Z')
+            newformat = datetimeobject.strftime('%Y-%m-%d %H:%M:%S')
+        else:
+            newformat = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
+        student["timestamp"] = newformat
+        sql = """INSERT INTO unpaired(timestamp, first, last, email, level, teach, learn, comments) VALUES(%s, %s, %s, %s, %s, %s, %s, %s)"""
+        cur.execute(sql, (student["timestamp"], student["first_name"], student["last_name"], student.get("email", None),  student.get("level", None),
+        student.get("teach", None), student.get("learn", None), student.get("comments", None)))
     # Commit changes
     conn.commit()
     # Close cursor

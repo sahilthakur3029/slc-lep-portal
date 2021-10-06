@@ -6,7 +6,6 @@ from routes.studentdisplay import studentdisplay
 from routes.pairsdisplay import pairsdisplay
 from routes.unpaireddisplay import unpaireddisplay
 from routes.settings import settings 
-from routes.timesheetdisplay import timesheetdisplay
 from flask_cors import CORS
 from flask_login import (
     LoginManager,
@@ -28,7 +27,6 @@ app.register_blueprint(studentdisplay)
 app.register_blueprint(pairsdisplay)
 app.register_blueprint(unpaireddisplay)
 app.register_blueprint(settings)
-app.register_blueprint(timesheetdisplay)
 CORS(app)
 
 # Connect to your postgres DB

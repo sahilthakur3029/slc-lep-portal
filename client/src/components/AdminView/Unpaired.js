@@ -470,7 +470,6 @@ class Unpaired extends Component {
         <TopBar />
         <h2 className={classes.heads}>Unpaired Students</h2>
         {this.state.redirect}
-        {console.log(this.state.rows)}
         <Snackbar
           open={this.state.openAlert}
           autoHideDuration={5000}

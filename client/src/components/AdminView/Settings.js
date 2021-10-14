@@ -348,6 +348,7 @@ class Settings extends Component {
       !/^\d+$/.test(endWeek) ||
       startWeek >= endWeek
     ) {
+      // Could later change this to an error instead for clarity
       startWeek = 3;
       endWeek = 16;
     }

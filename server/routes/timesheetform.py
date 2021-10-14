@@ -1,5 +1,6 @@
 from flask import Flask, Blueprint, jsonify, request
 from flask_cors import CORS
+from flask_login.utils import login_required
 import psycopg2
 import json
 
@@ -38,6 +39,7 @@ def updatepage():
             "orientationKey": records[0][0],
         }
 
+# this command corresponds to the admin timesheet page 
 @timesheetform.route('/timesheet')
 def timesheetData():
         # Open a cursor to perform database operations
@@ -49,3 +51,21 @@ def timesheetData():
         # Close cursor
         cur.close()
         return jsonify(records)
+
+# this command corresponds to the admin timesheet page 
+@timesheetform.route('/updatetimesheet', methods=['POST'])
+@login_required
+def updateTimesheet():
+    # Open a cursor to perform database operations
+    cur = conn.cursor()
+    data_json = request.get_json()['timesheetdata']
+    cur.execute("DELETE FROM timesheet")
+    for student in data_json:
+        sql = """INSERT INTO timesheet(first_name, last_name, partner_names, hours, week) VALUES(%s, %s, %s, %s, %s)"""
+        cur.execute(sql, (student["first_name"], student["last_name"], student["partner_names"], 
+        student.get("hours", "0"),  student.get("week", "Undefined Week")))
+    # Commit changes
+    conn.commit()
+    # Close cursor
+    cur.close()
+    return jsonify({"success": True})

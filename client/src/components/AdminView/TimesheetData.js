@@ -117,6 +117,27 @@ const EditPopup = ({
           value={row.last_name || ""}
           onChange={(event) => onChange("last_name", event.target.value)}
         />
+      </FormControl>{" "}
+      <FormControl fullWidth>
+        <InputLabel>Partner Names</InputLabel>
+        <Input
+          value={row.partner_names || ""}
+          onChange={(event) => onChange("partner_names", event.target.value)}
+        />
+      </FormControl>{" "}
+      <FormControl>
+        <InputLabel>Hours</InputLabel>
+        <Input
+          value={row.hours || ""}
+          onChange={(event) => onChange("hours", event.target.value)}
+        />
+      </FormControl>{" "}
+      <FormControl>
+        <InputLabel>Week</InputLabel>
+        <Input
+          value={row.week || ""}
+          onChange={(event) => onChange("week", event.target.value)}
+        />
       </FormControl>
     </DialogContent>
     <DialogActions>
@@ -335,31 +356,31 @@ class TimesheetData extends Component {
       this.setState({ openAlertFail: true });
       return;
     }
-    // const { REACT_APP_UPDATEUNPAIRED } = process.env;
-    // fetch(REACT_APP_UPDATEUNPAIRED, {
-    //   method: "POST",
-    //   mode: "cors",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //     "X-CSRFToken": this.state.csrfToken,
-    //   },
-    //   body: JSON.stringify({
-    //     unpaireddata: this.state.rows,
-    //   }),
-    // })
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     if (data.success == true) {
-    //       this.setState({ openAlert: true });
-    //       return "Success";
-    //     } else {
-    //       this.setState({ redirect: <Redirect push to="/signin" /> });
-    //     }
-    //   })
-    //   .catch((error) =>
-    //     alert("Something went wrong. Please reload try again later.")
-    //   );
-    // return "Failed";
+    const { REACT_APP_UPDATETIMESHEET } = process.env;
+    fetch(REACT_APP_UPDATETIMESHEET, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": this.state.csrfToken,
+      },
+      body: JSON.stringify({
+        timesheetdata: this.state.rows,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success == true) {
+          this.setState({ openAlert: true });
+          return "Success";
+        } else {
+          this.setState({ redirect: <Redirect push to="/signin" /> });
+        }
+      })
+      .catch((error) =>
+        alert("Something went wrong. Please reload try again later.")
+      );
+    return "Failed";
   }
 
   deleteRows(deletedIds) {

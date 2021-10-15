@@ -5,6 +5,7 @@ import FormPartnerDetails from "./FormPartnerDetails";
 import FormWaiver from "./FormWaiver";
 import Confirm from "./Confirm";
 import Success from "./Success";
+import FormOrientationKey from "./FormOrientationKey";
 
 // Controls the form, displaying the next and previous buttons
 // and controlling which page shows since it is a multi page form
@@ -142,13 +143,23 @@ class FormController extends Component {
     switch (step) {
       case 1:
         return (
-          <FormUserDetails
+          <FormOrientationKey
             handleChange={this.handleChange}
             nextStep={this.nextStep}
+            prevStep={this.prevStep}
             values={values}
           />
         );
       case 2:
+        return (
+          <FormUserDetails
+            handleChange={this.handleChange}
+            nextStep={this.nextStep}
+            prevStep={this.prevStep}
+            values={values}
+          />
+        );
+      case 3:
         return (
           <FormLanguageDetails
             nextStep={this.nextStep}
@@ -157,7 +168,7 @@ class FormController extends Component {
             values={values}
           />
         );
-      case 3:
+      case 4:
         return (
           <FormPartnerDetails
             nextStep={this.nextStep}
@@ -166,7 +177,7 @@ class FormController extends Component {
             values={values}
           />
         );
-      case 4:
+      case 5:
         return (
           <FormWaiver
             nextStep={this.nextStep}
@@ -175,7 +186,7 @@ class FormController extends Component {
             values={values}
           />
         );
-      case 5:
+      case 6:
         return (
           <Confirm
             nextStep={this.nextStep}
@@ -184,7 +195,7 @@ class FormController extends Component {
             values={values}
           />
         );
-      case 6:
+      case 7:
         return <Success />;
       default:
         console.log("This is a multi-step form built with React.");

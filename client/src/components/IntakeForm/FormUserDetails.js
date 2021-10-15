@@ -12,12 +12,6 @@ import InputLabel from "@material-ui/core/InputLabel";
 import HelpIcon from "@material-ui/icons/Help";
 import Tooltip from "@material-ui/core/Tooltip";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import Snackbar from "@material-ui/core/Snackbar";
-import MuiAlert from "@material-ui/lab/Alert";
-
-function Alert(props) {
-  return <MuiAlert elevation={6} variant="filled" {...props} />;
-}
 
 // Theme comes from the theme variable in App.js
 const useStyles = (theme) => ({
@@ -74,45 +68,14 @@ const allDays = [
 ];
 
 class FormUserDetails extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      open: false,
-      semester: "",
-      currOrientationKey: "",
-    };
-  }
-  componentDidMount() {
-    const { REACT_APP_INTAKERENDER } = process.env;
-    fetch(REACT_APP_INTAKERENDER)
-      .then((response) => response.json())
-      .then((data) => {
-        this.setState({
-          semester: data.semester,
-          currOrientationKey: data.currOrientationKey,
-        });
-      })
-      .catch((error) => console.log("Error", error));
-  }
   continue = (e) => {
     e.preventDefault();
-    console.log(this.props.values.orientationKey.trim());
-    console.log(this.state.currOrientationKey);
-    if (
-      this.props.values.orientationKey.trim() !== this.state.currOrientationKey
-    ) {
-      this.setState({ open: true });
-      return;
-    }
     this.props.nextStep();
   };
-  handleClose = (e, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
 
-    this.setState({ open: false });
+  back = (e) => {
+    e.preventDefault();
+    this.props.prevStep();
   };
   render() {
     // props is the useStyles variable
@@ -120,25 +83,12 @@ class FormUserDetails extends Component {
     return (
       <MuiThemeProvider>
         <>
-          {/* Snackbar not required right? */}
-          <Snackbar
-            open={this.state.open}
-            autoHideDuration={5000}
-            onClose={() => this.setState({ open: false })}
-          >
-            <Alert onClose={this.handleClose} severity="error">
-              Incorrect orienataion key
-            </Alert>
-          </Snackbar>
-          <CssBaseline />
           <TopBar />
           <br />
-          <h1 className={classes.heads}>
-            LEP {this.state.semester} Intake Form
-          </h1>
-          <br />
           <div className={classes.elements}>
-            <h2 className={classes.formControl}>Basic Information</h2>
+            <h1 className={classes.formControl}>
+              <u>Basic Information</u>
+            </h1>
             <TextField
               placeholder="Enter Your First Name"
               label="First Name"
@@ -287,21 +237,14 @@ class FormUserDetails extends Component {
             />
             <br />
             <br />
-            <h2 className={classes.formControl}>
-              Please Enter The Key You Receieved At Orientation Below (You Will
-              Not Be Able To Continue Without The Correct Key):
-            </h2>
-            <TextField
-              placeholder="Orienataion Key"
-              label="Enter orientation key here"
-              onChange={handleChange("orientationKey")}
-              defaultValue={values.orientationKey}
-              margin="normal"
-              required
-              className={classes.formControl}
-            />
-            <br />
-            <br />
+            <ColorButton
+              variant="contained"
+              color="primary"
+              className={classes.margin}
+              onClick={this.back}
+            >
+              Back
+            </ColorButton>
             <ColorButton
               variant="contained"
               color="primary" // Looks like this could be secondary also without making a difference

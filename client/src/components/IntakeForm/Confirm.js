@@ -7,6 +7,7 @@ import { withStyles } from "@material-ui/core/styles";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 import { titleCase } from "title-case";
+import Box from "@material-ui/core/Box";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -20,6 +21,9 @@ const useStyles = (theme) => ({
   selectEmpty: {
     marginTop: theme.spacing(2),
   },
+  elements: {
+    textAlign: "center",
+  },
 });
 
 // Colour of the buttons on the last page, changed the hover colour
@@ -31,6 +35,7 @@ const ColorButton = withStyles((theme) => ({
       backgroundColor: "#848438",
     },
     margin: theme.spacing(1),
+    marginLeft: "30px",
   },
 }))(Button);
 
@@ -176,196 +181,251 @@ class Confirm extends Component {
     return (
       <MuiThemeProvider>
         <>
-          <Snackbar
-            open={this.state.open}
-            autoHideDuration={5000}
-            onClose={() => this.setState({ open: false })}
-          >
-            <Alert onClose={this.handleClose} severity="error">
-              Please make sure you have filled out all the required fields
-              marked by a *
-            </Alert>
-          </Snackbar>
-          <TopBar />
-          <br />
-          <h1 className={classes.formControl}>Confirmation</h1>
-          <List>
-            <ListItem>
-              <ListItemText primary="First Name:*" secondary={firstName} />
-            </ListItem>
-            <ListItem>
-              <ListItemText primary="Last Name:*" secondary={lastName} />
-            </ListItem>
-            <ListItem>
-              <ListItemText primary="Email:*" secondary={email} />
-            </ListItem>
-            <ListItem>
-              <ListItemText
-                primary="Academic Title:*"
-                secondary={academicTitle}
-              />
-            </ListItem>
-            <ListItem>
-              <ListItemText primary="Residency:*" secondary={residency} />
-            </ListItem>
-            <ListItem>
-              <ListItemText primary="Major(s):" secondary={major} />
-            </ListItem>
-            <ListItem>
-              <ListItemText primary="Gender:" secondary={gender} />
-            </ListItem>
-            <ListItem>
-              <ListItemText
-                primary="Gender Custom Response (If Applicable):"
-                secondary={genderCustom}
-              />
-            </ListItem>
-            <ListItem>
-              <ListItemText
-                primary="Days of Week Availability:"
-                secondary={availability.join(", ")}
-              />
-            </ListItem>
-            <ListItem>
-              <ListItemText
-                primary="What do you hope to gain from the SLC Language Exchange Program:*"
-                secondary={hopeToGain}
-              />
-            </ListItem>
-            <ListItem>
-              <ListItemText
-                primary="How do you plan to maintain your motivation to meet with your partner(s) weekly:*"
-                secondary={planToMeet}
-              />
-            </ListItem>
-            <ListItem>
-              <ListItemText
-                primary="First Choice Learn:*"
-                secondary={firstChoiceLearn}
-              />
-            </ListItem>
-            <ListItem>
-              <ListItemText
-                primary="First Choice Learn Other:"
-                secondary={firstChoiceLearnOther}
-              />
-            </ListItem>
-            <ListItem>
-              <ListItemText
-                primary="First Choice Learn Level:*"
-                secondary={firstChoiceLearnLevel}
-              />
-            </ListItem>
-            <ListItem>
-              <ListItemText
-                primary="Second Choice Learn:"
-                secondary={secondChoiceLearn}
-              />
-            </ListItem>
-            <ListItem>
-              <ListItemText
-                primary="Second Choice Learn Other:"
-                secondary={secondChoiceLearnOther}
-              />
-            </ListItem>
-            <ListItem>
-              <ListItemText
-                primary="Second Choice Learn Level:"
-                secondary={secondChoiceLearnLevel}
-              />
-            </ListItem>
-            <ListItem>
-              <ListItemText
-                primary="First Choice Teach:*"
-                secondary={firstChoiceTeach}
-              />
-            </ListItem>
-            <ListItem>
-              <ListItemText
-                primary="First Choice Teach Other:"
-                secondary={firstChoiceTeachOther}
-              />
-            </ListItem>
-            <ListItem>
-              <ListItemText
-                primary="First Choice Learn Teach Level:*"
-                secondary={firstChoiceTeachLevel}
-              />
-            </ListItem>
-            <ListItem>
-              <ListItemText
-                primary="Second Choice Teach:"
-                secondary={secondChoiceTeach}
-              />
-            </ListItem>
-            <ListItem>
-              <ListItemText
-                primary="Second Choice Teach Other:"
-                secondary={secondChoiceTeachOther}
-              />
-            </ListItem>
-            <ListItem>
-              <ListItemText
-                primary="Second Choice Teach Level:"
-                secondary={secondChoiceTeachLevel}
-              />
-            </ListItem>
-            <ListItem>
-              <ListItemText primary="Comments:" secondary={comments} />
-            </ListItem>
-            <ListItem>
-              <ListItemText
-                primary="Preferred Major(s):"
-                secondary={preferredMajor}
-              />
-            </ListItem>
-            <ListItem>
-              <ListItemText
-                primary="Preferred Major(s) Preference Level:"
-                secondary={preferredMajorWeight}
-              />
-            </ListItem>
-            <ListItem>
-              <ListItemText
-                primary="Preferred Gender:"
-                secondary={preferredGender}
-              />
-            </ListItem>
-            <ListItem>
-              <ListItemText
-                primary="Preferred Gender Custom Response (If Applicable):"
-                secondary={preferredGenderCustom}
-              />
-            </ListItem>
-            <ListItem>
-              <ListItemText
-                primary="Preferred Gender Preference Level:"
-                secondary={preferredGenderWeight}
-              />
-            </ListItem>
-            <ListItem>
-              <ListItemText
-                primary="Waiver Acknowledgment:*"
-                secondary={waiverAccept}
-              />
-            </ListItem>
-          </List>
-          <ColorButton
-            variant="contained"
-            color="primary"
-            className={classes.margin}
-            onClick={this.back}
-          >
-            Back
-          </ColorButton>
-          <ColorButton
-            variant="contained"
-            color="primary"
-            className={classes.margin}
-            onClick={this.continue}
-          >
-            Confirm & Continue
-          </ColorButton>
+          <div className={classes.elements}>
+            <Snackbar
+              open={this.state.open}
+              autoHideDuration={5000}
+              onClose={() => this.setState({ open: false })}
+            >
+              <Alert onClose={this.handleClose} severity="error">
+                Please make sure you have filled out all the required fields
+                marked by a *
+              </Alert>
+            </Snackbar>
+            <TopBar />
+            <br />
+            <h1 className={classes.formControl}>
+              <u>Confirmation</u>
+            </h1>
+            <List>
+              <ListItem>
+                <ListItemText
+                  primary="First Name:*"
+                  secondary={firstName}
+                  style={{ textAlign: "center" }}
+                />
+              </ListItem>
+              <ListItem>
+                <ListItemText
+                  primary="Last Name:*"
+                  secondary={lastName}
+                  style={{ textAlign: "center" }}
+                />
+              </ListItem>
+              <ListItem>
+                <ListItemText
+                  primary="Email:*"
+                  secondary={email}
+                  style={{ textAlign: "center" }}
+                />
+              </ListItem>
+              <ListItem>
+                <ListItemText
+                  primary="Academic Title:*"
+                  secondary={academicTitle}
+                  style={{ textAlign: "center" }}
+                />
+              </ListItem>
+              <ListItem>
+                <ListItemText
+                  primary="Residency:*"
+                  secondary={residency}
+                  style={{ textAlign: "center" }}
+                />
+              </ListItem>
+              <ListItem>
+                <ListItemText
+                  primary="Major(s):"
+                  secondary={major}
+                  style={{ textAlign: "center" }}
+                />
+              </ListItem>
+              <ListItem>
+                <ListItemText
+                  primary="Gender:"
+                  secondary={gender}
+                  style={{ textAlign: "center" }}
+                />
+              </ListItem>
+              <ListItem>
+                <ListItemText
+                  primary="Gender Custom Response (If Applicable):"
+                  secondary={genderCustom}
+                  style={{ textAlign: "center" }}
+                />
+              </ListItem>
+              <ListItem>
+                <ListItemText
+                  primary="Days of Week Availability:"
+                  secondary={availability.join(", ")}
+                  style={{ textAlign: "center" }}
+                />
+              </ListItem>
+              <ListItem>
+                <ListItemText
+                  primary="What do you hope to gain from the SLC Language Exchange Program:*"
+                  secondary={hopeToGain}
+                  style={{ textAlign: "center" }}
+                />
+              </ListItem>
+              <ListItem>
+                <ListItemText
+                  primary="How do you plan to maintain your motivation to meet with your partner(s) weekly:*"
+                  secondary={planToMeet}
+                  style={{ textAlign: "center" }}
+                />
+              </ListItem>
+              <ListItem>
+                <ListItemText
+                  primary="First Choice Learn:*"
+                  secondary={firstChoiceLearn}
+                  style={{ textAlign: "center" }}
+                />
+              </ListItem>
+              <ListItem>
+                <ListItemText
+                  primary="First Choice Learn Other:"
+                  secondary={firstChoiceLearnOther}
+                  style={{ textAlign: "center" }}
+                />
+              </ListItem>
+              <ListItem>
+                <ListItemText
+                  primary="First Choice Learn Level:*"
+                  secondary={firstChoiceLearnLevel}
+                  style={{ textAlign: "center" }}
+                />
+              </ListItem>
+              <ListItem>
+                <ListItemText
+                  primary="Second Choice Learn:"
+                  secondary={secondChoiceLearn}
+                  style={{ textAlign: "center" }}
+                />
+              </ListItem>
+              <ListItem>
+                <ListItemText
+                  primary="Second Choice Learn Other:"
+                  secondary={secondChoiceLearnOther}
+                  style={{ textAlign: "center" }}
+                />
+              </ListItem>
+              <ListItem>
+                <ListItemText
+                  primary="Second Choice Learn Level:"
+                  secondary={secondChoiceLearnLevel}
+                  style={{ textAlign: "center" }}
+                />
+              </ListItem>
+              <ListItem>
+                <ListItemText
+                  primary="First Choice Teach:*"
+                  secondary={firstChoiceTeach}
+                  style={{ textAlign: "center" }}
+                />
+              </ListItem>
+              <ListItem>
+                <ListItemText
+                  primary="First Choice Teach Other:"
+                  secondary={firstChoiceTeachOther}
+                  style={{ textAlign: "center" }}
+                />
+              </ListItem>
+              <ListItem>
+                <ListItemText
+                  primary="First Choice Learn Teach Level:*"
+                  secondary={firstChoiceTeachLevel}
+                  style={{ textAlign: "center" }}
+                />
+              </ListItem>
+              <ListItem>
+                <ListItemText
+                  primary="Second Choice Teach:"
+                  secondary={secondChoiceTeach}
+                  style={{ textAlign: "center" }}
+                />
+              </ListItem>
+              <ListItem>
+                <ListItemText
+                  primary="Second Choice Teach Other:"
+                  secondary={secondChoiceTeachOther}
+                  style={{ textAlign: "center" }}
+                />
+              </ListItem>
+              <ListItem>
+                <ListItemText
+                  primary="Second Choice Teach Level:"
+                  secondary={secondChoiceTeachLevel}
+                  style={{ textAlign: "center" }}
+                />
+              </ListItem>
+              <ListItem>
+                <ListItemText
+                  primary="Comments:"
+                  secondary={comments}
+                  style={{ textAlign: "center" }}
+                />
+              </ListItem>
+              <ListItem>
+                <ListItemText
+                  primary="Preferred Major(s):"
+                  secondary={preferredMajor}
+                  style={{ textAlign: "center" }}
+                />
+              </ListItem>
+              <ListItem>
+                <ListItemText
+                  primary="Preferred Major(s) Preference Level:"
+                  secondary={preferredMajorWeight}
+                  style={{ textAlign: "center" }}
+                />
+              </ListItem>
+              <ListItem>
+                <ListItemText
+                  primary="Preferred Gender:"
+                  secondary={preferredGender}
+                  style={{ textAlign: "center" }}
+                />
+              </ListItem>
+              <ListItem>
+                <ListItemText
+                  primary="Preferred Gender Custom Response (If Applicable):"
+                  secondary={preferredGenderCustom}
+                  style={{ textAlign: "center" }}
+                />
+              </ListItem>
+              <ListItem>
+                <ListItemText
+                  primary="Preferred Gender Preference Level:"
+                  secondary={preferredGenderWeight}
+                  style={{ textAlign: "center" }}
+                />
+              </ListItem>
+              <ListItem>
+                <ListItemText
+                  primary="Waiver Acknowledgment:*"
+                  secondary={waiverAccept}
+                  style={{ textAlign: "center" }}
+                />
+              </ListItem>
+            </List>
+            <ColorButton
+              variant="contained"
+              color="primary"
+              className={classes.margin}
+              onClick={this.back}
+            >
+              Back
+            </ColorButton>
+            <ColorButton
+              variant="contained"
+              color="primary"
+              className={classes.margin}
+              onClick={this.continue}
+            >
+              Confirm & Continue
+            </ColorButton>
+          </div>
         </>
       </MuiThemeProvider>
     );

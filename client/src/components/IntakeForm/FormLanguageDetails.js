@@ -25,6 +25,9 @@ const useStyles = (theme) => ({
     textAlign: "center",
     fontSize: 50,
   },
+  elements: {
+    textAlign: "center",
+  },
   selectEmpty: {
     marginTop: theme.spacing(2),
   },
@@ -99,238 +102,243 @@ class FormLanguageDetails extends Component {
         <>
           <TopBar />
           <br />
-          <h1 className={classes.formControl}>
-            Language Exchange
-          </h1>
-          <br />
-          <h2 className={classes.formControl}>
-            What languages do you want to practice?
-          </h2>
-          <br />
-          <FormControl className={classes.formControl} required>
-            <InputLabel id="firstChoiceLearn-label">First Choice</InputLabel>
-            <Select
-              labelId="firstChoiceLearn-label"
-              id="firstChoiceLearn"
-              value={values.firstChoiceLearn}
-              onChange={handleChange("firstChoiceLearn")}
-              input={<Input />}
-              MenuProps={MenuProps}
+          <div className={classes.elements}>
+            <h1 className={classes.formControl}>
+              <u>Language Exchange</u>
+            </h1>
+            <br />
+            <h2 className={classes.formControl}>
+              What languages do you want to practice?
+            </h2>
+            <br />
+            <FormControl className={classes.formControl} required>
+              <InputLabel id="firstChoiceLearn-label">First Choice</InputLabel>
+              <Select
+                labelId="firstChoiceLearn-label"
+                id="firstChoiceLearn"
+                value={values.firstChoiceLearn}
+                onChange={handleChange("firstChoiceLearn")}
+                input={<Input />}
+                MenuProps={MenuProps}
+              >
+                {allLanguages.map((name) => (
+                  <MenuItem key={name} value={name}>
+                    {name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <TextField
+              placeholder="Other Language"
+              label="If other, please specify here or leave blank"
+              onChange={handleChange("firstChoiceLearnOther")}
+              defaultValue={values.firstChoiceLearnOther}
+              margin="normal"
+              className={classes.formControl}
+            />
+            <FormControl
+              component="fieldset"
+              required
+              className={classes.formControl}
             >
-              {allLanguages.map((name) => (
-                <MenuItem key={name} value={name}>
-                  {name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <TextField
-            placeholder="Other Language"
-            label="If other, please specify here or leave blank"
-            onChange={handleChange("firstChoiceLearnOther")}
-            defaultValue={values.firstChoiceLearnOther}
-            margin="normal"
-            className={classes.formControl}
-          />
-          <FormControl
-            component="fieldset"
-            required
-            className={classes.formControl}
-          >
-            <FormLabel component="legend">
-              On a scale from 1-5, how proficient are you in this language?
-            </FormLabel>
-            <RadioGroup
-              row
-              aria-label="firstChoiceLearnLevel"
-              name="firstChoiceLearnLevel1"
-              defaultValue={values.firstChoiceLearnLevel}
-              onChange={handleChange("firstChoiceLearnLevel")}
+              <FormLabel component="legend">
+                On a scale from 1-5, how proficient are you in this language?
+              </FormLabel>
+              <RadioGroup
+                row
+                aria-label="firstChoiceLearnLevel"
+                name="firstChoiceLearnLevel1"
+                defaultValue={values.firstChoiceLearnLevel}
+                onChange={handleChange("firstChoiceLearnLevel")}
+              >
+                <FormControlLabel value="1" control={<Radio />} label="1" />
+                <FormControlLabel value="2" control={<Radio />} label="2" />
+                <FormControlLabel value="3" control={<Radio />} label="3" />
+                <FormControlLabel value="4" control={<Radio />} label="4" />
+                <FormControlLabel value="5" control={<Radio />} label="5" />
+              </RadioGroup>
+            </FormControl>
+            <br />
+            <FormControl className={classes.formControl}>
+              <InputLabel id="secondChoiceLearn-label">
+                Second Choice (optional)
+              </InputLabel>
+              <Select
+                labelId="secondChoiceLearn-label"
+                id="secondChoiceLearn"
+                value={values.secondChoiceLearn}
+                onChange={handleChange("secondChoiceLearn")}
+                input={<Input />}
+                MenuProps={MenuProps}
+              >
+                {allLanguages.map((name) => (
+                  <MenuItem key={name} value={name}>
+                    {name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <TextField
+              placeholder="Other Language"
+              label="If other, please specify here or leave blank"
+              onChange={handleChange("secondChoiceLearnOther")}
+              defaultValue={values.secondChoiceLearnOther}
+              margin="normal"
+              className={classes.formControl}
+            />
+            <FormControl component="fieldset" className={classes.formControl}>
+              <FormLabel component="legend">
+                On a scale from 1-5, how proficient are you in this language?
+              </FormLabel>
+              <RadioGroup
+                row
+                aria-label="secondChoiceLearnLevel"
+                name="secondChoiceLearnLevel1"
+                defaultValue={values.secondChoiceLearnLevel}
+                onChange={handleChange("secondChoiceLearnLevel")}
+              >
+                <FormControlLabel value="1" control={<Radio />} label="1" />
+                <FormControlLabel value="2" control={<Radio />} label="2" />
+                <FormControlLabel value="3" control={<Radio />} label="3" />
+                <FormControlLabel value="4" control={<Radio />} label="4" />
+                <FormControlLabel value="5" control={<Radio />} label="5" />
+              </RadioGroup>
+            </FormControl>
+            <br />
+            <br />
+            <h2 className={classes.formControl}>
+              What languages do you want to help your partner(s) practice?
+            </h2>
+            <br />
+            <FormControl className={classes.formControl} required>
+              <InputLabel id="firstChoiceTeach-label">First Choice</InputLabel>
+              <Select
+                labelId="firstChoiceTeach-label"
+                id="firstChoiceTeach"
+                value={values.firstChoiceTeach}
+                onChange={handleChange("firstChoiceTeach")}
+                input={<Input />}
+                MenuProps={MenuProps}
+              >
+                {allLanguages.map((name) => (
+                  <MenuItem key={name} value={name}>
+                    {name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <TextField
+              placeholder="Other Language"
+              label="If other, please specify here or leave blank"
+              onChange={handleChange("firstChoiceTeachOther")}
+              defaultValue={values.firstChoiceTeachOther}
+              margin="normal"
+              className={classes.formControl}
+            />
+            <FormControl
+              component="fieldset"
+              required
+              className={classes.formControl}
             >
-              <FormControlLabel value="1" control={<Radio />} label="1" />
-              <FormControlLabel value="2" control={<Radio />} label="2" />
-              <FormControlLabel value="3" control={<Radio />} label="3" />
-              <FormControlLabel value="4" control={<Radio />} label="4" />
-              <FormControlLabel value="5" control={<Radio />} label="5" />
-            </RadioGroup>
-          </FormControl>
-          <br />
-          <FormControl className={classes.formControl}>
-            <InputLabel id="secondChoiceLearn-label">
-              Second Choice (optional)
-            </InputLabel>
-            <Select
-              labelId="secondChoiceLearn-label"
-              id="secondChoiceLearn"
-              value={values.secondChoiceLearn}
-              onChange={handleChange("secondChoiceLearn")}
-              input={<Input />}
-              MenuProps={MenuProps}
+              <FormLabel component="legend">
+                On a scale from 1-5, how proficient are you in this language?
+              </FormLabel>
+              <RadioGroup
+                row
+                aria-label="firstChoiceTeachLevel"
+                name="firstChoiceTeachLevel1"
+                defaultValue={values.firstChoiceTeachLevel}
+                onChange={handleChange("firstChoiceTeachLevel")}
+              >
+                <FormControlLabel value="1" control={<Radio />} label="1" />
+                <FormControlLabel value="2" control={<Radio />} label="2" />
+                <FormControlLabel value="3" control={<Radio />} label="3" />
+                <FormControlLabel value="4" control={<Radio />} label="4" />
+                <FormControlLabel value="5" control={<Radio />} label="5" />
+              </RadioGroup>
+            </FormControl>
+            <br />
+            <FormControl className={classes.formControl}>
+              <InputLabel id="secondChoiceTeachlabel">
+                Second Choice (optional)
+              </InputLabel>
+              <Select
+                labelId="secondChoiceTeach-label"
+                id="secondChoiceTeach"
+                value={values.secondChoiceTeach}
+                onChange={handleChange("secondChoiceTeach")}
+                input={<Input />}
+                MenuProps={MenuProps}
+              >
+                {allLanguages.map((name) => (
+                  <MenuItem key={name} value={name}>
+                    {name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <TextField
+              placeholder="Other Language"
+              label="If other, please specify here or leave blank"
+              onChange={handleChange("secondChoiceTeachOther")}
+              defaultValue={values.secondChoiceTeachOther}
+              margin="normal"
+              className={classes.formControl}
+            />
+            <FormControl component="fieldset" className={classes.formControl}>
+              <FormLabel component="legend">
+                On a scale from 1-5, how proficient are you in this language?
+              </FormLabel>
+              <RadioGroup
+                row
+                aria-label="secondChoiceTeachLevel"
+                name="secondChoiceTeachLevel1"
+                defaultValue={values.secondChoiceTeachLevel}
+                onChange={handleChange("secondChoiceTeachLevel")}
+              >
+                <FormControlLabel value="1" control={<Radio />} label="1" />
+                <FormControlLabel value="2" control={<Radio />} label="2" />
+                <FormControlLabel value="3" control={<Radio />} label="3" />
+                <FormControlLabel value="4" control={<Radio />} label="4" />
+                <FormControlLabel value="5" control={<Radio />} label="5" />
+              </RadioGroup>
+            </FormControl>
+            <br />
+            <br />
+            <h2 className={classes.formControl}>
+              Is there any additional information you'd like us to know?
+            </h2>
+            <br />
+            <TextField
+              label="If you would like to request a partner, please include that information here."
+              onChange={handleChange("comments")}
+              defaultValue={values.comments}
+              margin="normal"
+              style={{
+                margin: 0,
+                width: "77%",
+              }}
+              className={classes.formControl}
+            />
+            <br />
+            <br />
+            <ColorButton
+              variant="contained"
+              color="primary"
+              className={classes.margin}
+              onClick={this.back}
             >
-              {allLanguages.map((name) => (
-                <MenuItem key={name} value={name}>
-                  {name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <TextField
-            placeholder="Other Language"
-            label="If other, please specify here or leave blank"
-            onChange={handleChange("secondChoiceLearnOther")}
-            defaultValue={values.secondChoiceLearnOther}
-            margin="normal"
-            className={classes.formControl}
-          />
-          <FormControl component="fieldset" className={classes.formControl}>
-            <FormLabel component="legend">
-              On a scale from 1-5, how proficient are you in this language?
-            </FormLabel>
-            <RadioGroup
-              row
-              aria-label="secondChoiceLearnLevel"
-              name="secondChoiceLearnLevel1"
-              defaultValue={values.secondChoiceLearnLevel}
-              onChange={handleChange("secondChoiceLearnLevel")}
+              Back
+            </ColorButton>
+            <ColorButton
+              variant="contained"
+              color="primary"
+              className={classes.margin}
+              onClick={this.continue}
             >
-              <FormControlLabel value="1" control={<Radio />} label="1" />
-              <FormControlLabel value="2" control={<Radio />} label="2" />
-              <FormControlLabel value="3" control={<Radio />} label="3" />
-              <FormControlLabel value="4" control={<Radio />} label="4" />
-              <FormControlLabel value="5" control={<Radio />} label="5" />
-            </RadioGroup>
-          </FormControl>
-          <br />
-          <br />
-          <h2 className={classes.formControl}>
-            What languages do you want to help your partner(s) practice?
-          </h2>
-          <br />
-          <FormControl className={classes.formControl} required>
-            <InputLabel id="firstChoiceTeach-label">First Choice</InputLabel>
-            <Select
-              labelId="firstChoiceTeach-label"
-              id="firstChoiceTeach"
-              value={values.firstChoiceTeach}
-              onChange={handleChange("firstChoiceTeach")}
-              input={<Input />}
-              MenuProps={MenuProps}
-            >
-              {allLanguages.map((name) => (
-                <MenuItem key={name} value={name}>
-                  {name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <TextField
-            placeholder="Other Language"
-            label="If other, please specify here or leave blank"
-            onChange={handleChange("firstChoiceTeachOther")}
-            defaultValue={values.firstChoiceTeachOther}
-            margin="normal"
-            className={classes.formControl}
-          />
-          <FormControl
-            component="fieldset"
-            required
-            className={classes.formControl}
-          >
-            <FormLabel component="legend">
-              On a scale from 1-5, how proficient are you in this language?
-            </FormLabel>
-            <RadioGroup
-              row
-              aria-label="firstChoiceTeachLevel"
-              name="firstChoiceTeachLevel1"
-              defaultValue={values.firstChoiceTeachLevel}
-              onChange={handleChange("firstChoiceTeachLevel")}
-            >
-              <FormControlLabel value="1" control={<Radio />} label="1" />
-              <FormControlLabel value="2" control={<Radio />} label="2" />
-              <FormControlLabel value="3" control={<Radio />} label="3" />
-              <FormControlLabel value="4" control={<Radio />} label="4" />
-              <FormControlLabel value="5" control={<Radio />} label="5" />
-            </RadioGroup>
-          </FormControl>
-          <br />
-          <FormControl className={classes.formControl}>
-            <InputLabel id="secondChoiceTeachlabel">
-              Second Choice (optional)
-            </InputLabel>
-            <Select
-              labelId="secondChoiceTeach-label"
-              id="secondChoiceTeach"
-              value={values.secondChoiceTeach}
-              onChange={handleChange("secondChoiceTeach")}
-              input={<Input />}
-              MenuProps={MenuProps}
-            >
-              {allLanguages.map((name) => (
-                <MenuItem key={name} value={name}>
-                  {name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <TextField
-            placeholder="Other Language"
-            label="If other, please specify here or leave blank"
-            onChange={handleChange("secondChoiceTeachOther")}
-            defaultValue={values.secondChoiceTeachOther}
-            margin="normal"
-            className={classes.formControl}
-          />
-          <FormControl component="fieldset" className={classes.formControl}>
-            <FormLabel component="legend">
-              On a scale from 1-5, how proficient are you in this language?
-            </FormLabel>
-            <RadioGroup
-              row
-              aria-label="secondChoiceTeachLevel"
-              name="secondChoiceTeachLevel1"
-              defaultValue={values.secondChoiceTeachLevel}
-              onChange={handleChange("secondChoiceTeachLevel")}
-            >
-              <FormControlLabel value="1" control={<Radio />} label="1" />
-              <FormControlLabel value="2" control={<Radio />} label="2" />
-              <FormControlLabel value="3" control={<Radio />} label="3" />
-              <FormControlLabel value="4" control={<Radio />} label="4" />
-              <FormControlLabel value="5" control={<Radio />} label="5" />
-            </RadioGroup>
-          </FormControl>
-          <br />
-          <br />
-          <h2 className={classes.formControl}>
-            Is there any additional information you'd like us to know?
-          </h2>
-          <br />
-          <TextField
-            label="If you would like to request a partner, please include that information here."
-            onChange={handleChange("comments")}
-            defaultValue={values.comments}
-            margin="normal"
-            fullWidth
-            className={classes.formControl}
-          />
-          <br />
-          <br />
-          <ColorButton
-            variant="contained"
-            color="primary"
-            className={classes.margin}
-            onClick={this.back}
-          >
-            Back
-          </ColorButton>
-          <ColorButton
-            variant="contained"
-            color="primary"
-            className={classes.margin}
-            onClick={this.continue}
-          >
-            Next
-          </ColorButton>
+              Next
+            </ColorButton>
+          </div>
         </>
       </MuiThemeProvider>
     );

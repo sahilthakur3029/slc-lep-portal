@@ -1,11 +1,11 @@
 from flask import Flask, jsonify, request
-from routes.algorithm import algorithm
-from routes.intakeform import intakeform
-from routes.timesheetform import timesheetform
-from routes.studentdisplay import studentdisplay
-from routes.pairsdisplay import pairsdisplay
-from routes.unpaireddisplay import unpaireddisplay
-from routes.settings import settings 
+from server.routes.algorithm import algorithm
+from server.routes.intakeform import intakeform
+from server.routes.timesheetform import timesheetform
+from server.routes.studentdisplay import studentdisplay
+from server.routes.pairsdisplay import pairsdisplay
+from server.routes.unpaireddisplay import unpaireddisplay
+from server.routes.settings import settings 
 from flask_cors import CORS
 from flask_login import (
     LoginManager,
@@ -17,7 +17,7 @@ from flask_login import (
 )
 from flask_wtf.csrf import CSRFProtect, generate_csrf
 import psycopg2
-import google_token
+import server.google_token
 import os
 
 app = Flask(__name__, static_url_path='', static_folder='../client/build')
@@ -127,7 +127,7 @@ def login():
 
     # Case 2: Decodes Token + Checks For Invalid ID Token 
     try:
-        identity = google_token.validate_id_token(
+        identity = server.google_token.validate_id_token(
             id_token, app.config['GOOGLE_CLIENT_ID'])
     except ValueError:
         return jsonify({"login": False})

@@ -28,7 +28,11 @@ class App extends React.Component {
         <BrowserRouter>
           <Switch>
             <Route exact path="/" component={FormController} />
-            <Route exact path="/timesheet" component={TimesheetController} />
+            <Route
+              exact
+              path="/timesheetlogs"
+              component={TimesheetController}
+            />
             <Route exact path="/adminhome" component={AdminHome} />
             <Route exact path="/paired" component={Paired} />
             <Route exact path="/unpaired" component={Unpaired} />

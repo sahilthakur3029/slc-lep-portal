@@ -3,12 +3,18 @@ from flask_cors import CORS
 from flask_login.utils import login_required
 import psycopg2
 import json
+import os
 
 timesheetform = Blueprint('timesheetform', __name__, template_folder='templates')
 CORS(timesheetform)
 
+database_url = os.getenv(
+    'DATABASE_URL',
+    default='dbname=slcapplication',  # E.g., for local dev
+)
+
 # Connect to your postgres DB
-conn = psycopg2.connect("dbname=slcapplication user=postgres password=ksshiraja")
+conn = psycopg2.connect(database_url)
 
 @timesheetform.route('/loghours', methods = ['POST'])
 def insertApplicant():

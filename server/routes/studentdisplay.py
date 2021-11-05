@@ -5,12 +5,18 @@ from flask_login import (
     login_required,
 )
 from datetime import datetime
+import os
 
 studentdisplay = Blueprint('studentdisplay', __name__, template_folder='templates')
 CORS(studentdisplay)
 
+database_url = os.getenv(
+    'DATABASE_URL',
+    default='dbname=slcapplication',  # E.g., for local dev
+)
+
 # Connect to your postgres DB
-conn = psycopg2.connect("dbname=slcapplication user=postgres password=ksshiraja")
+conn = psycopg2.connect(database_url)
 
 
 @studentdisplay.route('/names', methods = ['GET', 'POST'])

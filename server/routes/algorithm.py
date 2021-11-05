@@ -11,12 +11,19 @@ from datetime import datetime
 from flask_login import (
     login_required,
 )
+import os
 
 algorithm = Blueprint('algorithm', __name__, template_folder='templates')
 CORS(algorithm)
 
 # Connect to your postgres DB
-conn = psycopg2.connect("dbname=slcapplication user=postgres password=ksshiraja")
+database_url = os.getenv(
+    'DATABASE_URL',
+    default='dbname=slcapplication',  # E.g., for local dev
+)
+
+# Connect to your postgres DB
+conn = psycopg2.connect(database_url)
 
 def postgresql_to_dataframe(conn, select_query, column_names):
     """

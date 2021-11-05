@@ -3,12 +3,18 @@ from flask_cors import CORS
 import psycopg2
 from datetime import datetime
 from flask_login.utils import login_required
+import os
 
 unpaireddisplay = Blueprint('unpaireddisplay', __name__, template_folder='templates')
 CORS(unpaireddisplay)
 
+database_url = os.getenv(
+    'DATABASE_URL',
+    default='dbname=slcapplication',  # E.g., for local dev
+)
+
 # Connect to your postgres DB
-conn = psycopg2.connect("dbname=slcapplication user=postgres password=ksshiraja")
+conn = psycopg2.connect(database_url)
 
 
 @unpaireddisplay.route('/unpaired', methods = ['GET', 'POST'])

@@ -1,12 +1,18 @@
 from flask import Flask, Blueprint, jsonify, request
 from flask_cors import CORS
 import psycopg2
+import os
 
 intakeform = Blueprint('intakeform', __name__, template_folder='templates')
 CORS(intakeform)
 
+database_url = os.getenv(
+    'DATABASE_URL',
+    default='dbname=slcapplication',  # E.g., for local dev
+)
+
 # Connect to your postgres DB
-conn = psycopg2.connect("dbname=slcapplication user=postgres password=ksshiraja")
+conn = psycopg2.connect(database_url)
 
 @intakeform.route('/newapplicant', methods = ['POST'])
 def insertApplicant():

@@ -5,12 +5,18 @@ import json
 from flask_login import (
     login_required,
 )
+import os
 
 settings = Blueprint('settings', __name__, template_folder='templates')
 CORS(settings)
 
+database_url = os.getenv(
+    'DATABASE_URL',
+    default='dbname=slcapplication',  # E.g., for local dev
+)
+
 # Connect to your postgres DB
-conn = psycopg2.connect("dbname=slcapplication user=postgres password=ksshiraja")
+conn = psycopg2.connect(database_url)
 
 # ON DEPLOYMENT UNCOMMENT DELETING INTAKEFORM
 @settings.route('/savedata', methods=["POST"])

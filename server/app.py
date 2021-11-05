@@ -20,7 +20,7 @@ import psycopg2
 import google_token
 import os
 
-app = Flask(__name__, static_folder="public")
+app = Flask(__name__, static_url_path='', static_folder='../client/build')
 app.register_blueprint(intakeform)
 app.register_blueprint(timesheetform)
 app.register_blueprint(algorithm)

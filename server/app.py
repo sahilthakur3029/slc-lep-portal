@@ -18,6 +18,7 @@ from flask_login import (
 from flask_wtf.csrf import CSRFProtect, generate_csrf
 import psycopg2
 import google_token
+import os
 
 app = Flask(__name__, static_folder="public")
 app.register_blueprint(intakeform)
@@ -29,8 +30,13 @@ app.register_blueprint(unpaireddisplay)
 app.register_blueprint(settings)
 CORS(app)
 
+database_url = os.getenv(
+    'DATABASE_URL',
+    default='dbname=slcapplication',  # E.g., for local dev
+)
+
 # Connect to your postgres DB
-conn = psycopg2.connect("dbname=slcapplication user=postgres password=ksshiraja")
+conn = psycopg2.connect(database_url)
 # Open a cursor to perform database operations
 cur = conn.cursor()
 
@@ -177,7 +183,7 @@ def index():
 
   # Retrieve query results
   records = cur.fetchall()
-  return {"Test":"Hello World!"}
+  return jsonify(records)
 
 
 if __name__ == '__main__': 

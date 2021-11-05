@@ -92,7 +92,6 @@ const ColorButton = withStyles((theme) => ({
     marginLeft: "30px",
     height: 32,
     margin: theme.spacing(1),
-    marginLeft: "30px",
   },
 }))(Button);
 
@@ -502,7 +501,7 @@ class StudentDisplay extends Component {
     })
       .then((res) => res.json())
       .then((data) => {
-        if (data.login == true) {
+        if (data.login === true) {
           this.setState({ isAuthenticated: true });
           const { REACT_APP_NAMES } = process.env;
           let rows_array = [];
@@ -669,7 +668,7 @@ class StudentDisplay extends Component {
     })
       .then((response) => response.json())
       .then((data) => {
-        if (data.success == true) {
+        if (data.success === true) {
           this.setState({ openAlert: true });
           return "Success";
         } else {
@@ -739,7 +738,7 @@ class StudentDisplay extends Component {
       return <div />;
     }
     // props is the useStyles variable
-    const { values, handleChange, classes } = this.props;
+    const { classes } = this.props;
     const { rows, columns } = this.state;
 
     const RowDetail = ({ row }) => (

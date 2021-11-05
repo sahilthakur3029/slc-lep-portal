@@ -11,7 +11,6 @@ import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";
 import HelpIcon from "@material-ui/icons/Help";
 import Tooltip from "@material-ui/core/Tooltip";
-import CssBaseline from "@material-ui/core/CssBaseline";
 
 // Theme comes from the theme variable in App.js
 const useStyles = (theme) => ({

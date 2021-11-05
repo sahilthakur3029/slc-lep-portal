@@ -7,6 +7,10 @@ const useStyles = (theme) => ({
   formControl: {
     margin: theme.spacing(1),
     minWidth: 350,
+    marginLeft: "30px",
+  },
+  elements: {
+    textAlign: "center",
   },
   selectEmpty: {
     marginTop: theme.spacing(2),
@@ -20,11 +24,13 @@ class TimesheetSuccess extends Component {
       <MuiThemeProvider>
         <>
           <TopBar />
-          <br />
-          <h1 className={classes.formControl}>
-            Thank You For Logging In Your Hours!
-          </h1>
-          <p className={classes.formControl}>You can now close this page.</p>
+          <div className={classes.elements}>
+            <br />
+            <h1 className={classes.formControl}>
+              Thank You For Logging In Your Hours!
+            </h1>
+            <p className={classes.formControl}>You can now close this page.</p>
+          </div>
         </>
       </MuiThemeProvider>
     );

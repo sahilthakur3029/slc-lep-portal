@@ -7,7 +7,6 @@ import { withStyles } from "@material-ui/core/styles";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 import { titleCase } from "title-case";
-import Box from "@material-ui/core/Box";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;

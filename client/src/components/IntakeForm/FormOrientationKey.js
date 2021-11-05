@@ -47,27 +47,6 @@ const ColorButton = withStyles((theme) => ({
   },
 }))(Button);
 
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 350,
-    },
-  },
-};
-
-const allDays = [
-  "Sunday",
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-];
-
 class FormOrientationKey extends Component {
   constructor(props) {
     super(props);
@@ -162,6 +141,7 @@ class FormOrientationKey extends Component {
               up for an orienatation can be found{" "}
               <a
                 target="_blank"
+                rel="noreferrer"
                 href={
                   "https://" +
                   "slc.berkeley.edu/programs/language-exchange-program/formats-service#lep-welcome"

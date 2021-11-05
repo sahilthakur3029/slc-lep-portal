@@ -68,7 +68,6 @@ const ColorButton1 = withStyles((theme) => ({
     marginLeft: "30px",
     height: 32,
     margin: theme.spacing(1),
-    marginLeft: "30px",
   },
 }))(Button);
 
@@ -124,7 +123,7 @@ class Settings extends Component {
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
-        if (data.login == true) {
+        if (data.login === true) {
           this.setState({ isAuthenticated: true });
           const { REACT_APP_TSRENDER } = process.env;
           fetch(REACT_APP_TSRENDER)
@@ -382,7 +381,7 @@ class Settings extends Component {
     })
       .then((response) => response.json())
       .then((data) => {
-        if (data.success == true) {
+        if (data.success === true) {
           this.setState({ openAlert: true });
           return "Success";
         } else {

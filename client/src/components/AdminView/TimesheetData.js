@@ -34,8 +34,6 @@ import {
   SearchPanel,
   TableHeaderRow,
   TableColumnResizing,
-  TableRowDetail,
-  TableFixedColumns,
   ColumnChooser,
   TableColumnVisibility,
   TableEditColumn,
@@ -271,7 +269,7 @@ class TimesheetData extends Component {
     })
       .then((res) => res.json())
       .then((data) => {
-        if (data.login == true) {
+        if (data.login === true) {
           this.setState({ isAuthenticated: true });
           let rows_array = [];
           let counter = 0;
@@ -360,7 +358,7 @@ class TimesheetData extends Component {
     })
       .then((response) => response.json())
       .then((data) => {
-        if (data.success == true) {
+        if (data.success === true) {
           this.setState({ openAlert: true });
           return "Success";
         } else {
@@ -431,7 +429,7 @@ class TimesheetData extends Component {
       return <div />;
     }
     // props is the useStyles variable
-    const { values, handleChange, classes } = this.props;
+    const { classes } = this.props;
     const { rows, columns } = this.state;
 
     const columnWid = [

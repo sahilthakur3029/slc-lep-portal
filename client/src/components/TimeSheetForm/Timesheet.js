@@ -201,7 +201,11 @@ class Timesheet extends Component {
             </h2>
             <p className={classes.heads}>
               For reference, see the SLC Academic Calendar at{" "}
-              <a target="_blank" href={"https://" + this.state.calendarLink}>
+              <a
+                target="_blank"
+                rel="noreferrer"
+                href={"https://" + this.state.calendarLink}
+              >
                 {this.state.calendarLink}
               </a>
               .

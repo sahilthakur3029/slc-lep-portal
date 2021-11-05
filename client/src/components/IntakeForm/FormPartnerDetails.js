@@ -15,14 +15,16 @@ import FormLabel from "@material-ui/core/FormLabel";
 
 const useStyles = (theme) => ({
   formControl: {
+    margin: theme.spacing(1),
+    minWidth: 350,
+    marginLeft: "30px",
+    textAlign: "left",
+  },
+  heads: {
     margin: theme.spacing(2),
     minWidth: 350,
     marginLeft: "30px",
-  },
-  heads: {
-    color: "black",
     textAlign: "center",
-    fontSize: 50,
   },
   elements: {
     textAlign: "center",
@@ -69,7 +71,7 @@ class FormPartnerDetails extends Component {
           <TopBar />
           <div className={classes.elements}>
             <br />
-            <h1 className={classes.formControl}>
+            <h1 className={classes.heads}>
               <u>Partner Preferences</u>
             </h1>
             <h4 className={classes.formControlSmall}>
@@ -78,7 +80,7 @@ class FormPartnerDetails extends Component {
               the program who is the perfect match.
             </h4>
             <br />
-            <h2 className={classes.formControl}>
+            <h2 className={classes.heads}>
               Would you like a partner who studies a particular major? If so,
               please include below:
             </h2>
@@ -116,7 +118,7 @@ class FormPartnerDetails extends Component {
             </FormControl>
             <br />
             <br />
-            <h2 className={classes.formControl}>
+            <h2 className={classes.heads}>
               Would you like a partner who studies a particular gender? If so,
               please include below:
             </h2>

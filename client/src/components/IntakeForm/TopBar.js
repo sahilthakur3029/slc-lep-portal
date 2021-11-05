@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import AppBar from "@material-ui/core/AppBar";
 import { withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import HeaderImg from "./header_pic.png";
+import HeaderImg from "./test5.png";
 
 const useStyles = (theme) => ({
   root: {
@@ -13,7 +13,7 @@ const useStyles = (theme) => ({
     alignSelf: "flex-start",
     color: "#C4820E", //#C4820E
     padding: "0.5%",
-    margin: "40% 2% 5% 2%",
+    margin: "6% 3% 5% 2%",
     // border: "solid #003262 2px",
     // backgroundColor: "#003262",
     fontSize: "1px",
@@ -21,11 +21,12 @@ const useStyles = (theme) => ({
   },
   topBar: {
     backgroundImage: `url(${HeaderImg})`,
-    backgroundPosition: "center",
-    backgroundSize: "cover",
     backgroundRepeat: "no-repeat",
-    // backgroundColor: "#003262", // "#003262",
-    // backgroundImage: "url(test_img.png)",
+    backgroundPosition: "center ",
+    backgroundSize: "cover",
+    maxWidth: "100%",
+    // backgroundAttachment: "fixed",
+    height: "100%",
   },
 });
 

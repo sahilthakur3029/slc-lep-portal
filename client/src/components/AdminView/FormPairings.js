@@ -1,8 +1,5 @@
 import React, { Component } from "react";
-import Home from "./AdminHome";
 import { withStyles } from "@material-ui/core/styles";
-import { PageButton } from "./Buttonss";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import TopBar from "../IntakeForm/TopBar";
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
 import Select from "@material-ui/core/Select";
@@ -44,21 +41,11 @@ const useStyles = (theme) => ({
 
 const ColorButton = withStyles((theme) => ({
   root: {
-    boxShadow: "0 3px 5px 2px rgba(60, 75, 120, .3)",
-    background: "linear-gradient(45deg, #687732 30%, #7A8B39 90%)",
-    backgroundColor: "#c123de",
-    borderRadius: "6px",
-    border: "0",
-    display: "inline-block",
-    cursor: "pointer",
-    color: "white",
-    fontSize: "15px",
-    fontWeight: "bold",
-    padding: "6px 24px",
-    textDecoration: "none",
-    textShadow: "0px 1px 0px #9b14b3",
-    marginLeft: "30px",
-    height: 32,
+    color: theme.palette.getContrastText("#859438"),
+    backgroundColor: "#859438",
+    "&:hover": {
+      backgroundColor: "#848438",
+    },
     margin: theme.spacing(1),
     marginLeft: "30px",
   },
@@ -96,7 +83,7 @@ class FormPairings extends Component {
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
-        if (data.login == true) {
+        if (data.login === true) {
           this.setState({ isAuthenticated: true });
         } else {
           this.setState({ redirect: <Redirect push to="/signin" /> });
@@ -127,7 +114,7 @@ class FormPairings extends Component {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
-        if (data.success == true) {
+        if (data.success === true) {
           this.setState({ openAlert: true });
           return "Success";
         } else {

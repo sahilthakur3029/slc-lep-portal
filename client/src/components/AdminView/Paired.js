@@ -74,21 +74,11 @@ const useStyles = (theme) => ({
 
 const ColorButton = withStyles((theme) => ({
   root: {
-    boxShadow: "0 3px 5px 2px rgba(60, 75, 120, .3)",
-    background: "linear-gradient(45deg, #687732 30%, #7A8B39 90%)",
-    backgroundColor: "#c123de",
-    borderRadius: "6px",
-    border: "0",
-    display: "inline-block",
-    cursor: "pointer",
-    color: "white",
-    fontSize: "15px",
-    fontWeight: "bold",
-    padding: "6px 24px",
-    textDecoration: "none",
-    textShadow: "0px 1px 0px #9b14b3",
-    marginLeft: "30px",
-    height: 32,
+    color: theme.palette.getContrastText("#859438"),
+    backgroundColor: "#859438",
+    "&:hover": {
+      backgroundColor: "#848438",
+    },
     margin: theme.spacing(1),
     marginLeft: "30px",
   },

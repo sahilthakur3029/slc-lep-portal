@@ -19,11 +19,13 @@ const useStyles = (theme) => ({
     margin: theme.spacing(1),
     minWidth: 350,
     marginLeft: "30px",
+    textAlign: "left",
   },
   heads: {
-    color: "black",
+    margin: theme.spacing(2),
+    minWidth: 350,
+    marginLeft: "30px",
     textAlign: "center",
-    fontSize: 50,
   },
   elements: {
     textAlign: "center",
@@ -103,11 +105,10 @@ class FormLanguageDetails extends Component {
           <TopBar />
           <br />
           <div className={classes.elements}>
-            <h1 className={classes.formControl}>
+            <h1 className={classes.heads}>
               <u>Language Exchange</u>
             </h1>
-            <br />
-            <h2 className={classes.formControl}>
+            <h2 className={classes.heads}>
               What languages do you want to practice?
             </h2>
             <br />
@@ -206,7 +207,7 @@ class FormLanguageDetails extends Component {
             </FormControl>
             <br />
             <br />
-            <h2 className={classes.formControl}>
+            <h2 className={classes.heads}>
               What languages do you want to help your partner(s) practice?
             </h2>
             <br />
@@ -305,7 +306,7 @@ class FormLanguageDetails extends Component {
             </FormControl>
             <br />
             <br />
-            <h2 className={classes.formControl}>
+            <h2 className={classes.heads}>
               Is there any additional information you'd like us to know?
             </h2>
             <br />
@@ -316,7 +317,7 @@ class FormLanguageDetails extends Component {
               margin="normal"
               style={{
                 margin: 0,
-                width: "77%",
+                width: "75%",
               }}
               className={classes.formControl}
             />

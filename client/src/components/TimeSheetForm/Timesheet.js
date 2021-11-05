@@ -21,11 +21,16 @@ const useStyles = (theme) => ({
     margin: theme.spacing(1),
     minWidth: 350,
     marginLeft: "30px",
+    textAlign: "left",
   },
   heads: {
-    color: "black",
+    margin: theme.spacing(2),
+    minWidth: 350,
+    marginLeft: "30px",
     textAlign: "center",
-    fontSize: 40,
+  },
+  elements: {
+    textAlign: "center",
   },
   selectEmpty: {
     marginTop: theme.spacing(2),
@@ -144,87 +149,89 @@ class Timesheet extends Component {
           <CssBaseline />
           <TopBar />
           <br />
-          <h1 className={classes.heads}>
-            {this.state.semester} LEP Weekly Timesheet
-          </h1>
-          <h2 className={classes.formControl}>
-            Please submit your weekly hours every Sunday by 5PM PST
-          </h2>
-          <TextField
-            placeholder="Enter Your First Name"
-            label="First Name"
-            onChange={handleChange("firstName")}
-            defaultValue={values.firstName}
-            margin="normal"
-            required
-            className={classes.formControl}
-          />
-          <TextField
-            placeholder="Enter Your Last Name"
-            label="Last Name"
-            onChange={handleChange("lastName")}
-            defaultValue={values.lastName}
-            margin="normal"
-            required
-            className={classes.formControl}
-          />
-          <br />
-          <TextField
-            placeholder="Enter Your Partner(s) Names"
-            label="Partner Names"
-            onChange={handleChange("partnerNames")}
-            defaultValue={values.partnerNames}
-            margin="normal"
-            required
-            className={classes.formControl}
-          />
-          <br />
-          <TextField
-            placeholder="How many hours did you meet?"
-            label="Hours"
-            onChange={handleChange("hours")}
-            defaultValue={values.hours}
-            margin="normal"
-            required
-            className={classes.formControl}
-          />
-          <br />
-          <br />
-          <h2 className={classes.formControl}>
-            Please select the week you are logging hours for:
-          </h2>
-          <p className={classes.formControl}>
-            For reference, see the SLC Academic Calendar at{" "}
-            <a target="_blank" href={"https://" + this.state.calendarLink}>
-              {this.state.calendarLink}
-            </a>
-            .
-          </p>
-          <FormControl className={classes.formControl} required>
-            <InputLabel id="week-label">Choose Week</InputLabel>
-            <Select
-              labelId="week-label"
-              id="week-title"
-              defaultValue=""
-              onChange={handleChange("week")}
+          <div className={classes.elements}>
+            <h1 className={classes.heads}>
+              <u>LEP {this.state.semester} Weekly Timesheet</u>
+            </h1>
+            <h2 className={classes.heads}>
+              Please submit your weekly hours every Sunday by 5PM PST
+            </h2>
+            <TextField
+              placeholder="Enter Your First Name"
+              label="First Name"
+              onChange={handleChange("firstName")}
+              defaultValue={values.firstName}
+              margin="normal"
+              required
+              className={classes.formControl}
+            />
+            <TextField
+              placeholder="Enter Your Last Name"
+              label="Last Name"
+              onChange={handleChange("lastName")}
+              defaultValue={values.lastName}
+              margin="normal"
+              required
+              className={classes.formControl}
+            />
+            <br />
+            <TextField
+              placeholder="Enter Your Partner(s) Names"
+              label="Partner Names"
+              onChange={handleChange("partnerNames")}
+              defaultValue={values.partnerNames}
+              margin="normal"
+              required
+              className={classes.formControl}
+            />
+            <br />
+            <TextField
+              placeholder="How many hours did you meet?"
+              label="Hours"
+              onChange={handleChange("hours")}
+              defaultValue={values.hours}
+              margin="normal"
+              required
+              className={classes.formControl}
+            />
+            <br />
+            <br />
+            <h2 className={classes.heads}>
+              Please select the week you are logging hours for:
+            </h2>
+            <p className={classes.heads}>
+              For reference, see the SLC Academic Calendar at{" "}
+              <a target="_blank" href={"https://" + this.state.calendarLink}>
+                {this.state.calendarLink}
+              </a>
+              .
+            </p>
+            <FormControl className={classes.formControl} required>
+              <InputLabel id="week-label">Choose Week</InputLabel>
+              <Select
+                labelId="week-label"
+                id="week-title"
+                defaultValue=""
+                onChange={handleChange("week")}
+              >
+                {this.state.allWeeks.map((name) => (
+                  <MenuItem key={name} value={name}>
+                    {name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <br />
+            <br />
+            <ColorButton
+              variant="contained"
+              color="primary"
+              className={classes.margin}
+              onClick={this.continue}
             >
-              {this.state.allWeeks.map((name) => (
-                <MenuItem key={name} value={name}>
-                  {name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <br />
-          <br />
-          <ColorButton
-            variant="contained"
-            color="primary"
-            className={classes.margin}
-            onClick={this.continue}
-          >
-            Confirm & Continue
-          </ColorButton>
+              Confirm & Continue
+            </ColorButton>
+          </div>
         </>
       </MuiThemeProvider>
     );

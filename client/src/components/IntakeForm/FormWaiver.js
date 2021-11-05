@@ -9,7 +9,6 @@ const useStyles = (theme) => ({
   formControl: {
     margin: theme.spacing(2),
     minWidth: 350,
-    marginLeft: "30px",
   },
   heads: {
     color: "black",
@@ -26,7 +25,6 @@ const useStyles = (theme) => ({
     margin: theme.spacing(1),
     minWidth: 350,
     color: "gray",
-    marginLeft: "30px",
   },
 });
 

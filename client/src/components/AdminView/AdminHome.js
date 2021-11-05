@@ -1,23 +1,27 @@
 import React, { Component } from "react";
-import Paired from "./Paired";
-// import Button from "./Paired";
 import Button from "@material-ui/core/Button";
-import Unpaired from "./Unpaired";
-import FormPairings from "./FormPairings";
-import { makeStyles } from "@material-ui/core/styles";
-import { PageButton } from "./Buttonss";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import TopBar from "../IntakeForm/TopBar";
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
 import { withStyles } from "@material-ui/core/styles";
 import { Redirect } from "react-router-dom";
 import SettingsIcon from "@material-ui/icons/Settings";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import PersonIcon from "@material-ui/icons/Person";
+import GroupIcon from "@material-ui/icons/Group";
+import GroupAddIcon from "@material-ui/icons/GroupAdd";
+import AccessTimeIcon from "@material-ui/icons/AccessTime";
+import "./AdminHome.css";
 
 const useStyles = (theme) => ({
   formControl: {
     margin: theme.spacing(1),
     minWidth: 350,
+  },
+  heads: {
+    margin: theme.spacing(2),
+    minWidth: 350,
+    marginLeft: "30px",
+    textAlign: "center",
   },
   selectEmpty: {
     marginTop: theme.spacing(2),
@@ -32,6 +36,17 @@ const useStyles = (theme) => ({
     padding: "0 30px",
   },
 });
+
+const ColorButton = withStyles((theme) => ({
+  root: {
+    color: theme.palette.getContrastText("#859438"),
+    backgroundColor: "#859438",
+    "&:hover": {
+      backgroundColor: "#848438",
+    },
+    // margin: theme.spacing(1),
+  },
+}))(Button);
 
 class Home extends Component {
   constructor(props) {
@@ -49,7 +64,7 @@ class Home extends Component {
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
-        if (data.login == true) {
+        if (data.login === true) {
           this.setState({ isAuthenticated: true });
         } else {
           this.setState({ redirect: <Redirect push to="/signin" /> });
@@ -78,44 +93,81 @@ class Home extends Component {
       <MuiThemeProvider>
         <>
           <TopBar />
+          <br />
           {this.state.redirect}
-          <h1>Home</h1>
-          <p>Welcome to the SLC</p>
-          <Button
-            className={classes.buttonRoot}
-            onClick={() =>
-              this.setState({ redirect: <Redirect push to="/unpaired" /> })
-            }
-          >
-            Unpaired
-          </Button>
-          <Button
-            className={classes.buttonRoot}
-            onClick={() =>
-              this.setState({ redirect: <Redirect push to="/paired" /> })
-            }
-          >
-            Paired
-          </Button>
-          <Button
-            className={classes.buttonRoot}
-            onClick={() =>
-              this.setState({ redirect: <Redirect push to="/formpairs" /> })
-            }
-          >
-            Form new pairs
-          </Button>
-          <Button className={classes.buttonRoot} onClick={this.logout}>
-            Logout <ExitToAppIcon />
-          </Button>
-          <Button
-            className={classes.buttonRoot}
-            onClick={() =>
-              this.setState({ redirect: <Redirect push to="/settings" /> })
-            }
-          >
-            Settings <SettingsIcon />
-          </Button>
+          <h1 className={classes.heads}>
+            <u>Welcome to the LEP Admin Home</u>
+          </h1>
+          <div className="wrapper">
+            <ColorButton
+              variant="contained"
+              color="primary"
+              style={{ height: 40 }}
+              className={classes.margin}
+              onClick={() =>
+                this.setState({ redirect: <Redirect push to="/formpairs" /> })
+              }
+            >
+              Form new pairs <GroupAddIcon />
+            </ColorButton>
+            <ColorButton
+              variant="contained"
+              color="primary"
+              style={{ height: 40 }}
+              className={classes.margin}
+              onClick={() =>
+                this.setState({ redirect: <Redirect push to="/paired" /> })
+              }
+            >
+              Paired <GroupIcon />
+            </ColorButton>
+            <ColorButton
+              variant="contained"
+              color="primary"
+              style={{ height: 40 }}
+              className={classes.margin}
+              onClick={() =>
+                this.setState({ redirect: <Redirect push to="/unpaired" /> })
+              }
+            >
+              Unpaired <PersonIcon />
+            </ColorButton>
+          </div>
+          <div className="wrapper">
+            <ColorButton
+              variant="contained"
+              color="primary"
+              style={{ height: 40 }}
+              className={classes.margin}
+              onClick={() =>
+                this.setState({
+                  redirect: <Redirect push to="/timesheetdata" />,
+                })
+              }
+            >
+              Timesheet <AccessTimeIcon />
+            </ColorButton>
+            <ColorButton
+              variant="contained"
+              color="primary"
+              style={{ height: 40 }}
+              className={classes.margin}
+              onClick={() =>
+                this.setState({ redirect: <Redirect push to="/settings" /> })
+              }
+            >
+              Settings <SettingsIcon />
+            </ColorButton>
+            <ColorButton
+              variant="contained"
+              color="primary"
+              style={{ height: 40 }}
+              className={classes.margin}
+              onClick={this.logout}
+            >
+              Logout <ExitToAppIcon />
+            </ColorButton>
+          </div>
         </>
       </MuiThemeProvider>
     );

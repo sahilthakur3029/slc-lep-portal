@@ -3,14 +3,7 @@ import TopBar from "./TopBar.js";
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
-import FormControl from "@material-ui/core/FormControl";
 import { withStyles } from "@material-ui/core/styles";
-import Input from "@material-ui/core/Input";
-import InputLabel from "@material-ui/core/InputLabel";
-import HelpIcon from "@material-ui/icons/Help";
-import Tooltip from "@material-ui/core/Tooltip";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
@@ -29,7 +22,7 @@ const useStyles = (theme) => ({
   heads: {
     color: "black",
     textAlign: "center",
-    fontSize: 50,
+    fontSize: 40,
   },
   elements: {
     textAlign: "center",
@@ -38,6 +31,10 @@ const useStyles = (theme) => ({
     marginTop: theme.spacing(2),
   },
   questionMark: { fontSize: "medium" },
+  infoText: {
+    marginLeft: "10%",
+    marginRight: "10%",
+  },
 });
 
 const ColorButton = withStyles((theme) => ({
@@ -47,8 +44,6 @@ const ColorButton = withStyles((theme) => ({
     "&:hover": {
       backgroundColor: "#848438",
     },
-    margin: theme.spacing(1),
-    marginLeft: "30px",
   },
 }))(Button);
 
@@ -134,17 +129,55 @@ class FormOrientationKey extends Component {
           <TopBar />
           <br />
           <h1 className={classes.heads}>
-            LEP {this.state.semester} Intake Form
+            <u>LEP {this.state.semester} Intake Form</u>
           </h1>
-          <br />
           <div className={classes.elements}>
-            <h2 className={classes.formControl}>
-              <u>
-                Please Enter The Key You Receieved At Orientation Below (You
-                Will Not Be Able To Continue Without The Correct Key):
-              </u>
-            </h2>
+            <h3 className={classes.infoText}>
+              The SLC Language Exchange Program provides a platform for Cal
+              students to share their language skills and cultural knowledge.
+              Through language practice and community socials, we serve as a
+              space for all students to meaningfully engage and benefit from
+              Cal’s global diversity.
+            </h3>
+            <br />
+            <h3 className={classes.infoText}>
+              We believe that linguistic and cultural diversity is integral to
+              Cal’s academic excellence and reputation as the world’s leading
+              public university. By tapping into this diversity, we enable
+              participants to refine not only their language skills but also
+              their ability to function fluidly in diverse cultural contexts.
+              Based on mutual exchange, we aim to foster meaningful connections
+              within and across communities of language speakers, learners, and
+              practitioners at Cal. By deepening our knowledge of one another,
+              we seek to strengthen the bonds that unite us and break down the
+              barriers that divide us. In doing so, we re-invigorate our respect
+              for and commitment to our shared humanity.
+            </h3>
+            <br />
+            <h3 className={classes.infoText}>
+              In order to join our Language Exchange Program and to be paired
+              with 1-2 peers who are proficient in the language you’d like to
+              practice and are seeking support with a language you know, we ask
+              that you attend an orienatation first. More information on signing
+              up for an orienatation can be found{" "}
+              <a
+                target="_blank"
+                href={
+                  "https://" +
+                  "slc.berkeley.edu/programs/language-exchange-program/formats-service#lep-welcome"
+                }
+              >
+                here.
+              </a>{" "}
+              Once you've attended an orientation, you should have recevied an
+              orientation key in order to access the intake form. Please enter
+              the key below and click Next to start filling out the intake form.
+            </h3>
             <TextField
+              style={{
+                margin: 0,
+                width: "75%",
+              }}
               placeholder="Orienataion Key"
               label="Enter orientation key here"
               onChange={handleChange("orientationKey")}

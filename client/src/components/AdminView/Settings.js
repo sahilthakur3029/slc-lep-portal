@@ -40,6 +40,18 @@ const useStyles = (theme) => ({
 
 const ColorButton = withStyles((theme) => ({
   root: {
+    color: theme.palette.getContrastText("#859438"),
+    backgroundColor: "#859438",
+    "&:hover": {
+      backgroundColor: "#848438",
+    },
+    margin: theme.spacing(1),
+    marginLeft: "30px",
+  },
+}))(Button);
+
+const ColorButton1 = withStyles((theme) => ({
+  root: {
     boxShadow: "0 3px 5px 2px rgba(60, 75, 120, .3)",
     background: "linear-gradient(45deg, #687732 30%, #7A8B39 90%)",
     backgroundColor: "#c123de",
@@ -598,14 +610,14 @@ class Settings extends Component {
           <h2 style={{ color: "red" }} className={classes.formControl}>
             <u>Reset Algorithm [DANGER ZONE]</u>
           </h2>
-          <ColorButton
+          <ColorButton1
             variant="contained"
             color="primary"
             className={classes.margin}
             onClick={this.handleOpen}
           >
             Clear & Reset
-          </ColorButton>
+          </ColorButton1>
           <Modal
             open={this.state.open}
             onClose={this.handleClose}

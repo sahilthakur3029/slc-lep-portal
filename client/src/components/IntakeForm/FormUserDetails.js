@@ -19,11 +19,13 @@ const useStyles = (theme) => ({
     margin: theme.spacing(2),
     minWidth: 350,
     marginLeft: "30px",
+    textAlign: "left",
   },
   heads: {
-    color: "black",
+    margin: theme.spacing(2),
+    minWidth: 350,
+    marginLeft: "30px",
     textAlign: "center",
-    fontSize: 50,
   },
   elements: {
     textAlign: "center",
@@ -86,7 +88,7 @@ class FormUserDetails extends Component {
           <TopBar />
           <br />
           <div className={classes.elements}>
-            <h1 className={classes.formControl}>
+            <h1 className={classes.heads}>
               <u>Basic Information</u>
             </h1>
             <TextField
@@ -212,7 +214,7 @@ class FormUserDetails extends Component {
             <TextField
               style={{
                 margin: 0,
-                width: "77%",
+                width: "75%",
               }}
               label="What do you hope to gain from the SLC Language Exchange Program?"
               onChange={handleChange("hopeToGain")}
@@ -226,7 +228,7 @@ class FormUserDetails extends Component {
             <TextField
               style={{
                 margin: 0,
-                width: "77%",
+                width: "75%",
               }}
               label="How do you plan to maintain your motivation to meet with your partner(s) weekly?"
               onChange={handleChange("planToMeet")}

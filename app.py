@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, send_from_directory
 from server.routes.algorithm import algorithm
 from server.routes.intakeform import intakeform
 from server.routes.timesheetform import timesheetform
@@ -20,7 +20,7 @@ import psycopg2
 import server.google_token
 import os
 
-app = Flask(__name__, static_url_path='', static_folder='client/build/static')
+app = Flask(__name__, static_url_path='', static_folder='client/build')
 app.register_blueprint(intakeform)
 app.register_blueprint(timesheetform)
 app.register_blueprint(algorithm)
@@ -61,6 +61,10 @@ cors = CORS(
 )
 
 app.config['GOOGLE_CLIENT_ID'] = "765830083555-tnqn5hsvb0fodkq4h5foi7tat4d335ts.apps.googleusercontent.com"
+
+@app.route("/", defaults={'path':''})
+def serve(path):
+    return send_from_directory(app.static_folder,'index.html')
 
 @login_manager.unauthorized_handler     
 def unauthorized_callback():  

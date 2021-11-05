@@ -62,6 +62,10 @@ cors = CORS(
 
 app.config['GOOGLE_CLIENT_ID'] = "765830083555-tnqn5hsvb0fodkq4h5foi7tat4d335ts.apps.googleusercontent.com"
 
+@app.errorhandler(404)
+def not_found(e):
+    return app.send_static_file('index.html')
+
 @app.route("/", defaults={'path':''})
 def serve(path):
     return send_from_directory(app.static_folder,'index.html')

@@ -2,7 +2,6 @@ import React from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import "./App.css";
 import FormController from "./components/IntakeForm/FormController";
-import Home from "./components/Home";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core";
 import TimesheetController from "./components/TimesheetForm/TimesheetController";
 import AdminHome from "./components/AdminView/AdminHome";
@@ -28,8 +27,7 @@ class App extends React.Component {
       <ThemeProvider theme={theme}>
         <BrowserRouter>
           <Switch>
-            <Route exact path="/" component={Home} />
-            <Route exact path="/intakeform" component={FormController} />
+            <Route exact path="/" component={FormController} />
             <Route exact path="/timesheet" component={TimesheetController} />
             <Route exact path="/adminhome" component={AdminHome} />
             <Route exact path="/paired" component={Paired} />

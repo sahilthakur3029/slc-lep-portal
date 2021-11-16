@@ -10,6 +10,7 @@ import PersonIcon from "@material-ui/icons/Person";
 import GroupIcon from "@material-ui/icons/Group";
 import GroupAddIcon from "@material-ui/icons/GroupAdd";
 import AccessTimeIcon from "@material-ui/icons/AccessTime";
+import ListAltIcon from "@material-ui/icons/ListAlt";
 import "./AdminHome.css";
 
 const useStyles = (theme) => ({
@@ -140,8 +141,19 @@ class Home extends Component {
               style={{ height: 40 }}
               className={classes.margin}
               onClick={() =>
+                this.setState({ redirect: <Redirect push to="/studentlist" /> })
+              }
+            >
+              Student List <ListAltIcon />
+            </ColorButton>
+            <ColorButton
+              variant="contained"
+              color="primary"
+              style={{ height: 40 }}
+              className={classes.margin}
+              onClick={() =>
                 this.setState({
-                  redirect: <Redirect push to="/timesheetdata" />,
+                  redirect: <Redirect push to="/timesheet" />,
                 })
               }
             >
@@ -158,6 +170,8 @@ class Home extends Component {
             >
               Settings <SettingsIcon />
             </ColorButton>
+          </div>
+          <div className="wrapper2">
             <ColorButton
               variant="contained"
               color="primary"

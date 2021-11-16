@@ -40,7 +40,7 @@ class App extends React.Component {
             <Route exact path="/studentlist" component={StudentDisplay} />
             <Route exact path="/signin" component={SignIn} />
             <Route exact path="/settings" component={Settings} />
-            <Route exact path="/timesheetdata" component={TimesheetData} />
+            <Route exact path="/timesheet" component={TimesheetData} />
           </Switch>
         </BrowserRouter>
       </ThemeProvider>

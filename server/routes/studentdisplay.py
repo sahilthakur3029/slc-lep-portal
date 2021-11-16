@@ -20,6 +20,7 @@ conn = psycopg2.connect(database_url)
 
 
 @studentdisplay.route('/names', methods = ['GET', 'POST'])
+@login_required
 def getStudents():
     # Open a cursor to perform database operations
     cur = conn.cursor()

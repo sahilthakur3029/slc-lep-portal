@@ -46,7 +46,8 @@ def updatepage():
         }
 
 # this command corresponds to the admin timesheet page 
-@timesheetform.route('/timesheet')
+@timesheetform.route('/timesheetrecords')
+@login_required
 def timesheetData():
         # Open a cursor to perform database operations
         cur = conn.cursor()

@@ -101,7 +101,7 @@ class FormOrientationKey extends Component {
             onClose={() => this.setState({ open: false })}
           >
             <Alert onClose={this.handleClose} severity="error">
-              Incorrect orienataion key
+              Incorrect orientation key
             </Alert>
           </Snackbar>
           <CssBaseline />

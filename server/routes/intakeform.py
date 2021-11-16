@@ -1,5 +1,6 @@
 from flask import Flask, Blueprint, jsonify, request
 from flask_cors import CORS
+from flask_login.utils import login_required
 import psycopg2
 import os
 
@@ -56,6 +57,7 @@ def insertApplicant():
     return {'Successful': 'Successful'}
 
 @intakeform.route('/intakerender')
+@login_required
 def getSemester():
     # Open a cursor to perform database operations
     cur = conn.cursor()

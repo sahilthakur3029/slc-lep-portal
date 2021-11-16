@@ -7,3 +7,12 @@
   padding-bottom: 5%;
   /* text-align: center; */
 }
+.wrapper2 {
+  display: flex;
+  justify-content: center;
+  padding-left: 10%;
+  padding-right: 10%;
+  padding-top: 5%;
+  padding-bottom: 5%;
+  /* text-align: center; */
+}

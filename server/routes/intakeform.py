@@ -57,7 +57,6 @@ def insertApplicant():
     return {'Successful': 'Successful'}
 
 @intakeform.route('/intakerender')
-@login_required
 def getSemester():
     # Open a cursor to perform database operations
     cur = conn.cursor()

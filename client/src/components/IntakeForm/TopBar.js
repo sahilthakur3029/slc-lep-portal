@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import AppBar from "@material-ui/core/AppBar";
 import { withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import HeaderImg from "./test5.png";
+import HeaderImg from "./test6.png";
 
 const useStyles = (theme) => ({
   root: {

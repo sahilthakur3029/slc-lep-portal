@@ -26,7 +26,6 @@ def getPairs():
     cur.execute("SELECT * FROM unpaired")
     # Retrieve query results
     records = cur.fetchall()
-    print(records)
     # Close cursor
     cur.close()
     return jsonify(records)

@@ -254,7 +254,6 @@ const EditPopup = ({
 
 class EditPopupPlugin extends React.PureComponent {
   render() {
-    // console.log("POPUP ", this.props.popupComponent);
     const { popupComponent: Popup } = this.props;
     return (
       <Plugin>
@@ -458,8 +457,6 @@ class Paired extends Component {
   };
 
   saveChanges() {
-    console.log("BUTTON CLICKED");
-    console.log(this.state.rows);
     let rowsCopy = [...this.state.rows];
     let errors = false;
     for (let i = 0; i < rowsCopy.length; i++) {
@@ -623,7 +620,6 @@ class Paired extends Component {
         <TopBar />
         <h2 className={classes.heads}>Pairs</h2>
         {this.state.redirect}
-        {console.log(this.state)}
         <Snackbar
           open={this.state.openAlert}
           autoHideDuration={5000}

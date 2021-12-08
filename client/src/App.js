@@ -28,11 +28,7 @@ class App extends React.Component {
         <BrowserRouter>
           <Switch>
             <Route exact path="/" component={FormController} />
-            <Route
-              exact
-              path="/timesheetlogs"
-              component={TimesheetController}
-            />
+            <Route exact path="/timesheet" component={TimesheetController} />
             <Route exact path="/adminhome" component={AdminHome} />
             <Route exact path="/paired" component={Paired} />
             <Route exact path="/unpaired" component={Unpaired} />
@@ -40,7 +36,7 @@ class App extends React.Component {
             <Route exact path="/studentlist" component={StudentDisplay} />
             <Route exact path="/signin" component={SignIn} />
             <Route exact path="/settings" component={Settings} />
-            <Route exact path="/timesheet" component={TimesheetData} />
+            <Route exact path="/timesheetlogs" component={TimesheetData} />
           </Switch>
         </BrowserRouter>
       </ThemeProvider>

@@ -8,7 +8,9 @@ import { withStyles } from "@material-ui/core/styles";
 const useStyles = (theme) => ({
   formControl: {
     margin: theme.spacing(2),
-    minWidth: 350,
+    textAlign: "center",
+    marginLeft: "10%",
+    marginRight: "10%",
   },
   heads: {
     color: "black",
@@ -22,9 +24,17 @@ const useStyles = (theme) => ({
     marginTop: theme.spacing(2),
   },
   formControlSmall: {
-    margin: theme.spacing(1),
-    minWidth: 350,
+    margin: theme.spacing(2),
     color: "gray",
+    textAlign: "justify",
+    marginLeft: "10%",
+    marginRight: "10%",
+  },
+  formControlAck: {
+    margin: theme.spacing(2),
+    textAlign: "justify",
+    marginLeft: "10%",
+    marginRight: "10%",
   },
 });
 
@@ -57,18 +67,16 @@ class FormWaiver extends Component {
         <>
           <TopBar />
           <br />
+          <h1 className={classes.formControl}>
+            <u>
+              Waiver of Liability, Assumption of Risk, and Indemnity Agreement
+            </u>
+          </h1>
+          <h4 className={classes.formControl}>
+            UNIVERSITY OF CALIFORNIA AT BERKELEY
+          </h4>
+          <h4 className={classes.formControl}>Language Exchange Program</h4>
           <div className={classes.elements}>
-            <h1 className={classes.formControl}>
-              <u>
-                Waiver of Liability, Assumption of Risk, and Indemnity Agreement
-              </u>
-            </h1>
-            <h4 className={classes.formControlSmall}>
-              UNIVERSITY OF CALIFORNIA AT BERKELEY
-            </h4>
-            <h4 className={classes.formControlSmall}>
-              Language Exchange Program
-            </h4>
             <h4 className={classes.formControlSmall}>
               Waiver: In consideration of being permitted to participate in any
               way in the Language Exchange Program, I, for myself, my heirs,
@@ -108,7 +116,7 @@ class FormWaiver extends Component {
               full legal force and effect.
             </h4>
             <br />
-            <h2 className={classes.formControl}>
+            <h2 className={classes.formControlAck}>
               Acknowledgment of Understanding: I have read this waiver of
               liability, assumption of risk, and indemnity agreement, fully
               understand its terms, and understand that I am giving up

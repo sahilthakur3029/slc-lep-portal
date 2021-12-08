@@ -122,7 +122,6 @@ class Settings extends Component {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         if (data.login === true) {
           this.setState({ isAuthenticated: true });
           const { REACT_APP_TSRENDER } = process.env;
@@ -324,7 +323,6 @@ class Settings extends Component {
   }
 
   formatNames(p1name, p2name, p3name) {
-    console.log(p1name);
     if (p3name === null) {
       return p1name + " and " + p2name;
     } else {
@@ -429,7 +427,6 @@ class Settings extends Component {
               Save Successful!
             </Alert>
           </Snackbar>
-          {/* {console.log(/^\d+$/.test(this.state.startWeek))} */}
           <TopBar />
           <br />
           <h1 className={classes.heads}>Settings</h1>

@@ -53,7 +53,6 @@ class Confirm extends Component {
       credentials: "include",
     })
       .then((res) => {
-        console.log(res.headers.get(["X-CSRFToken"]));
         this.setState({ csrfToken: res.headers.get(["X-CSRFToken"]) });
       })
       .catch((err) => {

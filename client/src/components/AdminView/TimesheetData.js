@@ -141,7 +141,6 @@ const EditPopup = ({
 
 class EditPopupPlugin extends React.PureComponent {
   render() {
-    // console.log("POPUP ", this.props.popupComponent);
     const { popupComponent: Popup } = this.props;
     return (
       <Plugin>
@@ -338,8 +337,6 @@ class TimesheetData extends Component {
     return "Complete";
   }
   pushData(errors) {
-    console.log("Attempting push");
-    console.log(this.state.rows);
     if (errors) {
       this.setState({ openAlertFail: true });
       return;

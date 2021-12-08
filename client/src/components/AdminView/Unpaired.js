@@ -156,7 +156,6 @@ const EditPopup = ({
 
 class EditPopupPlugin extends React.PureComponent {
   render() {
-    // console.log("POPUP ", this.props.popupComponent);
     const { popupComponent: Popup } = this.props;
     return (
       <Plugin>

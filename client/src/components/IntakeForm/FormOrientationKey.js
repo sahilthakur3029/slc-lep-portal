@@ -34,6 +34,7 @@ const useStyles = (theme) => ({
   infoText: {
     marginLeft: "10%",
     marginRight: "10%",
+    textAlign: "justify",
   },
 });
 
@@ -71,8 +72,6 @@ class FormOrientationKey extends Component {
   }
   continue = (e) => {
     e.preventDefault();
-    console.log(this.props.values.orientationKey.trim());
-    console.log(this.state.currOrientationKey);
     if (
       this.props.values.orientationKey.trim() !== this.state.currOrientationKey
     ) {

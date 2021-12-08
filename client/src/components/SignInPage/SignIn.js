@@ -71,7 +71,6 @@ class SignIn extends Component {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         if (data.login === true) {
           this.setState({ isAuthenticated: true });
           this.setState({ redirect: <Redirect push to="/adminhome" /> });
@@ -91,7 +90,6 @@ class SignIn extends Component {
       credentials: "include",
     })
       .then((res) => {
-        console.log(res.headers.get(["X-CSRFToken"]));
         this.setState({ csrfToken: res.headers.get(["X-CSRFToken"]) });
       })
       .catch((err) => {
@@ -115,12 +113,10 @@ class SignIn extends Component {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         if (data.login === true) {
           this.setState({ isAuthenticated: true });
           this.setState({ redirect: <Redirect push to="/adminhome" /> });
         } else {
-          console.log("ERROR");
           this.setState({ loginError: true });
         }
       })
@@ -141,7 +137,6 @@ class SignIn extends Component {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         alert(`Welcome, ${data.email}!`);
       })
       .catch((err) => {

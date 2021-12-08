@@ -82,7 +82,6 @@ class FormPairings extends Component {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         if (data.login === true) {
           this.setState({ isAuthenticated: true });
         } else {
@@ -113,7 +112,6 @@ class FormPairings extends Component {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         if (data.success === true) {
           this.setState({ openAlert: true });
           return "Success";

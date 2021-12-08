@@ -37,7 +37,7 @@ def delete():
         cur.execute("DELETE FROM pairs")
         cur.execute("DELETE FROM timesheet")
         cur.execute("DELETE FROM unpaired")
-        # cur.execute("DELETE FROM intakeform")
+        cur.execute("DELETE FROM intakeform")
     # Commit changes
     conn.commit()
     # Close cursor

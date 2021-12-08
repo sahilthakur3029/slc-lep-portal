@@ -64,7 +64,6 @@ class Home extends Component {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         if (data.login === true) {
           this.setState({ isAuthenticated: true });
         } else {
@@ -153,7 +152,7 @@ class Home extends Component {
               className={classes.margin}
               onClick={() =>
                 this.setState({
-                  redirect: <Redirect push to="/timesheet" />,
+                  redirect: <Redirect push to="/timesheetlogs" />,
                 })
               }
             >

@@ -100,7 +100,7 @@ def get_user(user_id: int):
 
 # The user loader looks up a user by their user ID, and is called by
 # flask-login to get the current user from the session.  Return None
-# if the user ID isn't valid.
+# if the user ID isn't valid. 
 @login_manager.user_loader
 def user_loader(id: int):
     user_email = get_user(id)

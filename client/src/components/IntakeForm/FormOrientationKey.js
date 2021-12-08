@@ -136,8 +136,8 @@ class FormOrientationKey extends Component {
               In order to join our Language Exchange Program and to be paired
               with 1-2 peers who are proficient in the language you’d like to
               practice and are seeking support with a language you know, we ask
-              that you attend an orienatation first. More information on signing
-              up for an orienatation can be found{" "}
+              that you attend an orientation first. More information on signing
+              up for an orientation can be found{" "}
               <a
                 target="_blank"
                 rel="noreferrer"

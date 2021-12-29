@@ -11,6 +11,12 @@ import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";
 import HelpIcon from "@material-ui/icons/Help";
 import Tooltip from "@material-ui/core/Tooltip";
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 // Theme comes from the theme variable in App.js
 const useStyles = (theme) => ({
@@ -69,8 +75,20 @@ const allDays = [
 ];
 
 class FormUserDetails extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      open: false,
+    };
+  }
   continue = (e) => {
     e.preventDefault();
+    //CHANGE THIS
+    if (!this.props.values.email.trim().includes("@berkeley.edu")) {
+      this.setState({ open: true });
+      return;
+    }
     this.props.nextStep();
   };
 
@@ -78,12 +96,30 @@ class FormUserDetails extends Component {
     e.preventDefault();
     this.props.prevStep();
   };
+
+  handleClose = (e, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    this.setState({ open: false });
+  };
+
   render() {
     // props is the useStyles variable
     const { values, handleChange, classes } = this.props;
     return (
       <MuiThemeProvider>
         <>
+          <Snackbar
+            open={this.state.open}
+            autoHideDuration={5000}
+            onClose={() => this.setState({ open: false })}
+          >
+            <Alert onClose={this.handleClose} severity="error">
+              Ensure that you are using an @berkeley,edu email address
+            </Alert>
+          </Snackbar>
           <TopBar />
           <br />
           <div className={classes.elements}>

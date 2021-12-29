@@ -93,7 +93,6 @@ class FormOrientationKey extends Component {
     return (
       <MuiThemeProvider>
         <>
-          {/* Snackbar not required right? */}
           <Snackbar
             open={this.state.open}
             autoHideDuration={5000}

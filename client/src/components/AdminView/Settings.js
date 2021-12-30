@@ -468,7 +468,7 @@ class Settings extends Component {
           <br />
           <br />
           <h2 className={classes.formControl}>
-            <u>Mail Merge Data</u>
+            <u>Download Mail Merge Data</u>
           </h2>
           <br />
           <CsvDownload
@@ -504,12 +504,12 @@ class Settings extends Component {
               height: 32,
             }}
           >
-            Mailmerge Pairs
+            Mail Merge Pairs
           </CsvDownload>
           <br />
           <br />
           <h2 className={classes.formControl}>
-            <u>Download Data</u>
+            <u>Download Table Data</u>
           </h2>
           <br />
           <CsvDownload
@@ -655,7 +655,7 @@ class Settings extends Component {
           <br />
           <br />
           <h2 style={{ color: "red" }} className={classes.formControl}>
-            <u>Reset Algorithm [DANGER ZONE]</u>
+            <u>[DANGER ZONE] Reset Algorithm</u>
           </h2>
           <ColorButton1
             variant="contained"

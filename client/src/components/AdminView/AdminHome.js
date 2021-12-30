@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import Button from "@material-ui/core/Button";
+import * as React from "react";
+import { Component } from "react";
 import TopBar from "../IntakeForm/TopBar";
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
 import { withStyles } from "@material-ui/core/styles";
@@ -11,6 +11,10 @@ import GroupIcon from "@material-ui/icons/Group";
 import GroupAddIcon from "@material-ui/icons/GroupAdd";
 import AccessTimeIcon from "@material-ui/icons/AccessTime";
 import ListAltIcon from "@material-ui/icons/ListAlt";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import Typography from "@material-ui/core/Typography";
+import { CardActionArea } from "@material-ui/core";
 import "./AdminHome.css";
 
 const useStyles = (theme) => ({
@@ -37,17 +41,6 @@ const useStyles = (theme) => ({
     padding: "0 30px",
   },
 });
-
-const ColorButton = withStyles((theme) => ({
-  root: {
-    color: theme.palette.getContrastText("#859438"),
-    backgroundColor: "#859438",
-    "&:hover": {
-      backgroundColor: "#848438",
-    },
-    // margin: theme.spacing(1),
-  },
-}))(Button);
 
 class Home extends Component {
   constructor(props) {
@@ -99,87 +92,235 @@ class Home extends Component {
             <u>Welcome to the LEP Admin Home</u>
           </h1>
           <div className="wrapper">
-            <ColorButton
-              variant="contained"
-              color="primary"
-              style={{ height: 40 }}
-              className={classes.margin}
-              onClick={() =>
-                this.setState({ redirect: <Redirect push to="/formpairs" /> })
-              }
+            <Card
+              style={{
+                maxWidth: "25%",
+                height: "5%",
+                backgroundColor: "#859438",
+              }}
             >
-              Form new pairs <GroupAddIcon />
-            </ColorButton>
-            <ColorButton
-              variant="contained"
-              color="primary"
-              style={{ height: 40 }}
-              className={classes.margin}
-              onClick={() =>
-                this.setState({ redirect: <Redirect push to="/paired" /> })
-              }
+              <CardActionArea
+                onClick={() =>
+                  this.setState({
+                    redirect: <Redirect push to="/formpairs" />,
+                  })
+                }
+              >
+                <CardContent>
+                  <Typography
+                    gutterBottom
+                    variant="h5"
+                    component="div"
+                    style={{ textAlign: "center", color: "white" }}
+                  >
+                    Form Pairs <GroupAddIcon />
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    style={{ textAlign: "center", color: "white" }}
+                  >
+                    Run the pairing algorithm to match students
+                  </Typography>
+                </CardContent>
+              </CardActionArea>
+            </Card>
+            <Card
+              style={{
+                maxWidth: "25%",
+                height: "5%",
+                backgroundColor: "#859438",
+              }}
             >
-              Paired <GroupIcon />
-            </ColorButton>
-            <ColorButton
-              variant="contained"
-              color="primary"
-              style={{ height: 40 }}
-              className={classes.margin}
-              onClick={() =>
-                this.setState({ redirect: <Redirect push to="/unpaired" /> })
-              }
+              <CardActionArea
+                onClick={() =>
+                  this.setState({
+                    redirect: <Redirect push to="/paired" />,
+                  })
+                }
+              >
+                <CardContent>
+                  <Typography
+                    gutterBottom
+                    variant="h5"
+                    component="div"
+                    style={{ textAlign: "center", color: "white" }}
+                  >
+                    Paired <GroupIcon />
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    style={{ textAlign: "center", color: "white" }}
+                  >
+                    All currently active language pairs and trios
+                  </Typography>
+                </CardContent>
+              </CardActionArea>
+            </Card>
+            <Card
+              style={{
+                maxWidth: "25%",
+                height: "5%",
+                backgroundColor: "#859438",
+              }}
             >
-              Unpaired <PersonIcon />
-            </ColorButton>
+              <CardActionArea
+                onClick={() =>
+                  this.setState({
+                    redirect: <Redirect push to="/unpaired" />,
+                  })
+                }
+              >
+                <CardContent>
+                  <Typography
+                    gutterBottom
+                    variant="h5"
+                    component="div"
+                    style={{ textAlign: "center", color: "white" }}
+                  >
+                    Unpaired <PersonIcon />
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    style={{ textAlign: "center", color: "white" }}
+                  >
+                    All students not paired during the last algorithm run
+                  </Typography>
+                </CardContent>
+              </CardActionArea>
+            </Card>
           </div>
           <div className="wrapper">
-            <ColorButton
-              variant="contained"
-              color="primary"
-              style={{ height: 40 }}
-              className={classes.margin}
-              onClick={() =>
-                this.setState({ redirect: <Redirect push to="/studentlist" /> })
-              }
+            <Card
+              style={{
+                maxWidth: "25%",
+                height: "5%",
+                backgroundColor: "#859438",
+              }}
             >
-              Student List <ListAltIcon />
-            </ColorButton>
-            <ColorButton
-              variant="contained"
-              color="primary"
-              style={{ height: 40 }}
-              className={classes.margin}
-              onClick={() =>
-                this.setState({
-                  redirect: <Redirect push to="/timesheetlogs" />,
-                })
-              }
+              <CardActionArea
+                onClick={() =>
+                  this.setState({
+                    redirect: <Redirect push to="/studentlist" />,
+                  })
+                }
+              >
+                <CardContent>
+                  <Typography
+                    gutterBottom
+                    variant="h5"
+                    component="div"
+                    style={{ textAlign: "center", color: "white" }}
+                  >
+                    Student List <ListAltIcon />
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    style={{ textAlign: "center", color: "white" }}
+                  >
+                    All students who filled out the intake form
+                  </Typography>
+                </CardContent>
+              </CardActionArea>
+            </Card>
+            <Card
+              style={{
+                maxWidth: "25%",
+                height: "5%",
+                backgroundColor: "#859438",
+              }}
             >
-              Timesheet <AccessTimeIcon />
-            </ColorButton>
-            <ColorButton
-              variant="contained"
-              color="primary"
-              style={{ height: 40 }}
-              className={classes.margin}
-              onClick={() =>
-                this.setState({ redirect: <Redirect push to="/settings" /> })
-              }
+              <CardActionArea
+                onClick={() =>
+                  this.setState({
+                    redirect: <Redirect push to="/timesheetlogs" />,
+                  })
+                }
+              >
+                <CardContent>
+                  <Typography
+                    gutterBottom
+                    variant="h5"
+                    component="div"
+                    style={{ textAlign: "center", color: "white" }}
+                  >
+                    Timesheet <AccessTimeIcon />
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    style={{ textAlign: "center", color: "white" }}
+                  >
+                    Weekly logged conversational hours
+                  </Typography>
+                </CardContent>
+              </CardActionArea>
+            </Card>
+            <Card
+              style={{
+                maxWidth: "25%",
+                height: "5%",
+                backgroundColor: "#859438",
+              }}
             >
-              Settings <SettingsIcon />
-            </ColorButton>
+              <CardActionArea
+                onClick={() =>
+                  this.setState({
+                    redirect: <Redirect push to="/settings" />,
+                  })
+                }
+              >
+                <CardContent>
+                  <Typography
+                    gutterBottom
+                    variant="h5"
+                    component="div"
+                    style={{ textAlign: "center", color: "white" }}
+                  >
+                    Settings <SettingsIcon />
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    style={{ textAlign: "center", color: "white" }}
+                  >
+                    Change configurations, download data, and reset application
+                  </Typography>
+                </CardContent>
+              </CardActionArea>
+            </Card>
           </div>
           <div className="wrapper2">
-            <ColorButton
-              variant="contained"
-              color="primary"
-              style={{ height: 40 }}
-              className={classes.margin}
-              onClick={this.logout}
+            <Card
+              style={{
+                maxWidth: "25%",
+                height: "5%",
+                backgroundColor: "#859438",
+              }}
             >
-              Logout <ExitToAppIcon />
-            </ColorButton>
+              <CardActionArea onClick={this.logout}>
+                <CardContent>
+                  <Typography
+                    gutterBottom
+                    variant="h5"
+                    component="div"
+                    style={{ textAlign: "center", color: "white" }}
+                  >
+                    Logout <ExitToAppIcon />
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    style={{ textAlign: "center", color: "white" }}
+                  >
+                    Logout of SLC Admin Portal
+                  </Typography>
+                </CardContent>
+              </CardActionArea>
+            </Card>
           </div>
         </>
       </MuiThemeProvider>

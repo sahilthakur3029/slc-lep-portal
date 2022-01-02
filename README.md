@@ -20,7 +20,7 @@ The routes available are divided into two categories. The first of which are pub
     
     - *Confirmation*: This page allows the user to see all the information that they have entered up to this point in the form as well as submit the form. Mandatory fields are marked with an asterisk and the user cannot submit if any of the fields with an asterisk are left blank. 
     
-    - *Success*: This page confirms that the LEP program has received their information and that they can safely close their tab without loss of information.
+    - *Success*: This page confirms that the LEP program has received their information and that the user can safely close their tab without loss of information.
 
 2.   **`/timesheet`**: This page is where students can log their conversation hours within their respective pair or trio on a weekly basis.
 

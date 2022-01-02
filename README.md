@@ -8,9 +8,9 @@ The routes available are divided into two categories. The first of which are pub
 
 1.  **`/`**: This is the default page of the web portal that directs to the Intake Form. This is where students are able to fill information about themselves so that they can be entered in the Language Exchange Program's pairing pool. The Intake Form is divided into 7 portions: 
 
-    - *Introduction & Orientation Verification*: The landing page of this form provides information about Language Exchange Program in addition to containing a field prompting the user to enter an orientation key. The purpose of this field is to ensure that a potential entrant to the Language Exchange Program has attended an orientation first, where the correct key will be provided. Without the correct key entered, the user cannot access the rest of the form. An admin to this application has the ability to change the orientation key in the admin portal.
+    - *Introduction & Orientation Verification*: The landing page of this form provides information about the Language Exchange Program in addition to containing a field prompting the user to enter an orientation key. The purpose of this field is to ensure that a potential entrant to the Language Exchange Program has attended an orientation first, where the correct key will be provided. Without the correct key entered, the user cannot access the rest of the form. An admin to this application has the ability to change the orientation key within the admin portal.
     
-    - *Basic Information*: This page asks the user for basic information about themselves including information about their name, email, academic title, residency, etc. One thing to note is that the user has to enter an email ending with @berkeley.edu otherwise they will be prompted to do as such and not allowed to continue the application. There is also a free-response area where the user has to answer what they hope gain from the LEP program and how they plan to meet with their potential partner weekly, which are also both mandatory fields (this is however checked for when the user submits the application at the end of the form). 
+    - *Basic Information*: This page asks the user for basic information about themselves including information about their name, email, academic title, residency, etc. One thing to note is that the user has to enter an email ending with @berkeley.edu otherwise they will be prompted to do as such and not allowed to continue the application. There is also a free-response area where the user is required to answer what they hope gain from the LEP program and how they plan to meet with their potential partner weekly, which are also both mandatory fields (this is however checked for when the user submits the application at the end of the form). 
     
     - *Language Preferences*: This page prompts the user to enter languages they would want to practice and languages that they would want to learn. Each language can be marked as either a first choice or second choice, and the user needs to enter how proficient that they are in each respective language entered on a scale from 1-5. Lastly, this portion includes a field for any additional information that the user would want to include.
     
@@ -28,12 +28,19 @@ The routes available are divided into two categories. The first of which are pub
 The second category of routes, protected/admin routes, can only be accessed via Google OAuth for authorized email addresses manually added to the remotely managed database for the application. Any unauthorized accesses to these routes will result in a redirect to the admin sign-in page to the admin portal. The purpose of these routes are for the admin of the application to manage the student pool and pair students accordingly. They are described as follows:  
 
 1.  **`/signin`**: This is the default redirect page if an unauthorized user tries to access any of the protected/admin routes below. This page allows for an admin to sign-in to the application through their authorized Google email address.
-2.  **`/adminhome`**:
-3.  **`/formpairs`**: 
-4.  **`/paired`**:
+
+2.  **`/adminhome`**: This is the homepage of the admin portal. If the admin is already logged in from a previous session and the browser caches google logins, this will be the default redirect when the sign-in page is accessed. This page contains buttons to access all the routes below as well as an option to sign out at the very end.
+
+3.  **`/formpairs`**: This page allows for the pairing algorithm to be run in addition to selecting the strictness level of the pairing process from a scale of 1-3. More details about how this algorithm works can be found in `server/routes/algorithm.py`
+
+4.  **`/paired`**: This page contains an editable table containing rows 
+
 5.  **`/unpaired`**:
+
 6.  **`/studentlist`**:
+
 7.  **`/timesheetlogs`**:
+
 8.  **`/settings`**:
 
 ### Setup:

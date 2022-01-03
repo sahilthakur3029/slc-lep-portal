@@ -22,7 +22,7 @@ The routes available are divided into two categories. The first of which are pub
     
     - *Success*: This page confirms that the LEP program has received their information and that the user can safely close their tab without loss of information.
 
-2.   **`/timesheet`**: This page is where students can log their conversation hours within their respective pair or trio on a weekly basis.
+2.   **`/timesheet`**: This page is where students can log their conversational hours within their respective pair or trio on a weekly basis.
 
 ### Protected/Admin Routes:
 The second category of routes, protected/admin routes, can only be accessed via Google OAuth for authorized email addresses manually added to the remotely managed database for the application. Any unauthorized accesses to these routes will result in a redirect to the admin sign-in page to the admin portal. The purpose of these routes are for the admin of the application to manage the student pool and pair students accordingly. They are described as follows:  
@@ -33,15 +33,23 @@ The second category of routes, protected/admin routes, can only be accessed via 
 
 3.  **`/formpairs`**: This page allows for the pairing algorithm to be run in addition to selecting the strictness level of the pairing process from a scale of 1-3. More details about how this algorithm works can be found in `server/routes/algorithm.py`
 
-4.  **`/paired`**: This page contains an editable table containing rows 
+4.  **`/paired`**: This page contains an editable table containing rows where each row represents each pair or trio. In addition to containing a search bar to filter rows and a column chooser to filter columns located towards the top right of the screen, each row can be expanded by clicking the downwards arrow to provide information regarding any comments that were submitted through the intake form. Any changes made to the table will persist only if the save changes button is pressed.
 
-5.  **`/unpaired`**:
+5.  **`/unpaired`**: Page layout is the same as paired. The only difference is that each row of this table represents students that were not assigned a pair or trio during the last pairing process.
 
-6.  **`/studentlist`**:
+6.  **`/studentlist`**: Page layout is the same as paired. The only difference is that each row of this table represents all students that filled out the intake form.
 
-7.  **`/timesheetlogs`**:
+7.  **`/timesheetlogs`**: Page layout is the same as paired. The only difference is that each row of this table represents all students that filled out the timesheet form.
 
-8.  **`/settings`**:
+8.  **`/settings`**: This page contains multiple configurations and the ability to download data for the application. Any changes only persist if the save changes button is clicked before leaving the page. Each section is described more throughly below:
+
+    - *Intake Form / Timesheet Configurations*: This section allows for the semester display, the academic calendar link that shows up on the timesheet page, the orientation key, and the different weeks that can selected from in the timesheet page to be modified. In regards to the timesheet weeks,  
+    
+    - *Download Mail Merge Data*:
+    
+    - *Download Table Data*:
+    
+    - *Reset Algorithm*:
 
 ### Setup:
 

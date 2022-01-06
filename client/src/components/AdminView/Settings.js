@@ -87,6 +87,7 @@ class Settings extends Component {
       },
       open: false,
       mail_merge: "",
+      mail_merge_unpaired: "",
       isAuthenticated: "",
     };
     this.jsonParser = this.jsonParser.bind(this);
@@ -198,17 +199,13 @@ class Settings extends Component {
                 mail_merge_array.push({
                   "First Name": this.formatNames(
                     pairing[1],
-                    pairing[10],
-                    pairing[19]
+                    pairing[9],
+                    pairing[17]
                   ),
                   "Subject Pair Size":
                     pair_size[0].toUpperCase() + pair_size.substring(1),
                   "Body Pair Size": pair_size,
-                  "Email Address": this.formatEmail(
-                    pairing[3],
-                    pairing[12],
-                    pairing[21]
-                  ),
+                  Email: this.formatEmail(pairing[3], pairing[11], pairing[19]),
                 });
                 pair_info_array.push({
                   name_1: pairing[1] + " " + pairing[2],
@@ -246,10 +243,15 @@ class Settings extends Component {
 
           const { REACT_APP_UNPAIRS } = process.env;
           let u_student_info_array = [];
+          let mail_merge_unpaired_array = [];
           fetch(REACT_APP_UNPAIRS)
             .then((response) => response.json())
             .then((data) => {
               for (const student of data) {
+                mail_merge_unpaired_array.push({
+                  "First Name": student[1],
+                  Email: student[3],
+                });
                 u_student_info_array.push({
                   first_name: student[1],
                   last_name: student[2],
@@ -262,6 +264,7 @@ class Settings extends Component {
               }
               this.setState({
                 u_student_info: u_student_info_array,
+                mail_merge_unpaired: mail_merge_unpaired_array,
               });
             })
             .catch((error) =>
@@ -504,7 +507,42 @@ class Settings extends Component {
               height: 32,
             }}
           >
-            Mail Merge Pairs
+            Mail Merge Pairs/Trios
+          </CsvDownload>
+          <CsvDownload
+            data={this.state.mail_merge_unpaired}
+            filename="mailmerge_unpaired.csv"
+            style={{
+              color: "#fff",
+              marginLeft: "30px",
+              backgroundColor: "#859438",
+              boxShadow:
+                "0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%)",
+              padding: "6px 16px",
+              minWidth: "64px",
+              transition:
+                "background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
+              fontSize: "0.875rem",
+              fontWeight: "500",
+              fontFamily: "Roboto, Helvetica, Arial, sans-serif",
+              lineHeight: "1.75",
+              borderRadius: "4px",
+              letterSpacing: "0.02857em",
+              textTransform: "uppercase",
+              border: "0",
+              display: "inline-flex",
+              alignItems: "center",
+              verticalAlign: "middle",
+              justifyContent: "center",
+              textAlign: "center",
+              wordSpacing: "normal",
+              cursor: "pointer",
+              textDecoration: "none",
+              textShadow: "none",
+              height: 32,
+            }}
+          >
+            Mail Merge Unpaired
           </CsvDownload>
           <br />
           <br />

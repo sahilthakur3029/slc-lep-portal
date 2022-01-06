@@ -119,8 +119,8 @@ class FormPartnerDetails extends Component {
             <br />
             <br />
             <h2 className={classes.heads}>
-              Would you like a partner who studies a particular gender? If so,
-              please include below:
+              Would you like a partner with a particular gender? If so, please
+              include below:
             </h2>
             <h4 className={classes.formControlSmall}>
               If no preference, please leave blank.

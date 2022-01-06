@@ -17,7 +17,7 @@ database_url = os.getenv(
 conn = psycopg2.connect(database_url)
 
 
-@pairsdisplay.route('/paired_b', methods = ['GET', 'POST'])
+@pairsdisplay.route('/paired', methods = ['GET', 'POST'])
 @login_required
 def getPairs():
     # Open a cursor to perform database operations

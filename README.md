@@ -43,9 +43,9 @@ The second category of routes, protected/admin routes, can only be accessed via 
 
 8.  **`/settings`**: This page contains multiple configurations and the ability to download data for the application. Any changes only persist if the save changes button is clicked before leaving the page. Each section is described more throughly below:
 
-    - *Intake Form / Timesheet Configurations*: This section allows for the semester display, the academic calendar link that shows up on the timesheet page, the orientation key, and the different weeks that can selected from in the timesheet page to be modified. In regards to the timesheet weeks,  
+    - *Intake Form / Timesheet Configurations*: This section allows for the semester display, the academic calendar link that shows up on the timesheet page, the orientation key, and the different weeks that can selected from in the timesheet page to be modified. In regards to the timesheet weeks, these are the weeks that show up in the timesheet page dropdown when submitting hours. The admin needs to only set a starting week number and an ending week number - the rest of the week numbers in between them will be populated accordingly by the application.  
     
-    - *Download Mail Merge Data*:
+    - *Download Mail Merge Data*: This section allows for the pairs data to be dowloaded in a format such that Google Sheet's mail merge is able to send out emails to each pair
     
     - *Download Table Data*:
     

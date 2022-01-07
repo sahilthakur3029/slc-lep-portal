@@ -43,13 +43,13 @@ The second category of routes, protected/admin routes, can only be accessed via 
 
 8.  **`/settings`**: This page contains multiple configurations and the ability to download data for the application. Any changes only persist if the save changes button is clicked before leaving the page. Each section is described more throughly below:
 
-    - *Intake Form / Timesheet Configurations*: This section allows for the semester display, the academic calendar link that shows up on the timesheet page, the orientation key, and the different weeks that can selected from in the timesheet page to be modified. In regards to the timesheet weeks, these are the weeks that show up in the timesheet page dropdown when submitting hours. The admin needs to only set a starting week number and an ending week number - the rest of the week numbers in between them will be populated accordingly by the application.  
+    - *Intake Form / Timesheet Configurations*: This section allows for the semester display, the academic calendar link that shows up on the timesheet page, the orientation key, and the different weeks that can selected from in the timesheet page to be modified. In regards to the timesheet weeks, these are the weeks that show up in the timesheet page dropdown when submitting hours. The admin needs to only set a starting week number and an ending week number - the rest of the week numbers in between will be populated accordingly by the application.  
     
-    - *Download Mail Merge Data*: This section allows for the pairs data to be dowloaded in a format such that Google Sheet's mail merge is able to send out emails to each pair
+    - *Download Mail Merge Data*: This section allows for the pair and unpaired data to be dowloaded in a CSV format such that Google Sheet's mail merge is able to send out emails.
     
-    - *Download Table Data*:
+    - *Download Table Data*: Each table's data can downloaded in a CSV in this section.
     
-    - *Reset Algorithm*:
+    - *Reset Algorithm*: This section contains a button that fully deletes data across all 4 tables (paired, unpaired, student list, and timesheet). The purpose of this section is to reset the application across different semesters. Since this is such a dangerous action, a popup appears when clicking this button to confirm intent. After both confirming intent and clicking save changes at the bottom of the page to persist changes, all data will then be deleted. It is advised to download all data before before performing this action for record purposes.
 
 ### Setup:
 

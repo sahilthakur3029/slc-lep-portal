@@ -5,7 +5,8 @@ This file provides a general workflow in regards to the different routes on the 
 The application is currently hosted on Heroku utilizing a Heroku PostgreSQL remote database. The application's homepage can be found at https://slc-application.herokuapp.com/
 
 ### Heroku Disclaimer:
-This application currently operates within Heroku's free tier. The main takeaway from this is that the website goes idle  
+This application currently operates within Heroku's free tier. The main takeaway from this is that the website goes idle after 30 minutes of inactivity and may take a few seconds to boot.
+
 ### Public Routes:
 The routes available are divided into two categories. The first of which are public routes which contain forms open to anyone on the internet to access. They are described as follows:
 
@@ -54,11 +55,14 @@ The second category of routes, protected/admin routes, can only be accessed via 
     
     - *Reset Algorithm*: This section contains a button that fully deletes data across all 4 tables (paired, unpaired, student list, and timesheet). The purpose of this section is to reset the application across different semesters. Since this is such a dangerous action, a popup appears when clicking this button to confirm intent. After both confirming intent and clicking save changes at the bottom of the page to persist changes, all data will then be deleted. It is advised to download all data before performing this action for record purposes.
 
-### Setup:
+### Local Setup:
 - Ensure that you have python, node, pip, virtualenv, and postgres installed (recommended to use [homebrew](https://brew.sh/) to install these). If using homebrew to install postgres, confirm that the service is started by running `brew services` and if the service is stopped, run `brew services start postgres`
 - After cloning the repo, cd into it and create and start a virtual environment by running `virtualenv -p python3 venv` and `source venv/bin/activate`
 - Install all other necessary dependencies by running `pip3 install -r requirements.txt`
-- Import a local copy of the database. This can be done utilizng the sample dump provided in the repo. To do this, run `createdb -T template0 slcapplication` and 
+- Import a local copy of the database. This can be done utilizng the sample dump provided in the repo. To do this, run `createdb -T template0 slcapplication` and `psql slcapplication < sample_dump.sql`
+- To run the Flask server, simply enter `flask server`
+- To run the React client, cd in to the client directory. If this is the first time running the client, enter `npm install` to install the respective dependencies and then enter `npm start`. 
+- The steps above should get the app started. To access the admin homepage from the client, an appropriate Gmail address needs to be whitelisted to complete the Google OAuth workflow from the sign in page. This can be done by adding an email address to the authusers table in the database. To do this run `psql postgres` then `\c slcapplication` and `INSERT INTO authusers(id, email) VALUES (2, [YOUR EMAIL HERE]);
 
 ### Ports Used:
 - React Client: `http://localhost:3000`

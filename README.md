@@ -62,7 +62,7 @@ The second category of routes, protected/admin routes, can only be accessed via 
 - Import a local copy of the database. This can be done utilizng the sample dump provided in the repo. To do this, run `createdb -T template0 slcapplication` and `psql slcapplication < sample_dump.sql`
 - To run the Flask server, simply enter `flask server`
 - To run the React client, cd in to the client directory. If this is the first time running the client, enter `npm install` to install the respective dependencies and then enter `npm start`. 
-- The steps above should get the app started. To access the admin homepage from the client, an appropriate Gmail address needs to be whitelisted to complete the Google OAuth workflow from the sign in page. This can be done by adding an email address to the authusers table in the database. To do this run `psql postgres` then `\c slcapplication` and `INSERT INTO authusers(id, email) VALUES (2, [YOUR EMAIL HERE]);
+- The steps above should get the app started. To access the admin homepage from the client, an appropriate Gmail address needs to be whitelisted to complete the Google OAuth workflow from the sign in page. This can be done by adding an email address to the authusers table in the database. To do this, run `psql postgres` then `\c slcapplication` and `INSERT INTO authusers(id, email) VALUES (2, [YOUR EMAIL HERE]);`
 
 ### Ports Used:
 - React Client: `http://localhost:3000`

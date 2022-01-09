@@ -3,6 +3,9 @@ Created by Sahil Thakur. Questions can be sent to sahilthakur@berkeley.edu.
 
 This file provides a general workflow in regards to the different routes on the website as well as directions for local setup. 
 The application is currently hosted on Heroku utilizing a Heroku PostgreSQL remote database. The application's homepage can be found at https://slc-application.herokuapp.com/
+
+### Heroku Disclaimer:
+This application currently operates within Heroku's free tier. The main takeaway from this is that the website goes idle  
 ### Public Routes:
 The routes available are divided into two categories. The first of which are public routes which contain forms open to anyone on the internet to access. They are described as follows:
 
@@ -41,17 +44,21 @@ The second category of routes, protected/admin routes, can only be accessed via 
 
 7.  **`/timesheetlogs`**: Page layout is the same as paired. The only difference is that each row of this table represents all students that filled out the timesheet form.
 
-8.  **`/settings`**: This page contains multiple configurations and the ability to download data for the application. Any changes only persist if the save changes button is clicked before leaving the page. Each section is described more throughly below:
+8.  **`/settings`**: This page contains multiple configurations and the ability to download data for the application. Any changes only persist if the save changes button is clicked before leaving the page. Each section is described more thoroughly below:
 
-    - *Intake Form / Timesheet Configurations*: This section allows for the semester display, the academic calendar link that shows up on the timesheet page, the orientation key, and the different weeks that can selected from in the timesheet page to be modified. In regards to the timesheet weeks, these are the weeks that show up in the timesheet page dropdown when submitting hours. The admin needs to only set a starting week number and an ending week number - the rest of the week numbers in between will be populated accordingly by the application.  
+    - *Intake Form / Timesheet Configurations*: This section allows for the semester display, the academic calendar link that shows up on the timesheet page, the orientation key, and the different weeks that can selected from in the timesheet page to be modified. In regard to the timesheet weeks, these are the weeks that show up in the timesheet page dropdown when submitting hours. The admin needs to only set a starting week number and an ending week number - the rest of the week numbers in between will be populated accordingly by the application.  
     
-    - *Download Mail Merge Data*: This section allows for the pair and unpaired data to be dowloaded in a CSV format such that Google Sheet's mail merge is able to send out emails.
+    - *Download Mail Merge Data*: This section allows for the pair and unpaired data to be downloaded in a CSV format such that Google Sheet's mail merge is able to send out emails.
     
     - *Download Table Data*: Each table's data can downloaded in a CSV in this section.
     
-    - *Reset Algorithm*: This section contains a button that fully deletes data across all 4 tables (paired, unpaired, student list, and timesheet). The purpose of this section is to reset the application across different semesters. Since this is such a dangerous action, a popup appears when clicking this button to confirm intent. After both confirming intent and clicking save changes at the bottom of the page to persist changes, all data will then be deleted. It is advised to download all data before before performing this action for record purposes.
+    - *Reset Algorithm*: This section contains a button that fully deletes data across all 4 tables (paired, unpaired, student list, and timesheet). The purpose of this section is to reset the application across different semesters. Since this is such a dangerous action, a popup appears when clicking this button to confirm intent. After both confirming intent and clicking save changes at the bottom of the page to persist changes, all data will then be deleted. It is advised to download all data before performing this action for record purposes.
 
 ### Setup:
+- Ensure that you have python, node, pip, virtualenv, and postgres installed (recommended to use [homebrew](https://brew.sh/) to install these). If using homebrew to install postgres, confirm that the service is started by running `brew services` and if the service is stopped, run `brew services start postgres`
+- After cloning the repo, cd into it and create and start a virtual environment by running `virtualenv -p python3 venv` and `source venv/bin/activate`
+- Install all other necessary dependencies by running `pip3 install -r requirements.txt`
+- Import a local copy of the database. This can be done utilizng the sample dump provided in the repo. To do this, run `createdb -T template0 slcapplication` and 
 
 ### Ports Used:
 - React Client: `http://localhost:3000`

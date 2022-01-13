@@ -32,8 +32,8 @@ const useStyles = (theme) => ({
   },
   questionMark: { fontSize: "medium" },
   infoText: {
-    marginLeft: "10%",
-    marginRight: "10%",
+    marginLeft: "20%",
+    marginRight: "20%",
     textAlign: "justify",
   },
 });
@@ -110,33 +110,27 @@ class FormOrientationKey extends Component {
           </h1>
           <div className={classes.elements}>
             <h3 className={classes.infoText}>
-              The SLC Language Exchange Program provides a platform for Cal
-              students to share their language skills and cultural knowledge.
-              Through language practice and community socials, we serve as a
-              space for all students to meaningfully engage and benefit from
-              Cal’s global diversity.
+              Thank you for your interest in the SLC Language Exchange Program’s{" "}
+              <a
+                target="_blank"
+                rel="noreferrer"
+                href={
+                  "https://" +
+                  "slc.berkeley.edu/programs/language-exchange-program/formats-service#pairtrio"
+                }
+              >
+                Pair/Trio format
+              </a>
+              ! You can complete the following form to give us your partner
+              preferences and be added into our pairing pool for the current
+              semester. To begin, please type in the key that you received at
+              orientation.
             </h3>
             <br />
             <h3 className={classes.infoText}>
-              We believe that linguistic and cultural diversity is integral to
-              Cal’s academic excellence and reputation as the world’s leading
-              public university. By tapping into this diversity, we enable
-              participants to refine not only their language skills but also
-              their ability to function fluidly in diverse cultural contexts.
-              Based on mutual exchange, we aim to foster meaningful connections
-              within and across communities of language speakers, learners, and
-              practitioners at Cal. By deepening our knowledge of one another,
-              we seek to strengthen the bonds that unite us and break down the
-              barriers that divide us. In doing so, we re-invigorate our respect
-              for and commitment to our shared humanity.
-            </h3>
-            <br />
-            <h3 className={classes.infoText}>
-              In order to join our Language Exchange Program and to be paired
-              with 1-2 peers who are proficient in the language you’d like to
-              practice and are seeking support with a language you know, we ask
-              that you attend an orientation first. More information on signing
-              up for an orientation can be found{" "}
+              Note that all new and returning LEP participants are required to
+              attend an orientation each semester. You can learn more and see
+              our current schedule at{" "}
               <a
                 target="_blank"
                 rel="noreferrer"
@@ -145,18 +139,18 @@ class FormOrientationKey extends Component {
                   "slc.berkeley.edu/programs/language-exchange-program/formats-service#lep-welcome"
                 }
               >
-                here.
-              </a>{" "}
-              Once you've attended an orientation, you should have recevied an
-              orientation key in order to access the intake form. Please enter
-              the key below and click Next to start filling out the intake form.
+                slc.berkeley.edu/lep-orientations
+              </a>
+              .
             </h3>
+            <br />
+
             <TextField
               style={{
                 margin: 0,
-                width: "75%",
+                width: "50%",
               }}
-              placeholder="Orienataion Key"
+              placeholder="Orientation Key"
               label="Enter orientation key here"
               onChange={handleChange("orientationKey")}
               defaultValue={values.orientationKey}
@@ -175,6 +169,19 @@ class FormOrientationKey extends Component {
               Next
             </ColorButton>
             <br />
+            <br />
+            <h3 className={classes.infoText}>
+              You can learn more about the SLC Language Exchange Program at{" "}
+              <a
+                target="_blank"
+                rel="noreferrer"
+                href={"https://" + "slc.berkeley.edu/language-exchange-program"}
+              >
+                slc.berkeley.edu/lep
+              </a>
+              . For questions or concerns, please contact{" "}
+              <a href="mailto: slc-lep@berkeley.edu">slc-lep@berkeley.edu</a>.
+            </h3>
           </div>
         </>
       </MuiThemeProvider>

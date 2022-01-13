@@ -12,6 +12,9 @@ import FormOrientationKey from "./FormOrientationKey";
 
 // Initial State
 class FormController extends Component {
+  componentDidMount() {
+    document.title = "LEP Intake Form";
+  }
   state = {
     step: 1,
     firstName: "",

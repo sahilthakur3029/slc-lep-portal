@@ -4,8 +4,6 @@ Created by Sahil Thakur. Questions can be sent to sahilthakur@berkeley.edu.
 This file provides a general workflow in regards to the different routes on the website as well as directions for local setup. 
 The application is currently hosted on Heroku utilizing a Heroku PostgreSQL remote database. The application's homepage can be found at https://slc-application.herokuapp.com/
 
-### Heroku Disclaimer:
-This application currently operates within Heroku's free tier. The main takeaway from this is that the website goes idle after 30 minutes of inactivity and may take a few seconds to boot.
 
 ### Public Routes:
 The routes available are divided into two categories. The first of which are public routes which contain forms open to anyone on the internet to access. They are described as follows:

@@ -61,6 +61,11 @@ const useStyles = (theme) => ({
     textAlign: "center",
     fontSize: 35,
   },
+  numbers: {
+    color: "black",
+    textAlign: "center",
+    fontSize: 15,
+  },
   selectEmpty: {
     marginTop: theme.spacing(2),
   },
@@ -457,6 +462,9 @@ class Unpaired extends Component {
       <MuiThemeProvider>
         <TopBar />
         <h2 className={classes.heads}>Unpaired Students</h2>
+        <h2 className={classes.numbers}>
+          There are {this.state.rows.length} unpaired participants.
+        </h2>
         {this.state.redirect}
         <Snackbar
           open={this.state.openAlert}

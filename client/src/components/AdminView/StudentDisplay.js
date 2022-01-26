@@ -64,6 +64,11 @@ const useStyles = (theme) => ({
     textAlign: "center",
     fontSize: 35,
   },
+  numbers: {
+    color: "black",
+    textAlign: "center",
+    fontSize: 15,
+  },
   selectEmpty: {
     marginTop: theme.spacing(2),
   },
@@ -779,6 +784,9 @@ class StudentDisplay extends Component {
       <MuiThemeProvider>
         <TopBar />
         <h2 className={classes.heads}>Student List</h2>
+        <h2 className={classes.numbers}>
+          There are {this.state.rows.length} participants that have signed up.
+        </h2>
         {this.state.redirect}
         <Snackbar
           open={this.state.openAlert}

@@ -175,7 +175,7 @@ class FormOrientationKey extends Component {
               <a
                 target="_blank"
                 rel="noreferrer"
-                href={"https://" + "slc.berkeley.edu/language-exchange-program"}
+                href={"https://slc.berkeley.edu/language-exchange-program"}
               >
                 slc.berkeley.edu/lep
               </a>

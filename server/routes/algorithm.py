@@ -644,9 +644,12 @@ def updatePairRound(df):
     # Set used later to iterate
     paired_emails = set(all_partners_df['Email'])
     keep = []
+    # print("Already paired emails: ", paired_emails)
     for index, person in df.iterrows():
-        email = person["Email"]
+        email = person["Email"].lower().strip()
+        # print(email)
         if email in paired_emails:
+            # print("Already paired email comparison: ", email)
             continue
         else:
             keep.append(index)

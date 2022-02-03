@@ -8,6 +8,10 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 
+import Container from "@material-ui/core/Container";
+import Grid from "@material-ui/core/Grid";
+import Box from "@material-ui/core/Box";
+
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
@@ -112,6 +116,7 @@ class FormOrientationKey extends Component {
             <h3 className={classes.infoText}>
               Thank you for your interest in the SLC Language Exchange Program’s{" "}
               <a
+                style={{ color: "inherit" }}
                 target="_blank"
                 rel="noreferrer"
                 href={
@@ -132,6 +137,7 @@ class FormOrientationKey extends Component {
               attend an orientation each semester. You can learn more and see
               our current schedule at{" "}
               <a
+                style={{ color: "inherit" }}
                 target="_blank"
                 rel="noreferrer"
                 href={
@@ -173,6 +179,7 @@ class FormOrientationKey extends Component {
             <h3 className={classes.infoText}>
               You can learn more about the SLC Language Exchange Program at{" "}
               <a
+                style={{ color: "inherit" }}
                 target="_blank"
                 rel="noreferrer"
                 href={"https://slc.berkeley.edu/language-exchange-program"}
@@ -180,9 +187,66 @@ class FormOrientationKey extends Component {
                 slc.berkeley.edu/lep
               </a>
               . For questions or concerns, please contact{" "}
-              <a href="mailto: slc-lep@berkeley.edu">slc-lep@berkeley.edu</a>.
+              <a
+                style={{ color: "inherit" }}
+                href="mailto: slc-lep@berkeley.edu"
+              >
+                slc-lep@berkeley.edu
+              </a>
+              .
             </h3>
           </div>
+          <footer>
+            <Box
+              px={{ xs: 3, sm: 10 }}
+              py={{ xs: 3, sm: 5 }}
+              bgcolor="#859438"
+              color="white"
+            >
+              <Container maxWidth="lg">
+                <Grid container spacing={5}>
+                  <Grid>
+                    <Box>
+                      <a
+                        style={{ color: "inherit" }}
+                        target="_blank"
+                        rel="noreferrer"
+                        href={"https://open.berkeley.edu/privacy-statement"}
+                      >
+                        Privacy
+                      </a>
+                    </Box>
+                    <Box>
+                      <b>Acknowledgements</b>
+                    </Box>
+                    <Box>
+                      The SLC Language Exchange Program is grateful to Sahil
+                      Thakur for his resourcefulness, creativity, and commitment
+                      in the programming and creation of this application.
+                      Appreciation also goes to Riddhi Bagadiaa for her work in
+                      the early stages of this website. Thank you to Maya
+                      Mahajan and Khuyen Nguyen for their vision, leadership,
+                      and guidance on this project.
+                    </Box>
+                    <br />
+                    <Box>
+                      The creation of this application was funded in part by a
+                      grant from the{" "}
+                      <a
+                        style={{ color: "inherit" }}
+                        target="_blank"
+                        rel="noreferrer"
+                        href={"https://techfund.berkeley.edu/"}
+                      >
+                        UC Berkeley Student Technology Fund
+                      </a>
+                      .
+                    </Box>
+                  </Grid>
+                </Grid>
+              </Container>
+            </Box>
+          </footer>
         </>
       </MuiThemeProvider>
     );

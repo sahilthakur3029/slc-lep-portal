@@ -117,7 +117,7 @@ class FormUserDetails extends Component {
             onClose={() => this.setState({ open: false })}
           >
             <Alert onClose={this.handleClose} severity="error">
-              Ensure that you are using an @berkeley,edu email address
+              Ensure that you are using an @berkeley.edu email address
             </Alert>
           </Snackbar>
           <TopBar />

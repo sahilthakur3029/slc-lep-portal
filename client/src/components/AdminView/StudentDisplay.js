@@ -466,6 +466,7 @@ class StudentDisplay extends Component {
         { name: "partner_gender", title: "Pref. Partner Gender" },
         { name: "partner_gender_custom", title: "Pref. Custom Gender" },
         { name: "partner_gender_weight", title: "Pref. Gender Weight" },
+        { name: "comments", title: "Comments" },
       ],
       rows: [],
       redirect: null,
@@ -744,8 +745,6 @@ class StudentDisplay extends Component {
         Plan to Meet: {row.plan_to_meet}
         <br />
         Waiver Acceptance: {row.waiver_accept}
-        <br />
-        Comments: {row.comments}
       </div>
     );
 
@@ -776,6 +775,7 @@ class StudentDisplay extends Component {
       { columnName: "partner_gender", width: 180 },
       { columnName: "partner_gender_custom", width: 180 },
       { columnName: "partner_gender_weight", width: 180 },
+      { columnName: "comments", width: 1200 },
     ];
 
     const leftColumns = ["first_name", "last_name"];

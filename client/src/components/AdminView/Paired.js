@@ -383,6 +383,7 @@ class Paired extends Component {
     this.saveChanges = this.saveChanges.bind(this);
     this.deleteRows = this.deleteRows.bind(this);
     this.pushData = this.pushData.bind(this);
+    this.countPairings = this.countPairings.bind(this);
   }
 
   componentDidMount() {
@@ -580,6 +581,31 @@ class Paired extends Component {
     this.setState({ openAlertFail: false });
   };
 
+  countPairings() {
+    let pairs = 0;
+    let trios = 0;
+    for (let i = 0; i < this.state.rows.length; i++) {
+      if (
+        this.state.rows[i]["first_name_3"] == undefined ||
+        this.state.rows[i]["first_name_3"].trim() == ""
+      ) {
+        pairs += 1;
+      } else {
+        trios += 1;
+      }
+    }
+    let total = pairs * 2 + trios * 3;
+    return (
+      "There are " +
+      pairs +
+      " pairs and " +
+      trios +
+      " trios for a total of " +
+      total +
+      " students matched."
+    );
+  }
+
   render() {
     if (!this.state.rows) {
       return <div />;
@@ -624,9 +650,7 @@ class Paired extends Component {
       <MuiThemeProvider>
         <TopBar />
         <h2 className={classes.heads}>Paired Students</h2>
-        <h2 className={classes.numbers}>
-          There are {this.state.rows.length} active pairs/trios.
-        </h2>
+        <h2 className={classes.numbers}>{this.countPairings()}</h2>
         {this.state.redirect}
         <Snackbar
           open={this.state.openAlert}
@@ -657,12 +681,8 @@ class Paired extends Component {
             <EditingState onCommitChanges={this.commitChanges} />
             <TableColumnResizing columnWidths={columnWid} />
             <TableHeaderRow showSortingControls resizingEnabled={true} />{" "}
-            {/*Need to customise to make the headings more distinct!*/}
             <TableRowDetail contentComponent={RowDetail} />
             <TableEditColumn showEditCommand showAddCommand showDeleteCommand />
-            {/* <TableFixedColumns
-                leftColumns={leftColumns}
-              /> */}
             <TableColumnVisibility />
             <Toolbar />
             <EditPopupPlugin popupComponent={EditPopup} />

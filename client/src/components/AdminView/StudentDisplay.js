@@ -474,6 +474,7 @@ class StudentDisplay extends Component {
       isAuthenticated: "",
       openAlert: false,
       openAlertFail: false,
+      badNameRow: "",
     };
     this.commitChanges = this.commitChanges.bind(this);
     this.saveChanges = this.saveChanges.bind(this);
@@ -583,6 +584,7 @@ class StudentDisplay extends Component {
         !/^[1-5]$/.test(student["lang_1_teach_level"])
       ) {
         errors = true;
+        this.setState({ badNameRow: student["first_name"] + "'s" });
       } else {
         student["first_name"] = titleCase(student["first_name"].trim());
         student["last_name"] = titleCase(student["last_name"].trim());
@@ -593,8 +595,9 @@ class StudentDisplay extends Component {
         if (student["lang_2_learn"] !== undefined) {
           student["lang_2_learn"] = titleCase(student["lang_2_learn"].trim());
           if (student["lang_2_learn"] !== "") {
-            if (!/^[1-5]$/.test(student["lang_2_learn_level"])) {
+            if (!/^[0-5]$/.test(student["lang_2_learn_level"])) {
               errors = true;
+              this.setState({ badNameRow: student["first_name"] + "'s" });
             }
           } else {
             student["lang_2_learn_level"] = "0";
@@ -603,8 +606,9 @@ class StudentDisplay extends Component {
         if (student["lang_2_teach"] !== undefined) {
           student["lang_2_teach"] = titleCase(student["lang_2_teach"].trim());
           if (student["lang_2_teach"] !== "") {
-            if (!/^[1-5]$/.test(student["lang_2_teach_level"])) {
+            if (!/^[0-5]$/.test(student["lang_2_teach_level"])) {
               errors = true;
+              this.setState({ badNameRow: student["first_name"] + "'s" });
             }
           } else {
             student["lang_2_teach_level"] = "0";
@@ -613,8 +617,9 @@ class StudentDisplay extends Component {
         if (student["partner_major"] !== undefined) {
           student["partner_major"] = student["partner_major"].trim();
           if (student["partner_major"] !== "") {
-            if (!/^[1-5]$/.test(student["partner_major_weight"])) {
+            if (!/^[0-5]$/.test(student["partner_major_weight"])) {
               errors = true;
+              this.setState({ badNameRow: student["first_name"] + "'s" });
             }
           } else {
             student["partner_major_weight"] = "0";
@@ -625,8 +630,9 @@ class StudentDisplay extends Component {
             student["partner_gender"].trim()
           );
           if (student["partner_gender"] !== "") {
-            if (!/^[1-5]$/.test(student["partner_gender_weight"])) {
+            if (!/^[0-5]$/.test(student["partner_gender_weight"])) {
               errors = true;
+              this.setState({ badNameRow: student["first_name"] + "'s" });
             }
           } else {
             student["partner_gender_weight"] = "0";
@@ -803,7 +809,8 @@ class StudentDisplay extends Component {
           onClose={() => this.setState({ openAlertFail: false })}
         >
           <Alert onClose={this.handleCloseOnAlertFail} severity="error">
-            Please ensure you have filled out all necessary fields correctly
+            Please ensure you have filled out all necessary fields correctly in{" "}
+            {this.state.badNameRow} row
           </Alert>
         </Snackbar>
         <Paper>

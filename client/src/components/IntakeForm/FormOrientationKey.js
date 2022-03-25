@@ -208,7 +208,7 @@ class FormOrientationKey extends Component {
                   <Grid>
                     <Box>
                       <a
-                        style={{ color: "inherit" }}
+                        style={{ color: "#000000" }}
                         target="_blank"
                         rel="noreferrer"
                         href={"https://open.berkeley.edu/privacy-statement"}
@@ -216,10 +216,10 @@ class FormOrientationKey extends Component {
                         Privacy
                       </a>
                     </Box>
-                    <Box>
+                    <Box style={{ color: "#000000" }}>
                       <b>Acknowledgements</b>
                     </Box>
-                    <Box>
+                    <Box style={{ color: "#000000" }}>
                       The SLC Language Exchange Program is grateful to Sahil
                       Thakur for his resourcefulness, creativity, and commitment
                       in the programming and creation of this application.
@@ -229,7 +229,7 @@ class FormOrientationKey extends Component {
                       and guidance on this project.
                     </Box>
                     <br />
-                    <Box>
+                    <Box style={{ color: "#000000" }}>
                       The creation of this application was funded in part by a
                       grant from the{" "}
                       <a

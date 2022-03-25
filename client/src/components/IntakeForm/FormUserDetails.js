@@ -247,6 +247,7 @@ class FormUserDetails extends Component {
             <br />
             <br />
             <TextField
+              id="gain input"
               style={{
                 margin: 0,
                 width: "75%",
@@ -261,6 +262,7 @@ class FormUserDetails extends Component {
             <br />
             <br />
             <TextField
+              id="meet input"
               style={{
                 margin: 0,
                 width: "75%",

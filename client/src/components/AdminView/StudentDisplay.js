@@ -440,6 +440,7 @@ class StudentDisplay extends Component {
     super(props);
     this.state = {
       columns: [
+        { name: "timestamp", title: "Timestamp" },
         { name: "first_name", title: "First Name" },
         { name: "last_name", title: "Last Name" },
         { name: "email", title: "Email" },
@@ -755,6 +756,7 @@ class StudentDisplay extends Component {
     );
 
     const columnWid = [
+      { columnName: "timestamp", width: 240 },
       { columnName: "first_name", width: 240 },
       { columnName: "last_name", width: 240 },
       { columnName: "email", width: 300 },
@@ -784,7 +786,7 @@ class StudentDisplay extends Component {
       { columnName: "comments", width: 1200 },
     ];
 
-    const leftColumns = ["first_name", "last_name"];
+    const leftColumns = ["timestamp", "first_name", "last_name"];
 
     return (
       <MuiThemeProvider>

@@ -586,8 +586,9 @@ class Paired extends Component {
     let trios = 0;
     for (let i = 0; i < this.state.rows.length; i++) {
       if (
-        this.state.rows[i]["first_name_3"] == undefined ||
-        this.state.rows[i]["first_name_3"].trim() == ""
+        this.state.rows[i]["first_name_3"] === null ||
+        this.state.rows[i]["first_name_3"] === undefined ||
+        this.state.rows[i]["first_name_3"].trim() === ""
       ) {
         pairs += 1;
       } else {

@@ -23,7 +23,7 @@ def getPairs():
     # Open a cursor to perform database operations
     cur = conn.cursor()
     # Execute a query
-    cur.execute("SELECT * FROM pairs")
+    cur.execute("SELECT * FROM pairs ORDER BY timestamp")
     # Retrieve query results
     records = cur.fetchall()
     # Close cursor
@@ -36,25 +36,34 @@ def updatePairs():
     # Open a cursor to perform database operations
     cur = conn.cursor()
     data_json = request.get_json()['pairsdata']
-    print(data_json)
     cur.execute("DELETE FROM pairs")
+    # TODO: Update timestamps here for when updating pairs esp with new pair (use try/except in studentdisplay)
     for student in data_json:
-        if "timestamp_1" in student and student["timestamp_1"] != None and student["timestamp_1"] != "":
-            datetimeobject = datetime.strptime(student["timestamp_1"], '%a, %d %b %Y %H:%M:%S %Z')
-            newformat = datetimeobject.strftime('%Y-%m-%d %H:%M:%S')
+        if "timestamp_1" in student:
+            try:
+                datetimeobject = datetime.strptime(student["timestamp_1"], '%a, %d %b %Y %H:%M:%S %Z')
+                newformat = datetimeobject.strftime('%Y-%m-%d %H:%M:%S')
+            except:
+                newformat = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
         else:
             newformat = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
         student["timestamp_1"] = newformat
-        if "timestamp_2" in student and student["timestamp_2"] != None and student["timestamp_2"] != "":
-            datetimeobject = datetime.strptime(student["timestamp_2"], '%a, %d %b %Y %H:%M:%S %Z')
-            newformat = datetimeobject.strftime('%Y-%m-%d %H:%M:%S')
+        if "timestamp_2" in student:
+            try:
+                datetimeobject = datetime.strptime(student["timestamp_2"], '%a, %d %b %Y %H:%M:%S %Z')
+                newformat = datetimeobject.strftime('%Y-%m-%d %H:%M:%S')
+            except:
+                newformat = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
         else:
             newformat = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
         student["timestamp_2"] = newformat
         if "first_name_3" in student and student["first_name_3"] != None:
-            if "timestamp_3" in student and student["timestamp_3"] != None and student["timestamp_3"] != "":
-                datetimeobject = datetime.strptime(student["timestamp_3"], '%a, %d %b %Y %H:%M:%S %Z')
-                newformat = datetimeobject.strftime('%Y-%m-%d %H:%M:%S')
+            if "timestamp_3" in student:
+                try:
+                    datetimeobject = datetime.strptime(student["timestamp_3"], '%a, %d %b %Y %H:%M:%S %Z')
+                    newformat = datetimeobject.strftime('%Y-%m-%d %H:%M:%S')
+                except:
+                    newformat = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
             else:
                 newformat = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
             student["timestamp_3"] = newformat

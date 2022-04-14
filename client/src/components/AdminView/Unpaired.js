@@ -252,6 +252,7 @@ class Unpaired extends Component {
     super(props);
     this.state = {
       columns: [
+        { name: "timestamp", title: "Timestamp" },
         { name: "first_name", title: "First Name" },
         { name: "last_name", title: "Last Name" },
         { name: "email", title: "Email" },
@@ -450,6 +451,7 @@ class Unpaired extends Component {
     const RowDetail = ({ row }) => <div>Comments: {row.comments}</div>;
 
     const columnWid = [
+      { columnName: "timestamp", width: 240 },
       { columnName: "first_name", width: 240 },
       { columnName: "last_name", width: 240 },
       { columnName: "email", width: 300 },

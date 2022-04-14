@@ -581,15 +581,16 @@ def trio_find_weight(pair, person):
     return total_weight
 
 # Writing files to database
+# TODO: Change first timestamp to now reflect when entry was paired 
 def write_to_database(app_df, pairs, trios, leftovers, people):
     # print("Data below: ")
     for pair in pairs:
         p1 = pair.p1.idx - 1
         p2 = pair.p2.idx - 1
         cursor = conn.cursor()
-        sql = """INSERT INTO pairs(timestamp, first, last, email, level, teach, learn, comments, timestamp_1, first_1, last_1, email_1, level_1, teach_1, learn_1, comments_1) VALUES(%s, %s, %s, %s, %s, %s, %s, 
+        sql = """INSERT INTO pairs(timestamp, first, last, email, level, teach, learn, comments, timestamp_1, first_1, last_1, email_1, level_1, teach_1, learn_1, comments_1) VALUES((select localtimestamp(0)), %s, %s, %s, %s, %s, %s, 
         %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
-        cursor.execute(sql, (app_df.iloc[p1]["Timestamp"], app_df.iloc[p1]["First"], app_df.iloc[p1]["Last"], app_df.iloc[p1]["Email"], app_df.iloc[p1]["Level"],
+        cursor.execute(sql, (app_df.iloc[p1]["First"], app_df.iloc[p1]["Last"], app_df.iloc[p1]["Email"], app_df.iloc[p1]["Level"],
         json.dumps(pair.p1.teach), json.dumps(pair.p1.practice), app_df.iloc[p1]["Comments"], app_df.iloc[p2]["Timestamp"], app_df.iloc[p2]["First"], app_df.iloc[p2]["Last"], app_df.iloc[p2]["Email"],
         app_df.iloc[p2]["Level"], json.dumps(pair.p2.teach), json.dumps(pair.p2.practice), app_df.iloc[p2]["Comments"]))
         conn.commit()
@@ -600,9 +601,9 @@ def write_to_database(app_df, pairs, trios, leftovers, people):
         p3 = people[trio[2]].idx - 1
         cursor = conn.cursor()
         sql = """INSERT INTO pairs(timestamp, first, last, email, level, teach, learn, comments, timestamp_1, first_1, last_1, email_1, level_1, teach_1, learn_1, comments_1, 
-        timestamp_2, first_2, last_2, email_2, level_2, teach_2, learn_2, comments_2) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, 
+        timestamp_2, first_2, last_2, email_2, level_2, teach_2, learn_2, comments_2) VALUES((select localtimestamp(0)), %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, 
         %s, %s)"""
-        cursor.execute(sql, (app_df.iloc[p1]["Timestamp"], app_df.iloc[p1]["First"], app_df.iloc[p1]["Last"], app_df.iloc[p1]["Email"], app_df.iloc[p1]["Level"],
+        cursor.execute(sql, (app_df.iloc[p1]["First"], app_df.iloc[p1]["Last"], app_df.iloc[p1]["Email"], app_df.iloc[p1]["Level"],
         json.dumps(people[trio[0]].teach), json.dumps(people[trio[0]].practice), app_df.iloc[p1]["Comments"], app_df.iloc[p2]["Timestamp"], app_df.iloc[p2]["First"], app_df.iloc[p2]["Last"], app_df.iloc[p2]["Email"],
         app_df.iloc[p2]["Level"], json.dumps(people[trio[1]].teach), json.dumps(people[trio[1]].practice), app_df.iloc[p2]["Comments"], app_df.iloc[p3]["Timestamp"], app_df.iloc[p3]["First"], app_df.iloc[p3]["Last"], app_df.iloc[p3]["Email"],   
         app_df.iloc[p3]["Level"], json.dumps(people[trio[2]].teach), json.dumps(people[trio[2]].practice), app_df.iloc[p3]["Comments"]))

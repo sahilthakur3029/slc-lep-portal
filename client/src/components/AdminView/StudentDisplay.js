@@ -440,7 +440,7 @@ class StudentDisplay extends Component {
     super(props);
     this.state = {
       columns: [
-        { name: "timestamp", title: "Timestamp" },
+        { name: "timestamp", title: "Timestamp Submitted" },
         { name: "first_name", title: "First Name" },
         { name: "last_name", title: "Last Name" },
         { name: "email", title: "Email" },

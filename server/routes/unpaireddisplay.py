@@ -23,7 +23,7 @@ def getPairs():
     # Open a cursor to perform database operations
     cur = conn.cursor()
     # Execute a query
-    cur.execute("SELECT * FROM unpaired")
+    cur.execute("SELECT * FROM unpaired ORDER BY timestamp")
     # Retrieve query results
     records = cur.fetchall()
     # Close cursor
@@ -39,8 +39,11 @@ def updatePairs():
     cur.execute("DELETE FROM unpaired")
     for student in data_json:
         if "timestamp" in student:
-            datetimeobject = datetime.strptime(student["timestamp"], '%a, %d %b %Y %H:%M:%S %Z')
-            newformat = datetimeobject.strftime('%Y-%m-%d %H:%M:%S')
+            try:
+                datetimeobject = datetime.strptime(student["timestamp"], '%a, %d %b %Y %H:%M:%S %Z')
+                newformat = datetimeobject.strftime('%Y-%m-%d %H:%M:%S')
+            except:
+                newformat = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
         else:
             newformat = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
         student["timestamp"] = newformat

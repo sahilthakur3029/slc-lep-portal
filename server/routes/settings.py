@@ -22,7 +22,6 @@ conn = psycopg2.connect(database_url)
 @settings.route('/savedata', methods=["POST"])
 @login_required
 def delete():
-    print("DELETE RUNS")
     # Open a cursor to perform database operations
     cur = conn.cursor()
     data_json = request.get_json()

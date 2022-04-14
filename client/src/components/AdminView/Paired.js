@@ -350,6 +350,7 @@ class Paired extends Component {
     super(props);
     this.state = {
       columns: [
+        { name: "timestamp_1", title: "Timestamp Created" },
         { name: "first_name_1", title: "First Name 1" },
         { name: "last_name_1", title: "Last Name 1" },
         { name: "email_1", title: "Email 1" },
@@ -378,6 +379,7 @@ class Paired extends Component {
       isAuthenticated: "",
       openAlert: false,
       openAlertFail: false,
+      badNameRow: "",
     };
     this.commitChanges = this.commitChanges.bind(this);
     this.saveChanges = this.saveChanges.bind(this);
@@ -482,6 +484,7 @@ class Paired extends Component {
         student["email_2"].trim() === ""
       ) {
         errors = true;
+        this.setState({ badNameRow: student["first_name_1"] + "'s" });
       } else {
         student["first_name_1"] = titleCase(student["first_name_1"].trim());
         student["last_name_1"] = titleCase(student["last_name_1"].trim());
@@ -625,6 +628,7 @@ class Paired extends Component {
     );
 
     const columnWid = [
+      { columnName: "timestamp_1", width: 240 },
       { columnName: "first_name_1", width: 240 },
       { columnName: "last_name_1", width: 240 },
       { columnName: "email_1", width: 300 },
@@ -668,7 +672,8 @@ class Paired extends Component {
           onClose={() => this.setState({ openAlertFail: false })}
         >
           <Alert onClose={this.handleCloseOnAlertFail} severity="error">
-            Please ensure you have filled out all necessary fields correctly
+            Please ensure you have filled out all necessary fields correctly in{" "}
+            {this.state.badNameRow} row
           </Alert>
         </Snackbar>
         <Paper>

@@ -99,6 +99,7 @@ class Timesheet extends Component {
       this.props.values.partnerNames.trim() === "" ||
       this.props.values.week.trim() === "" ||
       this.props.values.hours.trim() === ""
+      // Add regex for hours here
     ) {
       this.setState({ open: true });
       return;

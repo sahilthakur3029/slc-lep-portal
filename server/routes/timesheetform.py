@@ -4,6 +4,7 @@ from flask_login.utils import login_required
 import psycopg2
 import json
 import os
+from datetime import datetime
 
 timesheetform = Blueprint('timesheetform', __name__, template_folder='templates')
 CORS(timesheetform)
@@ -21,7 +22,7 @@ def insertApplicant():
         # Open a cursor to perform database operations
         cur = conn.cursor()
         data_json = request.get_json()
-        sql = """INSERT INTO timesheet (first_name, last_name, partner_names, hours, week) VALUES (%s,%s,%s,%s,%s)"""
+        sql = """INSERT INTO timesheet (first_name, last_name, partner_names, hours, week, timestamp) VALUES (%s,%s,%s,%s,%s, (select localtimestamp(0)))"""
         cur.execute(sql, (data_json["firstName"], data_json["lastName"], data_json["partnerNames"], data_json["hours"], data_json["week"]))
         # Commit changes
         conn.commit()
@@ -52,7 +53,7 @@ def timesheetData():
         # Open a cursor to perform database operations
         cur = conn.cursor()
         # Execute a query
-        cur.execute("SELECT * FROM timesheet")
+        cur.execute("SELECT * FROM timesheet ORDER BY timestamp")
         # Retrieve query results
         records = cur.fetchall()
         # Close cursor
@@ -68,9 +69,18 @@ def updateTimesheet():
     data_json = request.get_json()['timesheetdata']
     cur.execute("DELETE FROM timesheet")
     for student in data_json:
-        sql = """INSERT INTO timesheet(first_name, last_name, partner_names, hours, week) VALUES(%s, %s, %s, %s, %s)"""
+        if "timestamp" in student:
+            try:
+                datetimeobject = datetime.strptime(student["timestamp"], '%a, %d %b %Y %H:%M:%S %Z')
+                newformat = datetimeobject.strftime('%Y-%m-%d %H:%M:%S')
+            except:
+                newformat = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
+        else:
+            newformat = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
+        student["timestamp"] = newformat
+        sql = """INSERT INTO timesheet(first_name, last_name, partner_names, hours, week, timestamp) VALUES(%s, %s, %s, %s, %s, %s)"""
         cur.execute(sql, (student["first_name"], student["last_name"], student["partner_names"], 
-        student.get("hours", "0"),  student.get("week", "Undefined Week")))
+        student.get("hours", "0"),  student.get("week", "Undefined Week"), student["timestamp"]))
     # Commit changes
     conn.commit()
     # Close cursor

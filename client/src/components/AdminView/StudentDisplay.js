@@ -48,8 +48,6 @@ import {
   RowDetailState,
 } from "@devexpress/dx-react-grid";
 
-// Things to do: Editing in a popup form
-
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }

@@ -93,35 +93,35 @@ const EditPopup = ({
     <DialogTitle>Edit Row</DialogTitle>
     <DialogContent>
       <FormControl>
-        <InputLabel>First Name</InputLabel>
+        <InputLabel>First Name *</InputLabel>
         <Input
           value={row.first_name || ""}
           onChange={(event) => onChange("first_name", event.target.value)}
         />
       </FormControl>{" "}
       <FormControl>
-        <InputLabel>Last Name</InputLabel>
+        <InputLabel>Last Name *</InputLabel>
         <Input
           value={row.last_name || ""}
           onChange={(event) => onChange("last_name", event.target.value)}
         />
       </FormControl>{" "}
       <FormControl fullWidth>
-        <InputLabel>Partner Names</InputLabel>
+        <InputLabel>Partner Names *</InputLabel>
         <Input
           value={row.partner_names || ""}
           onChange={(event) => onChange("partner_names", event.target.value)}
         />
       </FormControl>{" "}
       <FormControl>
-        <InputLabel>Hours</InputLabel>
+        <InputLabel>Hours *</InputLabel>
         <Input
           value={row.hours || ""}
           onChange={(event) => onChange("hours", event.target.value)}
         />
       </FormControl>{" "}
       <FormControl>
-        <InputLabel>Week</InputLabel>
+        <InputLabel>Week *</InputLabel>
         <Input
           value={row.week || ""}
           onChange={(event) => onChange("week", event.target.value)}
@@ -232,6 +232,7 @@ class TimesheetData extends Component {
     super(props);
     this.state = {
       columns: [
+        { name: "timestamp", title: "Timestamp Created" },
         { name: "first_name", title: "First Name" },
         { name: "last_name", title: "Last Name" },
         { name: "partner_names", title: "Partner Names" },
@@ -244,6 +245,7 @@ class TimesheetData extends Component {
       isAuthenticated: "",
       openAlert: false,
       openAlertFail: false,
+      badNameRow: "",
     };
     this.commitChanges = this.commitChanges.bind(this);
     this.saveChanges = this.saveChanges.bind(this);
@@ -284,6 +286,7 @@ class TimesheetData extends Component {
                   partner_names: student[2],
                   hours: student[3],
                   week: student[4],
+                  timestamp: student[5],
                 });
                 counter = counter + 1;
               }
@@ -324,12 +327,16 @@ class TimesheetData extends Component {
         student["hours"].trim() === "" ||
         student["week"] === undefined ||
         student["week"].trim() === ""
+        // For future use when making an hour algorithm
+        // !/^[+]?([.]\d+|\d+([.]\d+)?)$/.test(student["hours"])
       ) {
         errors = true;
+        this.setState({ badNameRow: student["first_name"] + "'s" });
       } else {
         student["first_name"] = titleCase(student["first_name"].trim());
         student["last_name"] = titleCase(student["last_name"].trim());
       }
+      rowsCopy[i] = student;
     }
     this.setState({ rows: rowsCopy }, () => {
       this.pushData(errors);
@@ -430,6 +437,7 @@ class TimesheetData extends Component {
     const { rows, columns } = this.state;
 
     const columnWid = [
+      { columnName: "timestamp", width: 240 },
       { columnName: "first_name", width: 240 },
       { columnName: "last_name", width: 240 },
       { columnName: "partner_names", width: 240 },
@@ -457,7 +465,8 @@ class TimesheetData extends Component {
           onClose={() => this.setState({ openAlertFail: false })}
         >
           <Alert onClose={this.handleCloseOnAlertFail} severity="error">
-            Please ensure you have filled out all fields correctly
+            Please ensure you have filled out all necessary fields correctly in{" "}
+            {this.state.badNameRow} row
           </Alert>
         </Snackbar>
         <Paper>

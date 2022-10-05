@@ -208,21 +208,22 @@ class Settings extends Component {
                   Email: this.formatEmail(pairing[3], pairing[11], pairing[19]),
                 });
                 pair_info_array.push({
-                  name_1: pairing[1] + " " + pairing[2],
+                  first_name_1: pairing[1],
+                  last_name_1: pairing[2],
                   email_1: pairing[3],
                   level_1: pairing[4],
                   teach_1: this.jsonParser(JSON.parse(pairing[5])),
                   learn_1: this.jsonParser(JSON.parse(pairing[6])),
                   comments_1: pairing[7],
-                  name_2: pairing[9] + " " + pairing[10],
+                  first_name_2: pairing[9],
+                  last_name_2: pairing[10],
                   email_2: pairing[11],
                   level_2: pairing[12],
                   teach_2: this.jsonParser(JSON.parse(pairing[13])),
                   learn_2: this.jsonParser(JSON.parse(pairing[14])),
                   comments_2: pairing[15],
-                  name_3: pairing[17]
-                    ? pairing[17] + " " + pairing[18] ?? ""
-                    : "",
+                  first_name_3: pairing[17] ?? "",
+                  last_name_3: pairing[18] ?? "",
                   email_3: pairing[19] ?? "",
                   level_3: pairing[20] ?? "",
                   teach_3: this.jsonParser(JSON.parse(pairing[21])) ?? "",

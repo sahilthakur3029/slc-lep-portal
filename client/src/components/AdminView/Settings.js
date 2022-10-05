@@ -212,22 +212,22 @@ class Settings extends Component {
                   last_name_1: pairing[2],
                   email_1: pairing[3],
                   level_1: pairing[4],
-                  teach_1: this.jsonParser(JSON.parse(pairing[5])),
-                  learn_1: this.jsonParser(JSON.parse(pairing[6])),
+                  teach_1: this.jsonParser(pairing[5]),
+                  learn_1: this.jsonParser(pairing[6]),
                   comments_1: pairing[7],
                   first_name_2: pairing[9],
                   last_name_2: pairing[10],
                   email_2: pairing[11],
                   level_2: pairing[12],
-                  teach_2: this.jsonParser(JSON.parse(pairing[13])),
-                  learn_2: this.jsonParser(JSON.parse(pairing[14])),
+                  teach_2: this.jsonParser(pairing[13]),
+                  learn_2: this.jsonParser(pairing[14]),
                   comments_2: pairing[15],
                   first_name_3: pairing[17] ?? "",
                   last_name_3: pairing[18] ?? "",
                   email_3: pairing[19] ?? "",
                   level_3: pairing[20] ?? "",
-                  teach_3: this.jsonParser(JSON.parse(pairing[21])) ?? "",
-                  learn_3: this.jsonParser(JSON.parse(pairing[22])) ?? "",
+                  teach_3: this.jsonParser(pairing[21]) ?? "",
+                  learn_3: this.jsonParser(pairing[22]) ?? "",
                   comments_3: pairing[23] ?? "",
                 });
               }
@@ -258,8 +258,8 @@ class Settings extends Component {
                   last_name: student[2],
                   email: student[3],
                   level: student[4],
-                  teach: this.jsonParser(JSON.parse(student[5])),
-                  learn: this.jsonParser(JSON.parse(student[6])),
+                  teach: this.jsonParser(student[5]),
+                  learn: this.jsonParser(student[6]),
                   comments: student[7],
                 });
               }
@@ -306,15 +306,20 @@ class Settings extends Component {
   }
 
   jsonParser(p) {
-    let returnString = "";
-    for (var key in p) {
-      if (p.hasOwnProperty(key) && returnString === "") {
-        returnString = returnString + key + ": " + p[key];
-      } else if (p.hasOwnProperty(key) && returnString !== "") {
-        returnString = returnString + ", " + key + ": " + p[key];
+    try {
+      p = JSON.parse(p);
+      let returnString = "";
+      for (var key in p) {
+        if (p.hasOwnProperty(key) && returnString === "") {
+          returnString = returnString + key + ": " + p[key];
+        } else if (p.hasOwnProperty(key) && returnString !== "") {
+          returnString = returnString + ", " + key + ": " + p[key];
+        }
       }
+      return returnString;
+    } catch (error) {
+      return "Parsing Error";
     }
-    return returnString;
   }
 
   formatNames(p1name, p2name, p3name) {

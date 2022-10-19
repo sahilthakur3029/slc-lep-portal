@@ -355,7 +355,9 @@ class Settings extends Component {
     if (
       !/^\d+$/.test(startWeek) ||
       !/^\d+$/.test(endWeek) ||
-      startWeek >= endWeek
+      startWeek >= endWeek ||
+      startWeek < 0 ||
+      endWeek > 20
     ) {
       // Could later change this to an error instead for clarity
       startWeek = 3;

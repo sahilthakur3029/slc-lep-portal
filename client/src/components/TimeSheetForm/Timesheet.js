@@ -15,7 +15,16 @@ import MuiAlert from "@material-ui/lab/Alert";
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
-
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 350,
+    },
+  },
+};
 const useStyles = (theme) => ({
   formControl: {
     margin: theme.spacing(1),
@@ -96,10 +105,9 @@ class Timesheet extends Component {
     if (
       this.props.values.firstName.trim() === "" ||
       this.props.values.lastName.trim() === "" ||
+      this.props.values.email.trim() === "" ||
       this.props.values.partnerNames.trim() === "" ||
-      this.props.values.week.trim() === "" ||
-      this.props.values.hours.trim() === ""
-      // Add regex for hours here
+      this.props.values.week.trim() === ""
     ) {
       this.setState({ open: true });
       return;
@@ -115,6 +123,7 @@ class Timesheet extends Component {
       body: JSON.stringify({
         firstName: this.props.values.firstName,
         lastName: this.props.values.lastName,
+        email: this.props.values.email,
         partnerNames: this.props.values.partnerNames,
         hours: this.props.values.hours,
         week: this.props.values.week,
@@ -176,6 +185,15 @@ class Timesheet extends Component {
             />
             <br />
             <TextField
+              placeholder="Enter Your Email"
+              label="Email"
+              onChange={handleChange("email")}
+              defaultValue={values.email}
+              margin="normal"
+              required
+              className={classes.formControl}
+            />
+            <TextField
               placeholder="Enter Your Partner(s) Names"
               label="Partner Names"
               onChange={handleChange("partnerNames")}
@@ -185,15 +203,38 @@ class Timesheet extends Component {
               className={classes.formControl}
             />
             <br />
-            <TextField
-              placeholder="How many hours did you meet?"
-              label="Hours"
-              onChange={handleChange("hours")}
-              defaultValue={values.hours}
-              margin="normal"
-              required
-              className={classes.formControl}
-            />
+            <FormControl className={classes.formControl} required>
+              <InputLabel id="hours">Hours</InputLabel>
+              <Select
+                labelId="hours-label"
+                id="hours"
+                defaultValue={values.hours}
+                onChange={handleChange("hours")}
+                MenuProps={MenuProps}
+              >
+                <MenuItem value={0}>0</MenuItem>
+                <MenuItem value={0.5}>0.5</MenuItem>
+                <MenuItem value={1}>1</MenuItem>
+                <MenuItem value={1.5}>1.5</MenuItem>
+                <MenuItem value={2}>2</MenuItem>
+                <MenuItem value={2.5}>2.5</MenuItem>
+                <MenuItem value={3}>3</MenuItem>
+                <MenuItem value={3.5}>3.5</MenuItem>
+                <MenuItem value={4}>4</MenuItem>
+                <MenuItem value={4.5}>4.5</MenuItem>
+                <MenuItem value={5}>5</MenuItem>
+                <MenuItem value={5}>5.5</MenuItem>
+                <MenuItem value={6}>6</MenuItem>
+                <MenuItem value={6.5}>6.5</MenuItem>
+                <MenuItem value={7}>7</MenuItem>
+                <MenuItem value={7.5}>7.5</MenuItem>
+                <MenuItem value={8}>8</MenuItem>
+                <MenuItem value={8.5}>8.5</MenuItem>
+                <MenuItem value={9}>9</MenuItem>
+                <MenuItem value={9.5}>9.5</MenuItem>
+                <MenuItem value={10}>10</MenuItem>
+              </Select>
+            </FormControl>
             <br />
             <br />
             <h2 className={classes.heads}>

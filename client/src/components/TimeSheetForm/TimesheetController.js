@@ -10,9 +10,10 @@ class TimesheetController extends Component {
       step: 1,
       firstName: "",
       lastName: "",
+      email: "",
       partnerNames: "",
       week: "",
-      hours: "",
+      hours: 0,
     };
   }
 
@@ -31,10 +32,12 @@ class TimesheetController extends Component {
 
   render() {
     const { step } = this.state;
-    const { firstName, lastName, partnerNames, week, hours } = this.state;
+    const { firstName, lastName, email, partnerNames, week, hours } =
+      this.state;
     const values = {
       firstName,
       lastName,
+      email,
       partnerNames,
       week,
       hours,

@@ -80,6 +80,7 @@ class Settings extends Component {
       redirect: null,
       deleteData: false,
       openAlert: false,
+      openAlertFail: false,
       modalStyle: {
         top: "50%",
         left: "50%",
@@ -280,6 +281,7 @@ class Settings extends Component {
             .then((data) => {
               for (const student of data) {
                 timesheet_info_array.push({
+                  timestamp: student[5],
                   first_name: student[0],
                   last_name: student[1],
                   partner_names: student[2],
@@ -359,9 +361,8 @@ class Settings extends Component {
       startWeek < 0 ||
       endWeek > 20
     ) {
-      // Could later change this to an error instead for clarity
-      startWeek = 3;
-      endWeek = 16;
+      this.setState({ openAlertFail: true });
+      return;
     }
     fetch(REACT_APP_SAVE, {
       method: "POST",
@@ -414,6 +415,14 @@ class Settings extends Component {
     this.setState({ openAlert: false });
   };
 
+  handleCloseOnAlertFail = (e, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    this.setState({ openAlertFail: false });
+  };
+
   render() {
     const { classes } = this.props;
     return (
@@ -427,6 +436,15 @@ class Settings extends Component {
           >
             <Alert onClose={this.handleCloseOnAlert} severity="success">
               Save Successful!
+            </Alert>
+          </Snackbar>
+          <Snackbar
+            open={this.state.openAlertFail}
+            autoHideDuration={5000}
+            onClose={() => this.setState({ openAlertFail: false })}
+          >
+            <Alert onClose={this.handleCloseOnAlertFail} severity="error">
+              Ensure start and end weeks are between 0-20
             </Alert>
           </Snackbar>
           <TopBar />

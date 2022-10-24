@@ -111,11 +111,6 @@ def user_loader(id: int):
     return None
 
 
-@app.route("/api/ping", methods=["GET"])
-def home():
-    return jsonify({"ping": "pong!"})
-
-
 @app.route("/api/getcsrf", methods=["GET"])
 def get_csrf():
     token = generate_csrf()
@@ -183,15 +178,6 @@ def logout():
     logout_user()
     return jsonify({"logout": True})
 
-
-@app.route('/test')
-def index():
-  # Execute a query
-  cur.execute("SELECT * FROM formmang")
-
-  # Retrieve query results
-  records = cur.fetchall()
-  return jsonify(records)
 
 
 if __name__ == '__main__': 

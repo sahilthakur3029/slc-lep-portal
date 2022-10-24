@@ -1,16 +1,17 @@
 from flask import Flask, Blueprint, jsonify, request
 from flask_cors import CORS
+from collections import Counter
+from datetime import datetime
+from server.routes.timesheetform import reorganizeRowsTimesheetv2
+from flask_login import (
+    login_required,
+)
 import psycopg2
 import pandas as pd
 import networkx as nx
 import ast 
 import itertools
 import json
-from collections import Counter
-from datetime import datetime
-from flask_login import (
-    login_required,
-)
 import os
 
 algorithm = Blueprint('algorithm', __name__, template_folder='templates')
@@ -161,7 +162,9 @@ def run_algorithm():
         "Partner Major Weight": row["P_Major_Weight"], "Partner Gender": row["P_Gender"].strip(), "Partner Gender Weight": row["P_Gender_Weight"]})
     step_2 = pd.DataFrame(formatted_data, columns=["Timestamp", "First", "Last", "Email", "Level", "Gender", "Major", "Teach", "Learn", "Comments", "Days Available", 
     "Partner Major", "Partner Major Weight", "Partner Gender", "Partner Gender Weight"])
-    step_3(step_2, data_json["strictness"])     
+    step_3(step_2, data_json["strictness"]) 
+    # Calling function to update timesheet v2  
+    reorganizeRowsTimesheetv2()  
     return jsonify({"success": True})
 
 # Step 3 of the algorithm 

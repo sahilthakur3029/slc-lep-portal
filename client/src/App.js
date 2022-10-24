@@ -12,6 +12,7 @@ import StudentDisplay from "./components/AdminView/StudentDisplay";
 import SignIn from "./components/SignInPage/SignIn";
 import Settings from "./components/AdminView/Settings";
 import TimesheetData from "./components/AdminView/TimesheetData";
+import TimesheetDataV2 from "./components/AdminView/TimesheetDataV2";
 
 const theme = createMuiTheme({
   palette: {
@@ -37,6 +38,7 @@ class App extends React.Component {
             <Route exact path="/signin" component={SignIn} />
             <Route exact path="/settings" component={Settings} />
             <Route exact path="/timesheetlogs" component={TimesheetData} />
+            <Route exact path="/timesheetlogsv2" component={TimesheetDataV2} />
           </Switch>
         </BrowserRouter>
       </ThemeProvider>

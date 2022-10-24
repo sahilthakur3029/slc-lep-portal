@@ -1,8 +1,9 @@
 from flask import Flask, Blueprint, jsonify, request
 from flask_cors import CORS
 from flask_login.utils import login_required
-import psycopg2
 from datetime import datetime
+from server.routes.timesheetform import reorganizeRowsTimesheetv2
+import psycopg2
 import os
 
 pairsdisplay = Blueprint('pairsdisplay', __name__, template_folder='templates')
@@ -88,4 +89,6 @@ def updatePairs():
     conn.commit()
     # Close cursor
     cur.close()
+    # Calling function to update timesheet v2
+    reorganizeRowsTimesheetv2()
     return jsonify({"success": True})

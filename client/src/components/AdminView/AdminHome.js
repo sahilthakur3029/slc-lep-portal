@@ -191,8 +191,6 @@ class Home extends Component {
                 </CardContent>
               </CardActionArea>
             </Card>
-          </div>
-          <div className="wrapper">
             <Card
               style={{
                 maxWidth: "25%",
@@ -226,6 +224,8 @@ class Home extends Component {
                 </CardContent>
               </CardActionArea>
             </Card>
+          </div>
+          <div className="wrapper">
             <Card
               style={{
                 maxWidth: "25%",
@@ -247,14 +247,47 @@ class Home extends Component {
                     component="div"
                     style={{ textAlign: "center", color: "white" }}
                   >
-                    Timesheet <AccessTimeIcon />
+                    Raw Timesheet [v1] <AccessTimeIcon />
                   </Typography>
                   <Typography
                     variant="body2"
                     color="text.secondary"
                     style={{ textAlign: "center", color: "white" }}
                   >
-                    Weekly logged conversational hours
+                    All weekly logged conversational hours
+                  </Typography>
+                </CardContent>
+              </CardActionArea>
+            </Card>
+            <Card
+              style={{
+                maxWidth: "25%",
+                height: "5%",
+                backgroundColor: "#859438",
+              }}
+            >
+              <CardActionArea
+                onClick={() =>
+                  this.setState({
+                    redirect: <Redirect push to="/timesheetlogsv2" />,
+                  })
+                }
+              >
+                <CardContent>
+                  <Typography
+                    gutterBottom
+                    variant="h5"
+                    component="div"
+                    style={{ textAlign: "center", color: "white" }}
+                  >
+                    Timesheet [v2] <AccessTimeIcon />
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    style={{ textAlign: "center", color: "white" }}
+                  >
+                    Weekly logged conversational hours of those paired
                   </Typography>
                 </CardContent>
               </CardActionArea>
@@ -292,8 +325,6 @@ class Home extends Component {
                 </CardContent>
               </CardActionArea>
             </Card>
-          </div>
-          <div className="wrapper2">
             <Card
               style={{
                 maxWidth: "25%",

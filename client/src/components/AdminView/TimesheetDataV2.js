@@ -116,147 +116,147 @@ const EditPopup = ({
       <FormControl>
         <InputLabel>Week 0</InputLabel>
         <Input
-          value={row.week_0 || 0}
+          value={row.week_0}
           onChange={(event) => onChange("week_0", event.target.value)}
         />
       </FormControl>
       <FormControl>
         <InputLabel>Week 1</InputLabel>
         <Input
-          value={row.week_1 || ""}
+          value={row.week_1}
           onChange={(event) => onChange("week_1", event.target.value)}
         />
       </FormControl>
       <FormControl>
         <InputLabel>Week 2</InputLabel>
         <Input
-          value={row.week_2 || ""}
+          value={row.week_2}
           onChange={(event) => onChange("week_2", event.target.value)}
         />
       </FormControl>
       <FormControl>
         <InputLabel>Week 3</InputLabel>
         <Input
-          value={row.week_3 || ""}
+          value={row.week_3}
           onChange={(event) => onChange("week_3", event.target.value)}
         />
       </FormControl>
       <FormControl>
         <InputLabel>Week 4</InputLabel>
         <Input
-          value={row.week_4 || ""}
+          value={row.week_4}
           onChange={(event) => onChange("week_4", event.target.value)}
         />
       </FormControl>
       <FormControl>
         <InputLabel>Week 5</InputLabel>
         <Input
-          value={row.week_5 || ""}
+          value={row.week_5}
           onChange={(event) => onChange("week_5", event.target.value)}
         />
       </FormControl>
       <FormControl>
         <InputLabel>Week 6</InputLabel>
         <Input
-          value={row.week_6 || ""}
+          value={row.week_6}
           onChange={(event) => onChange("week_6", event.target.value)}
         />
       </FormControl>
       <FormControl>
         <InputLabel>Week 7</InputLabel>
         <Input
-          value={row.week_7 || ""}
+          value={row.week_7}
           onChange={(event) => onChange("week_7", event.target.value)}
         />
       </FormControl>
       <FormControl>
         <InputLabel>Week 8</InputLabel>
         <Input
-          value={row.week_8 || ""}
+          value={row.week_8}
           onChange={(event) => onChange("week_8", event.target.value)}
         />
       </FormControl>
       <FormControl>
         <InputLabel>Week 9</InputLabel>
         <Input
-          value={row.week_9 || ""}
+          value={row.week_9}
           onChange={(event) => onChange("week_9", event.target.value)}
         />
       </FormControl>
       <FormControl>
         <InputLabel>Week 10</InputLabel>
         <Input
-          value={row.week_10 || ""}
+          value={row.week_10}
           onChange={(event) => onChange("week_10", event.target.value)}
         />
       </FormControl>
       <FormControl>
         <InputLabel>Week 11</InputLabel>
         <Input
-          value={row.week_11 || ""}
+          value={row.week_11}
           onChange={(event) => onChange("week_11", event.target.value)}
         />
       </FormControl>
       <FormControl>
         <InputLabel>Week 12</InputLabel>
         <Input
-          value={row.week_12 || ""}
+          value={row.week_12}
           onChange={(event) => onChange("week_12", event.target.value)}
         />
       </FormControl>
       <FormControl>
         <InputLabel>Week 13</InputLabel>
         <Input
-          value={row.week_13 || ""}
+          value={row.week_13}
           onChange={(event) => onChange("week_13", event.target.value)}
         />
       </FormControl>
       <FormControl>
         <InputLabel>Week 14</InputLabel>
         <Input
-          value={row.week_14 || ""}
+          value={row.week_14}
           onChange={(event) => onChange("week_14", event.target.value)}
         />
       </FormControl>
       <FormControl>
         <InputLabel>Week 15</InputLabel>
         <Input
-          value={row.week_15 || ""}
+          value={row.week_15}
           onChange={(event) => onChange("week_15", event.target.value)}
         />
       </FormControl>
       <FormControl>
         <InputLabel>Week 16</InputLabel>
         <Input
-          value={row.week_16 || ""}
+          value={row.week_16}
           onChange={(event) => onChange("week_16", event.target.value)}
         />
       </FormControl>
       <FormControl>
         <InputLabel>Week 17</InputLabel>
         <Input
-          value={row.week_17 || ""}
+          value={row.week_17}
           onChange={(event) => onChange("week_17", event.target.value)}
         />
       </FormControl>
       <FormControl>
         <InputLabel>Week 18</InputLabel>
         <Input
-          value={row.week_18 || ""}
+          value={row.week_18}
           onChange={(event) => onChange("week_18", event.target.value)}
         />
       </FormControl>
       <FormControl>
         <InputLabel>Week 19</InputLabel>
         <Input
-          value={row.week_19 || ""}
+          value={row.week_19}
           onChange={(event) => onChange("week_19", event.target.value)}
         />
       </FormControl>
       <FormControl>
         <InputLabel>Week 20</InputLabel>
         <Input
-          value={row.week_20 || ""}
+          value={row.week_20}
           onChange={(event) => onChange("week_20", event.target.value)}
         />
       </FormControl>

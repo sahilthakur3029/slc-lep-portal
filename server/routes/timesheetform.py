@@ -3,6 +3,7 @@ from flask_cors import CORS
 from flask_login.utils import login_required
 from datetime import datetime
 import psycopg2
+from psycopg2.extensions import AsIs
 import json
 import os
 
@@ -28,6 +29,8 @@ def insertApplicant():
         conn.commit()
         # Close cursor
         cur.close()
+        # Updating timesheet v2
+        updateTimesheetv2Hours(data_json["email"], data_json["hours"], data_json["week"])
         return jsonify({'Successful': 'Successful'})
 
 @timesheetform.route('/tsrender')
@@ -154,6 +157,28 @@ def reorganizeRowsTimesheetv2():
             else:
                 sql = """UPDATE timesheet_v2 SET pair_id = %s WHERE email = %s"""
                 cur.execute(sql, (i+1, j))
+    # Commit changes
+    conn.commit()
+    # Close cursor
+    cur.close()
+    return
+
+@login_required
+def updateTimesheetv2Hours(email, hours, week):
+    week = week.lower().replace(' ', '_')
+    # Open a cursor to perform database operations
+    cur = conn.cursor()
+    sql = """SELECT MAX(%s) FROM timesheet_v2 WHERE pair_id = (SELECT pair_id FROM timesheet_v2 WHERE email = %s)"""
+    cur.execute(sql, (AsIs(week), email))
+    cur_max_hours_for_week = cur.fetchone()[0]
+    if cur_max_hours_for_week is None:
+        cur.close()
+        return 
+    new_max_hours = max(cur_max_hours_for_week, hours)
+    if (str(new_max_hours).endswith('.0')):
+        new_max_hours = int(new_max_hours)
+    sql = """UPDATE timesheet_v2 SET %s = %s WHERE pair_id = (SELECT pair_id FROM timesheet_v2 WHERE email = %s)"""
+    cur.execute(sql, (AsIs(week), new_max_hours, email))
     # Commit changes
     conn.commit()
     # Close cursor

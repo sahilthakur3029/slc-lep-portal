@@ -113,7 +113,6 @@ def updateTimesheetv2():
     data_json = request.get_json()['timesheetdatav2']
     cur.execute("DELETE FROM timesheet_v2")
     for student in data_json:
-        print(student)
         sql = """INSERT INTO timesheet_v2 (pair_id, first_name, last_name, email, week_0, week_1, week_2, week_3, week_4, week_5, week_6, week_7,
         week_8, week_9, week_10, week_11, week_12, week_13, week_14, week_15, week_16, week_17, week_18,
         week_19, week_20) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""

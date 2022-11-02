@@ -37,6 +37,7 @@ import {
   ColumnChooser,
   TableColumnVisibility,
   TableEditColumn,
+  TableSummaryRow,
 } from "@devexpress/dx-react-grid-material-ui";
 import {
   SearchState,
@@ -44,6 +45,9 @@ import {
   SortingState,
   IntegratedSorting,
   RowDetailState,
+  SummaryState,
+  IntegratedSummary,
+  DataTypeProvider,
 } from "@devexpress/dx-react-grid";
 
 function Alert(props) {
@@ -372,6 +376,7 @@ class TimesheetDataV2 extends Component {
       openAlert: false,
       openAlertFail: false,
       badNameRow: "",
+      totalSummaryItems: [{ columnName: "week_3", type: "sum" }],
     };
     this.commitChanges = this.commitChanges.bind(this);
     this.saveChanges = this.saveChanges.bind(this);
@@ -402,6 +407,7 @@ class TimesheetDataV2 extends Component {
             { name: "first_name", title: "First Name" },
             { name: "last_name", title: "Last Name" },
           ];
+          let columns_summary = [];
           const { REACT_APP_TSRENDER } = process.env;
           fetch(REACT_APP_TSRENDER)
             .then((response) => response.json())
@@ -412,7 +418,12 @@ class TimesheetDataV2 extends Component {
                   name: "week_" + i,
                   title: "Week " + i,
                 });
+                columns_summary.push({ columnName: "week_" + i, type: "sum" });
               }
+              columns_array.push({
+                name: "total",
+                title: "Total",
+              });
             })
             .catch((error) =>
               alert(
@@ -453,12 +464,35 @@ class TimesheetDataV2 extends Component {
                   week_18: student[22],
                   week_19: student[23],
                   week_20: student[24],
+                  total:
+                    student[4] +
+                    student[5] +
+                    student[6] +
+                    student[7] +
+                    student[8] +
+                    student[9] +
+                    student[10] +
+                    student[11] +
+                    student[12] +
+                    student[13] +
+                    student[14] +
+                    student[15] +
+                    student[16] +
+                    student[17] +
+                    student[18] +
+                    student[19] +
+                    student[20] +
+                    student[21] +
+                    student[22] +
+                    student[23] +
+                    student[24],
                 });
                 counter = counter + 1;
               }
               this.setState({
                 rows: rows_array,
                 columns: columns_array,
+                totalSummaryItems: columns_summary,
               });
             })
             .catch((error) =>
@@ -652,6 +686,7 @@ class TimesheetDataV2 extends Component {
       { columnName: "week_18", width: 100 },
       { columnName: "week_19", width: 100 },
       { columnName: "week_20", width: 100 },
+      { columnName: "total", width: 100 },
     ];
 
     return (
@@ -695,6 +730,9 @@ class TimesheetDataV2 extends Component {
             <EditPopupPlugin popupComponent={EditPopup} />
             <ColumnChooser />
             <SearchPanel />
+            <SummaryState totalItems={this.state.totalSummaryItems} />
+            <IntegratedSummary />
+            <TableSummaryRow />
           </Grid>
         </Paper>
         <br />

@@ -37,7 +37,6 @@ import {
   ColumnChooser,
   TableColumnVisibility,
   TableEditColumn,
-  TableSummaryRow,
 } from "@devexpress/dx-react-grid-material-ui";
 import {
   SearchState,
@@ -45,9 +44,6 @@ import {
   SortingState,
   IntegratedSorting,
   RowDetailState,
-  SummaryState,
-  IntegratedSummary,
-  DataTypeProvider,
 } from "@devexpress/dx-react-grid";
 
 function Alert(props) {
@@ -376,7 +372,7 @@ class TimesheetDataV2 extends Component {
       openAlert: false,
       openAlertFail: false,
       badNameRow: "",
-      totalSummaryItems: [{ columnName: "week_3", type: "sum" }],
+      rowsToSend: [],
     };
     this.commitChanges = this.commitChanges.bind(this);
     this.saveChanges = this.saveChanges.bind(this);
@@ -406,8 +402,8 @@ class TimesheetDataV2 extends Component {
             { name: "pair_id", title: "Pair" },
             { name: "first_name", title: "First Name" },
             { name: "last_name", title: "Last Name" },
+            { name: "email", title: "Email" },
           ];
-          let columns_summary = [];
           const { REACT_APP_TSRENDER } = process.env;
           fetch(REACT_APP_TSRENDER)
             .then((response) => response.json())
@@ -418,11 +414,10 @@ class TimesheetDataV2 extends Component {
                   name: "week_" + i,
                   title: "Week " + i,
                 });
-                columns_summary.push({ columnName: "week_" + i, type: "sum" });
               }
               columns_array.push({
                 name: "total",
-                title: "Total",
+                title: "Totals",
               });
             })
             .catch((error) =>
@@ -432,6 +427,27 @@ class TimesheetDataV2 extends Component {
             );
           let rows_array = [];
           let counter = 0;
+          let week_0_col = 0;
+          let week_1_col = 0;
+          let week_2_col = 0;
+          let week_3_col = 0;
+          let week_4_col = 0;
+          let week_5_col = 0;
+          let week_6_col = 0;
+          let week_7_col = 0;
+          let week_8_col = 0;
+          let week_9_col = 0;
+          let week_10_col = 0;
+          let week_11_col = 0;
+          let week_12_col = 0;
+          let week_13_col = 0;
+          let week_14_col = 0;
+          let week_15_col = 0;
+          let week_16_col = 0;
+          let week_17_col = 0;
+          let week_18_col = 0;
+          let week_19_col = 0;
+          let week_20_col = 0;
           const { REACT_APP_TIMESHEET_V2 } = process.env;
           fetch(REACT_APP_TIMESHEET_V2)
             .then((response) => response.json())
@@ -443,27 +459,27 @@ class TimesheetDataV2 extends Component {
                   first_name: student[1],
                   last_name: student[2],
                   email: student[3],
-                  week_0: student[4],
-                  week_1: student[5],
-                  week_2: student[6],
-                  week_3: student[7],
-                  week_4: student[8],
-                  week_5: student[9],
-                  week_6: student[10],
-                  week_7: student[11],
-                  week_8: student[12],
-                  week_9: student[13],
-                  week_10: student[14],
-                  week_11: student[15],
-                  week_12: student[16],
-                  week_13: student[17],
-                  week_14: student[18],
-                  week_15: student[19],
-                  week_16: student[20],
-                  week_17: student[21],
-                  week_18: student[22],
-                  week_19: student[23],
-                  week_20: student[24],
+                  week_0: student[4] ? student[4] : "",
+                  week_1: student[5] ? student[5] : "",
+                  week_2: student[6] ? student[6] : "",
+                  week_3: student[7] ? student[7] : "",
+                  week_4: student[8] ? student[8] : "",
+                  week_5: student[9] ? student[9] : "",
+                  week_6: student[10] ? student[10] : "",
+                  week_7: student[11] ? student[11] : "",
+                  week_8: student[12] ? student[12] : "",
+                  week_9: student[13] ? student[13] : "",
+                  week_10: student[14] ? student[14] : "",
+                  week_11: student[15] ? student[15] : "",
+                  week_12: student[16] ? student[16] : "",
+                  week_13: student[17] ? student[17] : "",
+                  week_14: student[18] ? student[18] : "",
+                  week_15: student[19] ? student[19] : "",
+                  week_16: student[20] ? student[20] : "",
+                  week_17: student[21] ? student[21] : "",
+                  week_18: student[22] ? student[22] : "",
+                  week_19: student[23] ? student[23] : "",
+                  week_20: student[24] ? student[24] : "",
                   total:
                     student[4] +
                     student[5] +
@@ -487,12 +503,82 @@ class TimesheetDataV2 extends Component {
                     student[23] +
                     student[24],
                 });
+                week_0_col = week_0_col + student[4];
+                week_1_col = week_1_col + student[5];
+                week_2_col = week_2_col + student[6];
+                week_3_col = week_3_col + student[7];
+                week_4_col = week_4_col + student[8];
+                week_5_col = week_5_col + student[9];
+                week_6_col = week_6_col + student[10];
+                week_7_col = week_7_col + student[11];
+                week_8_col = week_8_col + student[12];
+                week_9_col = week_9_col + student[13];
+                week_10_col = week_10_col + student[14];
+                week_11_col = week_11_col + student[15];
+                week_12_col = week_12_col + student[16];
+                week_13_col = week_13_col + student[17];
+                week_14_col = week_14_col + student[18];
+                week_15_col = week_15_col + student[19];
+                week_16_col = week_16_col + student[20];
+                week_17_col = week_17_col + student[21];
+                week_18_col = week_18_col + student[22];
+                week_19_col = week_19_col + student[23];
+                week_20_col = week_20_col + student[24];
                 counter = counter + 1;
               }
+              rows_array.push({
+                id: counter,
+                pair_id: "",
+                first_name: "",
+                last_name: "",
+                email: "Weekly Totals",
+                week_0: week_0_col,
+                week_1: week_1_col,
+                week_2: week_2_col,
+                week_3: week_3_col,
+                week_4: week_4_col,
+                week_5: week_5_col,
+                week_6: week_6_col,
+                week_7: week_7_col,
+                week_8: week_8_col,
+                week_9: week_9_col,
+                week_10: week_10_col,
+                week_11: week_11_col,
+                week_12: week_12_col,
+                week_13: week_13_col,
+                week_14: week_14_col,
+                week_15: week_15_col,
+                week_16: week_16_col,
+                week_17: week_17_col,
+                week_18: week_18_col,
+                week_19: week_19_col,
+                week_20: week_20_col,
+                total:
+                  week_0_col +
+                  week_1_col +
+                  week_2_col +
+                  week_3_col +
+                  week_4_col +
+                  week_5_col +
+                  week_6_col +
+                  week_7_col +
+                  week_8_col +
+                  week_9_col +
+                  week_10_col +
+                  week_11_col +
+                  week_12_col +
+                  week_13_col +
+                  week_14_col +
+                  week_15_col +
+                  week_16_col +
+                  week_17_col +
+                  week_18_col +
+                  week_19_col +
+                  week_20_col,
+              });
               this.setState({
                 rows: rows_array,
                 columns: columns_array,
-                totalSummaryItems: columns_summary,
               });
             })
             .catch((error) =>
@@ -515,8 +601,29 @@ class TimesheetDataV2 extends Component {
   saveChanges() {
     let rowsCopy = [...this.state.rows];
     let errors = false;
-    for (let i = 0; i < rowsCopy.length; i++) {
+    for (let i = 0; i < rowsCopy.length - 1; i++) {
       let student = { ...rowsCopy[i] };
+      student["week_0"] = student["week_0"] ? student["week_0"] : 0;
+      student["week_1"] = student["week_1"] ? student["week_1"] : 0;
+      student["week_2"] = student["week_2"] ? student["week_2"] : 0;
+      student["week_3"] = student["week_3"] ? student["week_3"] : 0;
+      student["week_4"] = student["week_4"] ? student["week_4"] : 0;
+      student["week_5"] = student["week_5"] ? student["week_5"] : 0;
+      student["week_6"] = student["week_6"] ? student["week_6"] : 0;
+      student["week_7"] = student["week_7"] ? student["week_7"] : 0;
+      student["week_8"] = student["week_8"] ? student["week_8"] : 0;
+      student["week_9"] = student["week_9"] ? student["week_9"] : 0;
+      student["week_10"] = student["week_10"] ? student["week_10"] : 0;
+      student["week_11"] = student["week_11"] ? student["week_11"] : 0;
+      student["week_12"] = student["week_12"] ? student["week_12"] : 0;
+      student["week_13"] = student["week_13"] ? student["week_13"] : 0;
+      student["week_14"] = student["week_14"] ? student["week_14"] : 0;
+      student["week_15"] = student["week_15"] ? student["week_15"] : 0;
+      student["week_16"] = student["week_16"] ? student["week_16"] : 0;
+      student["week_17"] = student["week_17"] ? student["week_17"] : 0;
+      student["week_18"] = student["week_18"] ? student["week_18"] : 0;
+      student["week_19"] = student["week_19"] ? student["week_19"] : 0;
+      student["week_20"] = student["week_20"] ? student["week_20"] : 0;
       if (
         student["first_name"] === undefined ||
         student["first_name"].trim() === "" ||
@@ -572,10 +679,31 @@ class TimesheetDataV2 extends Component {
       } else {
         student["first_name"] = titleCase(student["first_name"].trim());
         student["last_name"] = titleCase(student["last_name"].trim());
+        student["week_0"] = student["week_0"] ? student["week_0"] : 0;
+        student["week_1"] = student["week_1"] ? student["week_1"] : 0;
+        student["week_2"] = student["week_2"] ? student["week_2"] : 0;
+        student["week_3"] = student["week_3"] ? student["week_3"] : 0;
+        student["week_4"] = student["week_4"] ? student["week_4"] : 0;
+        student["week_5"] = student["week_5"] ? student["week_5"] : 0;
+        student["week_6"] = student["week_6"] ? student["week_6"] : 0;
+        student["week_7"] = student["week_7"] ? student["week_7"] : 0;
+        student["week_8"] = student["week_8"] ? student["week_8"] : 0;
+        student["week_9"] = student["week_9"] ? student["week_9"] : 0;
+        student["week_10"] = student["week_10"] ? student["week_10"] : 0;
+        student["week_11"] = student["week_11"] ? student["week_11"] : 0;
+        student["week_12"] = student["week_12"] ? student["week_12"] : 0;
+        student["week_13"] = student["week_13"] ? student["week_13"] : 0;
+        student["week_14"] = student["week_14"] ? student["week_14"] : 0;
+        student["week_15"] = student["week_15"] ? student["week_15"] : 0;
+        student["week_16"] = student["week_16"] ? student["week_16"] : 0;
+        student["week_17"] = student["week_17"] ? student["week_17"] : 0;
+        student["week_18"] = student["week_18"] ? student["week_18"] : 0;
+        student["week_19"] = student["week_19"] ? student["week_19"] : 0;
+        student["week_20"] = student["week_20"] ? student["week_20"] : 0;
       }
       rowsCopy[i] = student;
     }
-    this.setState({ rows: rowsCopy }, () => {
+    this.setState({ rowsToSend: rowsCopy }, () => {
       this.pushData(errors);
     });
     return "Complete";
@@ -594,7 +722,7 @@ class TimesheetDataV2 extends Component {
         "X-CSRFToken": this.state.csrfToken,
       },
       body: JSON.stringify({
-        timesheetdatav2: this.state.rows,
+        timesheetdatav2: this.state.rowsToSend.slice(0, -1),
       }),
     })
       .then((response) => response.json())
@@ -665,6 +793,7 @@ class TimesheetDataV2 extends Component {
       { columnName: "pair_id", width: 100 },
       { columnName: "first_name", width: 150 },
       { columnName: "last_name", width: 150 },
+      { columnName: "email", width: 300 },
       { columnName: "week_0", width: 100 },
       { columnName: "week_1", width: 100 },
       { columnName: "week_2", width: 100 },
@@ -730,9 +859,6 @@ class TimesheetDataV2 extends Component {
             <EditPopupPlugin popupComponent={EditPopup} />
             <ColumnChooser />
             <SearchPanel />
-            <SummaryState totalItems={this.state.totalSummaryItems} />
-            <IntegratedSummary />
-            <TableSummaryRow />
           </Grid>
         </Paper>
         <br />

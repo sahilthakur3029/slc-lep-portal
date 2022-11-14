@@ -76,6 +76,7 @@ class Settings extends Component {
       u_student_info: "",
       orientationKey: "",
       timesheet_info: "",
+      timesheet_v2_info: "",
       csrfToken: "",
       redirect: null,
       deleteData: false,
@@ -291,6 +292,163 @@ class Settings extends Component {
               }
               this.setState({
                 timesheet_info: timesheet_info_array,
+              });
+            })
+            .catch((error) =>
+              alert(
+                "Something went wrong in receiving data. Please try again later."
+              )
+            );
+
+          let rows_array = [];
+          let week_0_col = 0;
+          let week_1_col = 0;
+          let week_2_col = 0;
+          let week_3_col = 0;
+          let week_4_col = 0;
+          let week_5_col = 0;
+          let week_6_col = 0;
+          let week_7_col = 0;
+          let week_8_col = 0;
+          let week_9_col = 0;
+          let week_10_col = 0;
+          let week_11_col = 0;
+          let week_12_col = 0;
+          let week_13_col = 0;
+          let week_14_col = 0;
+          let week_15_col = 0;
+          let week_16_col = 0;
+          let week_17_col = 0;
+          let week_18_col = 0;
+          let week_19_col = 0;
+          let week_20_col = 0;
+          const { REACT_APP_TIMESHEET_V2 } = process.env;
+          fetch(REACT_APP_TIMESHEET_V2)
+            .then((response) => response.json())
+            .then((data) => {
+              for (const student of data) {
+                rows_array.push({
+                  pair_id: student[0],
+                  first_name: student[1],
+                  last_name: student[2],
+                  email: student[3],
+                  week_0: student[4] ? student[4] : "",
+                  week_1: student[5] ? student[5] : "",
+                  week_2: student[6] ? student[6] : "",
+                  week_3: student[7] ? student[7] : "",
+                  week_4: student[8] ? student[8] : "",
+                  week_5: student[9] ? student[9] : "",
+                  week_6: student[10] ? student[10] : "",
+                  week_7: student[11] ? student[11] : "",
+                  week_8: student[12] ? student[12] : "",
+                  week_9: student[13] ? student[13] : "",
+                  week_10: student[14] ? student[14] : "",
+                  week_11: student[15] ? student[15] : "",
+                  week_12: student[16] ? student[16] : "",
+                  week_13: student[17] ? student[17] : "",
+                  week_14: student[18] ? student[18] : "",
+                  week_15: student[19] ? student[19] : "",
+                  week_16: student[20] ? student[20] : "",
+                  week_17: student[21] ? student[21] : "",
+                  week_18: student[22] ? student[22] : "",
+                  week_19: student[23] ? student[23] : "",
+                  week_20: student[24] ? student[24] : "",
+                  total:
+                    student[4] +
+                    student[5] +
+                    student[6] +
+                    student[7] +
+                    student[8] +
+                    student[9] +
+                    student[10] +
+                    student[11] +
+                    student[12] +
+                    student[13] +
+                    student[14] +
+                    student[15] +
+                    student[16] +
+                    student[17] +
+                    student[18] +
+                    student[19] +
+                    student[20] +
+                    student[21] +
+                    student[22] +
+                    student[23] +
+                    student[24],
+                });
+                week_0_col = week_0_col + student[4];
+                week_1_col = week_1_col + student[5];
+                week_2_col = week_2_col + student[6];
+                week_3_col = week_3_col + student[7];
+                week_4_col = week_4_col + student[8];
+                week_5_col = week_5_col + student[9];
+                week_6_col = week_6_col + student[10];
+                week_7_col = week_7_col + student[11];
+                week_8_col = week_8_col + student[12];
+                week_9_col = week_9_col + student[13];
+                week_10_col = week_10_col + student[14];
+                week_11_col = week_11_col + student[15];
+                week_12_col = week_12_col + student[16];
+                week_13_col = week_13_col + student[17];
+                week_14_col = week_14_col + student[18];
+                week_15_col = week_15_col + student[19];
+                week_16_col = week_16_col + student[20];
+                week_17_col = week_17_col + student[21];
+                week_18_col = week_18_col + student[22];
+                week_19_col = week_19_col + student[23];
+                week_20_col = week_20_col + student[24];
+              }
+              rows_array.push({
+                pair_id: "",
+                first_name: "",
+                last_name: "",
+                email: "Weekly Totals",
+                week_0: week_0_col,
+                week_1: week_1_col,
+                week_2: week_2_col,
+                week_3: week_3_col,
+                week_4: week_4_col,
+                week_5: week_5_col,
+                week_6: week_6_col,
+                week_7: week_7_col,
+                week_8: week_8_col,
+                week_9: week_9_col,
+                week_10: week_10_col,
+                week_11: week_11_col,
+                week_12: week_12_col,
+                week_13: week_13_col,
+                week_14: week_14_col,
+                week_15: week_15_col,
+                week_16: week_16_col,
+                week_17: week_17_col,
+                week_18: week_18_col,
+                week_19: week_19_col,
+                week_20: week_20_col,
+                total:
+                  week_0_col +
+                  week_1_col +
+                  week_2_col +
+                  week_3_col +
+                  week_4_col +
+                  week_5_col +
+                  week_6_col +
+                  week_7_col +
+                  week_8_col +
+                  week_9_col +
+                  week_10_col +
+                  week_11_col +
+                  week_12_col +
+                  week_13_col +
+                  week_14_col +
+                  week_15_col +
+                  week_16_col +
+                  week_17_col +
+                  week_18_col +
+                  week_19_col +
+                  week_20_col,
+              });
+              this.setState({
+                timesheet_v2_info: rows_array,
               });
             })
             .catch((error) =>
@@ -715,6 +873,41 @@ class Settings extends Component {
             }}
           >
             Timesheet Data
+          </CsvDownload>
+          <CsvDownload
+            data={this.state.timesheet_v2_info}
+            filename="timesheet_v2.csv"
+            style={{
+              color: "#fff",
+              marginLeft: "30px",
+              backgroundColor: "#859438",
+              boxShadow:
+                "0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%)",
+              padding: "6px 16px",
+              minWidth: "64px",
+              transition:
+                "background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
+              fontSize: "0.875rem",
+              fontWeight: "500",
+              fontFamily: "Roboto, Helvetica, Arial, sans-serif",
+              lineHeight: "1.75",
+              borderRadius: "4px",
+              letterSpacing: "0.02857em",
+              textTransform: "uppercase",
+              border: "0",
+              display: "inline-flex",
+              alignItems: "center",
+              verticalAlign: "middle",
+              justifyContent: "center",
+              textAlign: "center",
+              wordSpacing: "normal",
+              cursor: "pointer",
+              textDecoration: "none",
+              textShadow: "none",
+              height: 32,
+            }}
+          >
+            Timesheet Data v2
           </CsvDownload>
           <br />
           <br />

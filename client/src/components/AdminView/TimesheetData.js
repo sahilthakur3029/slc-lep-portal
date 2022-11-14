@@ -106,8 +106,15 @@ const EditPopup = ({
           onChange={(event) => onChange("last_name", event.target.value)}
         />
       </FormControl>{" "}
+      <FormControl>
+        <InputLabel>Email</InputLabel>
+        <Input
+          value={row.email || ""}
+          onChange={(event) => onChange("email", event.target.value)}
+        />
+      </FormControl>{" "}
       <FormControl fullWidth>
-        <InputLabel>Partner Names *</InputLabel>
+        <InputLabel>Partner Names</InputLabel>
         <Input
           value={row.partner_names || ""}
           onChange={(event) => onChange("partner_names", event.target.value)}
@@ -125,6 +132,13 @@ const EditPopup = ({
         <Input
           value={row.week || ""}
           onChange={(event) => onChange("week", event.target.value)}
+        />
+      </FormControl>
+      <FormControl>
+        <InputLabel>In v2</InputLabel>
+        <Input
+          value={row.in_v2 || ""}
+          onChange={(event) => onChange("in_v2", event.target.value)}
         />
       </FormControl>
     </DialogContent>
@@ -235,9 +249,11 @@ class TimesheetData extends Component {
         { name: "timestamp", title: "Timestamp Created" },
         { name: "first_name", title: "First Name" },
         { name: "last_name", title: "Last Name" },
+        { name: "email", title: "Email" },
         { name: "partner_names", title: "Partner Names" },
         { name: "hours", title: "Hours" },
         { name: "week", title: "Week" },
+        { name: "in_v2", title: "In Timesheet v2?" },
       ],
       rows: [],
       redirect: null,
@@ -283,10 +299,12 @@ class TimesheetData extends Component {
                   id: counter,
                   first_name: student[0],
                   last_name: student[1],
+                  email: student[7],
                   partner_names: student[2],
                   hours: student[3],
                   week: student[4],
                   timestamp: student[5],
+                  in_v2: student[6],
                 });
                 counter = counter + 1;
               }
@@ -321,14 +339,10 @@ class TimesheetData extends Component {
         student["first_name"].trim() === "" ||
         student["last_name"] === undefined ||
         student["last_name"].trim() === "" ||
-        student["partner_names"] === undefined ||
-        student["partner_names"].trim() === "" ||
         student["hours"] === undefined ||
         student["hours"].trim() === "" ||
         student["week"] === undefined ||
         student["week"].trim() === ""
-        // For future use when making an hour algorithm
-        // !/^[+]?([.]\d+|\d+([.]\d+)?)$/.test(student["hours"])
       ) {
         errors = true;
         this.setState({ badNameRow: student["first_name"] + "'s" });
@@ -440,9 +454,11 @@ class TimesheetData extends Component {
       { columnName: "timestamp", width: 240 },
       { columnName: "first_name", width: 240 },
       { columnName: "last_name", width: 240 },
+      { columnName: "email", width: 240 },
       { columnName: "partner_names", width: 240 },
       { columnName: "hours", width: 240 },
       { columnName: "week", width: 240 },
+      { columnName: "in_v2", width: 240 },
     ];
 
     return (

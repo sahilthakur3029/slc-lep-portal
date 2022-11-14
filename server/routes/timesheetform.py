@@ -23,8 +23,14 @@ def insertApplicant():
         # Open a cursor to perform database operations
         cur = conn.cursor()
         data_json = request.get_json()
-        sql = """INSERT INTO timesheet (first_name, last_name, partner_names, hours, week, timestamp) VALUES (%s,%s,%s,%s,%s, (select localtimestamp(0)))"""
-        cur.execute(sql, (data_json["firstName"], data_json["lastName"], data_json["partnerNames"], data_json["hours"], data_json["week"]))
+        sql = """SELECT * FROM timesheet_v2 WHERE email = %s"""
+        cur.execute(sql, (data_json["email"],))
+        records = cur.fetchall()
+        in_v2 = ""
+        if len(records) == 0:
+            in_v2 = 'N'
+        sql = """INSERT INTO timesheet (first_name, last_name, partner_names, hours, week, timestamp, in_v2, email) VALUES (%s,%s,%s,%s,%s, (select localtimestamp(0)), %s, %s)"""
+        cur.execute(sql, (data_json["firstName"], data_json["lastName"], data_json["partnerNames"], data_json["hours"], data_json["week"], in_v2, data_json["email"]))
         # Commit changes
         conn.commit()
         # Close cursor
@@ -81,9 +87,9 @@ def updateTimesheet():
         else:
             newformat = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
         student["timestamp"] = newformat
-        sql = """INSERT INTO timesheet(first_name, last_name, partner_names, hours, week, timestamp) VALUES(%s, %s, %s, %s, %s, %s)"""
+        sql = """INSERT INTO timesheet(first_name, last_name, partner_names, hours, week, timestamp, in_v2, email) VALUES(%s, %s, %s, %s, %s, %s, %s, %s)"""
         cur.execute(sql, (student["first_name"], student["last_name"], student["partner_names"], 
-        student.get("hours", "0"),  student.get("week", "Undefined Week"), student["timestamp"]))
+        student.get("hours", "0"),  student.get("week", "Undefined Week"), student["timestamp"], student["in_v2"], student["email"]))
     # Commit changes
     conn.commit()
     # Close cursor

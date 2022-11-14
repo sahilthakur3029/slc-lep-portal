@@ -285,9 +285,11 @@ class Settings extends Component {
                   timestamp: student[5],
                   first_name: student[0],
                   last_name: student[1],
+                  email: student[7],
                   partner_names: student[2],
                   hours: student[3],
                   week: student[4],
+                  in_v2: student[6],
                 });
               }
               this.setState({

@@ -168,7 +168,6 @@ def reorganizeRowsTimesheetv2():
     cur.close()
     return
 
-@login_required
 def updateTimesheetv2Hours(email, hours, week):
     week = week.lower().replace(' ', '_')
     # Open a cursor to perform database operations

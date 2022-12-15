@@ -43,7 +43,9 @@ The second category of routes, protected/admin routes, can only be accessed via 
 
 7.  **`/timesheetlogs`**: Page layout is the same as paired. The only difference is that each row of this table represents all students that filled out the timesheet form.
 
-8.  **`/settings`**: This page contains multiple configurations and the ability to download data for the application. Any changes only persist if the save changes button is clicked before leaving the page. Each section is described more thoroughly below:
+8.  **`/timesheetlogsv2`**: This is another method of viewing the timesheet table. Instead of having one row per timesheet response (like in /timesheetlogs), this instead has one row per student and the columns being each week number of the program. Aggregates are performed on each row (total hours for each student in the program) and each column (total hours spent by students in the program per week).
+
+9.  **`/settings`**: This page contains multiple configurations and the ability to download data for the application. Any changes only persist if the save changes button is clicked before leaving the page. Each section is described more thoroughly below:
 
     - *Intake Form / Timesheet Configurations*: This section allows for the semester display, the academic calendar link that shows up on the timesheet page, the orientation key, and the different weeks that can selected from in the timesheet page to be modified. In regard to the timesheet weeks, these are the weeks that show up in the timesheet page dropdown when submitting hours. The admin needs to only set a starting week number and an ending week number - the rest of the week numbers in between will be populated accordingly by the application.  
     
